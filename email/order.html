@@ -1,0 +1,594 @@
+<table align="center" width="696" border="0" cellspacing="0" cellpadding="0">
+	<tbody>
+		<tr><td height="20" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+		<tr>
+			<td style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"><img src="/data/mail/logo.gif"></td>
+		</tr>
+		<tr><td height="20" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+		<tr><td height="2" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;" bgcolor="#000000"></td></tr>
+		<tr><td height="60" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+		<!-- 내용시작 -->
+		<tr>
+			<td style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"><img src="/data/mail/txt_order_accept.gif"></td>
+		</tr>
+		<tr><td height="35" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+		<tr><td class="texts" style="color: rgb(97, 106, 116); line-height: 22px; padding-left: 10px; font-family: 돋움, Dotum; font-size: 12px;"><b>{config_basic.shopName}</b>입니다.</td></tr>
+		<tr><td class="texts" style="color: rgb(97, 106, 116); line-height: 22px; padding-left: 10px; font-family: 돋움, Dotum; font-size: 12px;">주문이 접수되었습니다. 아래의 입금계좌로 입금을 진행 해 주시기 바랍니다.</td></tr>
+		<tr><td height="20" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+	</tbody>
+</table>
+<table align="center" width="696" border="0" cellspacing="0" cellpadding="0">
+<col width="48%" />
+<col style="width:4%;" />
+<col width="48%" />
+<tr>
+	<td><span style="font-size:12px; color:#000000; font-weight:bold; letter-spacing:-1px;">주문정보</span></td>
+	<td></td>
+	<td><span style="font-size:12px; color:#000000; font-weight:bold; letter-spacing:-1px;">결제정보</span></td>
+</tr>
+<tr>
+	<td><div style="width:100%;border-top:1px solid #545454;height:1px;"></div></td>
+	<td></td>
+	<td><div style="width:100%;border-top:1px solid #545454;height:1px;"></div></td>
+</tr>
+<tr>
+	<td>
+		<table width="100%">
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">주문번호</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.order_seq}</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">주문일자</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.regist_date}</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">주문고객</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.order_user_name}</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">전화</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.order_phone}</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">휴대전화</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.order_cellphone}</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">이메일</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{order.order_email}</td>
+			</tr>
+		</table>
+	</td>
+	<td></td>
+	<td>
+		<table width="100%">
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">상품금액</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{=number_format(items_tot.price)}원</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">배송비</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{=number_format(shipping_tot.goods_shipping_cost + shipping_tot.shipping_cost)}원</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">할인</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{=number_format( items_tot.coupon_sale + items_tot.member_sale + items_tot.fblike_sale + items_tot.mobile_sale + items_tot.promotion_code_sale + items_tot.referer_sale + shipping_tot.shipping_coupon_sale + shipping_tot.shipping_promotion_code_sale + order.enuri )}원</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">사용 적립금/이머니</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">{=number_format(order.emoney)}원 / {=number_format(order.cash)}원</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">총 결제금액</th>
+				<td style="padding:7px 0px;text-align:right;">
+				{?order.deposit_yn!='y'}<span>(입금전)</span>{/}
+				<span style="font-size:11px;color:#ff0000;font-weight:bold;"">{=number_format(order.settleprice)}원</span>
+				</td>
+			</tr>
+			<tr>
+				<th style="padding:7px 0px;text-align:left;color:#8b8b8b;font-weight:bold;font-size:11px;">결제수단</th>
+				<td style="padding:7px 0px;text-align:right;font-size:11px;">
+				<!--{ ?order.payment=='bank' }-->
+				{order.bank_account}
+				<!--{ : }-->
+				{order.mpayment}
+				<!--{ / }-->
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<div style="height:10px"></div>
+<table align="center" width="696">
+<tr>
+	<td class="left"><span style="font-size:12px; color:#000000; font-weight:bold; letter-spacing:-1px;">배송정보</span></td>
+</tr>
+<tr>
+	<td><div style="width:100%;border-top:1px solid #545454;height:2px;"></div></td>
+</tr>
+</table>
+
+<table style=" border-collapse:collapse !important; border:1px solid #bcbfc1;" align="center" width="696">
+	<col width="10%"></col>
+	<col width="20%"></col>
+	<col width="10%"l></col>
+	<col width="20%"></col>
+	<col width="10%"></col>
+	<col width="20%"></col>
+	<tr>
+		<th style="padding:7px 7px 7px 7px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">
+			받는고객
+		</th>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			{order.recipient_user_name}
+		</td>
+		<th style="padding:7px 7px 7px 7px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">
+			연락처1
+		</th>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			{order.recipient_phone}
+		</td>
+		<th style="padding:7px 7px 7px 7px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">
+			연락처2
+		</th>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			{order.recipient_cellphone}
+			{? order.recipient_email && order.recipient_cellphone}<br/>{ / }
+			{order.recipient_email}
+		</td>
+	</tr>
+	<tr>
+		<th style="padding:7px 7px 7px 7px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">
+			배송지 주소
+		</th>
+		<td colspan="5" style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+
+<!--{ ? order.international == 'international' }-->
+			({order.international_postcode})
+			{order.international_address}
+			{order.international_town_city}
+			{order.international_county}
+			{order.international_country}
+<!--{ : }-->
+			({order.recipient_zipcode})
+			{ ?order.recipient_address_type=='street' }{order.recipient_address_street}{:}{order.recipient_address}{/} {order.recipient_address_detail}
+<!--{ / }-->
+
+		</td>
+	</tr>
+	<tr>
+		<th style="padding:7px 7px 7px 7px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">
+			배송 메시지
+		</th>
+		<td colspan="5" style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			{order.memo}
+		</td>
+	</tr>
+</table>
+
+<div style="height:10px"></div>
+<table align="center" width="696">
+<tr>
+	<td class="left"><span style="font-size:12px; color:#000000; font-weight:bold; letter-spacing:-1px;">주문상품</span></td>
+</tr>
+<tr>
+	<td><div style="width:100%;border-top:1px solid #545454;height:2px;"></div></td>
+</tr>
+</table>
+
+<!--{ @ shipping_group_items }-->
+<!--{ ? .couopn_items }-->
+<!--{ @ .couopn_items }-->
+<!--{ ? ..index_ == 0  }-->
+<table style="border-collapse:collapse; border:1px solid #bcbfc1;table-layout: fixed;" align="center" width="696">
+	<col />
+	<col width="35" />
+	<col width="70" />
+	<col width="50" />
+	<col width="70" />
+	<col width="60" />
+	<col width="70" />
+	<col width="35" />
+	<tr>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">티켓명</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">주문</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">판매가</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">할인</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">할인가</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">적립</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">배송</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">취소</th>
+	</tr>
+<!--{ / }-->
+	<!--{ @ ..arr_options }-->
+	<tr>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<img src="{..image}" style="max-width:50px;max-height:50px;">
+					</td>
+					<td style="font-size:11px;">
+						{..goods_name}
+						{ ? ...option1!=null }
+						<div style="padding:5px 0px 0px 10px;color:#75757;font-size:11px;">
+							{...title1}:{...option1}
+							{ ? ...option2!=null } {...title2}:{...option2}{ / }
+							{ ? ...option3!=null } {...title3}:{...option3}{ / }
+							{ ? ...option4!=null } {...title4}:{...option4}{ / }
+							{ ? ...option5!=null } {...title5}:{...option5}{ / }
+						</div>
+						{ / }
+						<div style="padding:5px 0px 0px 10px;color:#ff0000;font-size:11px;">
+						{...goods_code}
+						</div>
+
+						{ ? ...inputs }
+						<div style="padding:0px 0px 0px 10px; color:#747474; font-size11px; letter-spacing:-1px;">
+						{ @ ...inputs }
+							{ ? ....value }
+							<div class="goods_input">
+								<img src="/admin/skin/default/images/common/icon_input.gif" />
+								{?....title}{....title}:{ / }
+								{?....type=='file'}
+								<a href="../order_process/filedown?file={....value}" target="actionFrame">{....value}</a>
+								{:}{....value}{ / }
+							</div>
+							{ / }
+						{ / }
+						</div>
+						{ / }
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{...ea}</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_price)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_price - ...out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">
+			{=number_format(...out_reserve)}<span style="display:inline-block;width:10px;">원</span>
+			{ ? ...out_point }
+			<br/>{=number_format(...out_point)}<span style="display:inline-block;width:10px;">P</span>
+			{ / }
+		</td>
+		<!--{ ? ...index_ == 0}-->
+		<td rowspan="{..rowspan}"  style="text-align:right;padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			<div style="color:#757575;font-size:11px;">
+				{?.shipping.provider_seq==1}본사{:}{.shipping.provider_name}{/}
+			</div>
+			<div>
+				티켓
+			</div>
+		</td>
+		<!--{ / }-->
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{...step85}</td>
+	</tr>
+	<!--{ / }-->
+	<!--{ / }-->
+</table>
+<!--{ / }-->
+<!--{ / }-->
+
+<!--{ @ shipping_group_items }-->
+<!--{ ? .goods_items }-->
+<!--{ @ .goods_items }-->
+<!--{ ? ..index_ == 0  }-->
+<div style="height:6px"></div>
+<table style=" border-collapse:collapse !important; border:1px solid #bcbfc1;table-layout: fixed;" align="center" width="696">
+	<col />
+	<col width="35" />
+	<col width="70" />
+	<col width="50" />
+	<col width="70" />
+	<col width="60" />
+	<col width="70" />
+	<col width="35" />
+	<tr>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">상품명</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">주문</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">판매가</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">할인</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">할인가</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">적립</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">배송</th>
+		<th style="padding:7px 0px;font-size:11px;color:#4d4d4d;font-weight:bold; border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1; background-color:#efefef;">취소</th>
+	</tr>
+<!--{ / }-->
+	<!--{ @ ..arr_options }-->
+	<tr>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<img src="{..image}" style="max-width:50px;max-height:50px;">
+					</td>
+					<td style="font-size:11px;">
+						{..goods_name}
+						{ ? ...option1!=null }
+						<div style="padding:5px 0px 0px 10px;color:#75757;font-size:11px;">
+							{...title1}:{...option1}
+							{ ? ...option2!=null } {...title2}:{...option2}{ / }
+							{ ? ...option3!=null } {...title3}:{...option3}{ / }
+							{ ? ...option4!=null } {...title4}:{...option4}{ / }
+							{ ? ...option5!=null } {...title5}:{...option5}{ / }
+						</div>
+						{ / }
+						<div style="padding:5px 0px 0px 10px;color:#ff0000;font-size:11px;">
+						{...goods_code}
+						</div>
+						 
+						{ ? ...inputs }
+						<div style="padding:0px 0px 0px 10px; color:#747474; font-size11px; letter-spacing:-1px;">
+						{ @ ...inputs }
+							{ ? ....value }
+							<div class="goods_input">
+								<img src="/admin/skin/default/images/common/icon_input.gif" />
+								{?....title}{....title}:{ / }
+								{?....type=='file'}
+								<a href="../order_process/filedown?file={....value}" target="actionFrame">{....value}</a>
+								{:}{....value}{ / }
+							</div>
+							{ / }
+						{ / }
+						</div>
+						{ / }
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{...ea}</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_price)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(...out_price - ...out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">
+			{=number_format(...out_reserve)}<span style="display:inline-block;width:10px;">원</span>
+			{ ? ...out_point }
+			<br/>{=number_format(...out_point)}<span style="display:inline-block;width:10px;">P</span>
+			{ / }
+		</td>
+		<!--{ ? ...index_ == 0}-->
+		<td rowspan="{..rowspan}"  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">
+			<div>
+				{ ? preg_match('/each/',.shipping.shipping_method) }
+				개별배송
+				{ : }
+				기본배송
+				{ / }
+			</div>
+			<div>
+				{.shipping.shipping_method_name}
+			</div>
+
+			<div>
+				{? .shipping.shipping_cost }
+					{=number_format(.shipping.shipping_cost-.shipping.add_delivery_cost)}원
+				{:.shipping.postpaid}
+					{=number_format(.shipping.postpaid)}원
+				{: .goods_shipping_cost_total }
+					{=number_format(.goods_shipping_cost_total)}원
+				{: .shipping.shipping_method == 'delivery'}
+					무료배송
+				{ / }
+			</div>
+
+			{? .shipping.add_delivery_cost }
+			<div>+ {=number_format(.shipping.add_delivery_cost)}원</div>
+			{ / }
+
+			{ ? .shipping.shipping_coupon_sale > 0 }
+			<div style="padding:10px 0px 0px 10px;color:#75757;font-size:11px;">-{=number_format(.shipping.shipping_coupon_sale)}원 쿠폰</div>
+			{ / }
+			{ ? .shipping.shipping_promotion_code_sale  > 0 }
+			<div style="padding:10px 0px 0px 10px;color:#75757;font-size:11px;">-{=number_format(.shipping.shipping_promotion_code_sale )}원 코드</div>
+			{ / }
+		</td>
+		<!--{ / }-->
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{...step85}</td>
+	</tr>
+
+	<!--{ @ ...sub }-->
+	<tr>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:left;">
+			<div style="padding-left:10px;font-size:11px;color:#757575;">
+			{....title} : {....suboption}
+			</div>
+		</td>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{....ea}</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(....out_price)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(....out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{=number_format(....out_price - ....out_tot_sale)}원</td>
+		<td  style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">
+			{=number_format(....out_reserve)}<span style="display:inline-block;width:10px;">원</span>
+			{ ? ....out_point }
+			<br/>{=number_format(....out_point)}<span style="display:inline-block;width:10px;">P</span>
+			{ / }
+		</td>
+		<td style="padding:7px 7px;font-size:11px;border-left:1px solid #bcbfc1; border-top:1px solid #bcbfc1;text-align:right;">{....step85}</td>
+	</tr>
+	<!--{ / }-->
+	<!--{ / }-->
+	<!--{ / }-->
+</table>
+<!--{ / }-->
+<!--{ / }-->
+
+<div style="height:5px;"></div>
+<table cellpadding="0" cellspacing="0" border="0"  align="center" width="696">
+<col width="17%"/>
+<col/>
+<col width="17%"/>
+<col/>
+<col width="17%"/>
+<col/>
+<col width="17%"/>
+<col/>
+<col width="17%"/>
+<tr>
+	<td style="text-align:right;font-size:12px;">
+		<span>
+		총 상품금액
+		</span>
+	</td>
+	<td style="text-align:center;font-size:12px;"><span>+</span></td>
+	<td style="text-align:right;font-size:12px;">
+		<span>
+			배송비
+			<span>{=number_format(shipping_tot.goods_shipping_cost + shipping_tot.shipping_cost)}</span>원
+		</span>
+	</td>
+	<td style="text-align:center;font-size:12px;"><span>-</span></td>
+	<td style="text-align:right;font-size:12px;">
+		<span>
+			할인
+			<span>{=number_format( items_tot.coupon_sale + items_tot.member_sale + items_tot.fblike_sale + items_tot.mobile_sale + items_tot.promotion_code_sale + items_tot.referer_sale + shipping_tot.shipping_coupon_sale + shipping_tot.shipping_promotion_code_sale + order.enuri )}</span>원
+
+		</span>
+	</td>
+	<td style="text-align:center;font-size:12px;"><span>-</span></td>
+	<td style="text-align:right;font-size:12px;">
+		<span>
+			사용
+			<span>{=number_format(order.emoney + order.cash)}</span>원
+		</span>
+	</td>
+	<td style="text-align:center;font-size:12px;"><span>=</span></td>
+	<td style="text-align:right;font-size:12px;">
+		<span>
+			총 결제금액
+		</span>
+	</td>
+</tr>
+<tr>
+	<td style="text-align:right;font-size:11px;"><span>{=number_format(items_tot.price)}</span>원</td>
+	<td></td>
+	<td style="text-align:right;font-size:11px;">
+		{ ? shipping_tot.goods_shipping_cost || shipping_tot.add_goods_shipping_cost }
+		<div>
+			개별배송
+			{ ? shipping_tot.goods_shipping_cost }
+			<span>{=number_format(shipping_tot.goods_shipping_cost)}</span>원
+			{ / }
+			{ ? shipping_tot.add_goods_shipping_cost }
+			<br/>(도서지역 {=number_format(shipping_tot.add_goods_shipping_cost)}원 포함)
+			{ / }
+		</div>
+		{ / }
+		{ ? shipping_tot.shipping_cost || shipping_tot.add_shipping_cost }
+		<div>
+			기본배송
+			{ ? shipping_tot.shipping_cost }
+			<span>{=number_format(shipping_tot.shipping_cost)}</span>원
+			{ / }
+			{ ? shipping_tot.add_shipping_cost }
+			<br/>(도서지역 {=number_format(shipping_tot.add_shipping_cost)}원 포함)
+			{ / }
+		</div>
+		{ / } 
+		{ ? order.postpaid }
+		<div>
+			착불배송
+			<span>{=number_format(order.postpaid)}</span>원
+		</div>
+		{ / }
+	</td>
+	<td></td>
+	<td style="text-align:right;font-size:11px;">
+		{ ? items_tot.coupon_sale }
+		<div>
+			쿠폰
+			<span>{=number_format(items_tot.coupon_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.promotion_code_sale }
+		<div>
+			코드
+			<span>{=number_format(items_tot.promotion_code_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.member_sale }
+		<div>
+			등급
+			<span>{=number_format(items_tot.member_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.fblike_sale }
+		<div>
+			좋아요
+			<span>{=number_format(items_tot.fblike_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.mobile_sale }
+		<div>
+			모바일
+			<span>{=number_format(items_tot.mobile_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.referer_sale }
+		<div>
+			유입경로
+			<span>{=number_format(items_tot.referer_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.shipping_coupon_sale }
+		<div>
+			배송비쿠폰
+			<span>{=number_format(shipping_tot.shipping_coupon_sale)}</span>원
+		</div>
+		{ / }
+		{ ? items_tot.shipping_promotion_code_sale }
+		<div>
+			배송비코드
+			<span>{=number_format(shipping_tot.shipping_promotion_code_sale)}</span>원
+		</div>
+		{ / }
+		{ ? order.enuri }
+		<div>
+			에누리
+			<span>{=number_format(order.enuri)}</span>원
+		</div>
+		{ / }
+	</td>
+	<td></td>
+	<td style="text-align:right;font-size:11px;">
+		{ ? order.emoney }
+		<div>
+			적립금
+			<span>{=number_format(order.emoney)}</span>원
+		</div>
+		{ / }
+		{ ? order.cash }
+		<div>
+			이머니
+			<span>{=number_format(order.cash)}</span>원
+		</div>
+		{ / }
+	</td>
+	<td></td>
+	<td style="text-align:right;font-size:12px;">
+		<span>{=number_format(order.settleprice)}</span>원
+	</td>
+</tr>
+</table>
+
+<table style="border:0px;" align="center" width="696">
+	<tr><td height="50" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+	<tr>
+		<td align="center" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"><a href="{basic.domain}" target="_blank"><img src="/data/mail/btn_go.gif" border="0"></a></td>
+	</tr>
+	<tr><td height="30" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+	<tr><td height="2" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;" bgcolor="#000000"></td></tr>
+	<tr><td height="20" style="color: rgb(77, 77, 77); line-height: 14px; font-size: 12px;"></td></tr>
+	<tr>
+		<td class="company" style="text-align: center; color: rgb(151, 158, 165); line-height: 22px; font-family: 돋움, Dotum; font-size: 11px;">
+			사업자등록번호 : {config_basic.businessLicense}&nbsp;&nbsp;&nbsp;&nbsp;통신판매업신고번호 : {config_basic.mailsellingLicense}&nbsp;&nbsp;&nbsp;&nbsp;대표이사 : {config_basic.ceo}
+		</td>
+	</tr>
+	<tr>
+		<td class="company" style="text-align: center; color: rgb(151, 158, 165); line-height: 22px; font-family: 돋움, Dotum; font-size: 11px;">
+			주소 : {config_basic.companyAddress} {config_basic.companyAddressDetail}&nbsp;&nbsp;&nbsp;&nbsp;대표전화 : {config_basic.companyPhone}&nbsp;&nbsp;&nbsp;&nbsp;팩스 : {config_basic.companyFax}
+		</td>
+	</tr>
+</table>

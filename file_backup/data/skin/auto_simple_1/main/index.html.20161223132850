@@ -1,0 +1,134 @@
+<head>
+    <meta name="naver-site-verification" content="42a7ec73a1804856c374e27c25ef9a91016b1bbc"/></head>
+<title>루틸로</title>
+<meta name="description" content="루틸로몰에 오신것을 환영합니다">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" >
+<tr>
+ <td>
+
+<!--비쥬얼 및 배너-->
+
+    <table cellpadding="0" cellspacing="0" border="0" width="1000">
+     <tr>
+        <td>{=showDesignBanner(2)}</td>
+        <td>
+         <table cellpadding="0" cellspacing="0" border="0" width="221">
+          <tr>
+            <td><a href='http://rutilo.firstmall.kr/goods/view?no=2' target='_self'><img src="../images/design/main_banner1.gif" title="" alt=""></a></td>
+          </tr>
+          <tr>
+            <td><a href='http://rutilo.firstmall.kr/goods/view?no=5' target='_self'><img src="../images/design/main_banner2.gif" title="" alt=""></a></td>
+          </tr>
+          </table>
+         </td>
+      </tr>    
+    </table>
+         
+    
+<!--비쥬얼 및 배너-->
+     
+    </td>
+    </tr>
+</table>
+     
+     
+     
+    <style type="text/css">
+.{lastest_key} .tit {font-size:12px; font-weight:bold;}
+.{lastest_key} .normal_bbslist .cat {font-size:12px;font-family:gothic,gulim;color:#888;letter-spacing:-1px;}
+.{lastest_key} .normal_bbslist .sbj {text-align:left;letter-spacing:0px;}
+.{lastest_key} .normal_bbslist .sbj a {font-size:12px;font-family:gothic,gulim;color:#222222;text-decoration:none;line-height:150%;}
+.{lastest_key} .normal_bbslist .sbj a:hover {text-decoration:underline;}
+.{lastest_key} .normal_bbslist .comment {font:normal 11px arial;color:#FC6138;}
+</style>
+
+
+   <!-- 기획전-->
+<table cellpadding="0" cellspacing="0" border="0" width="1000" align="center" style="margin-top:70px">
+
+ <tr>
+   <td><img src="../images/design/tit_main_event.gif" title="" alt="" /></td>
+ </tr>
+    
+ <tr>
+  <td>
+    <table width="1000"  cellpadding="0" cellspacing="0" border="0" align="center" style="margin-top:10px">
+        <tr>
+            <td><img src="../images/design/event_banner1.gif" title="" alt="" /></td>
+            <td width="20"></td>
+            <td><a href='http://rutilo.firstmall.kr/promotion/coupon_member?setDesignMode=on' target='_self'><img src="../images/design/event_banner2.gif" title="" alt="" /></a></td>
+        </tr>
+      </table>
+   </td>
+        
+ </tr>
+       
+</table>
+     
+<!-- //기획전-->          
+     
+<!-- 추천상품-->
+<table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" style="margin-top:40px">
+
+ <tr>
+   <td><img src="../images/design/tit_main_recommend.gif" title="" alt="" /></td>
+ </tr>
+    
+ <tr>
+   <td height="10px"></td>
+ </tr>
+    
+ <tr>
+   <td>{=showDesignBanner(1)}</td>
+ </tr>
+       
+</table>
+     
+<!-- //추천상품--> 
+
+        
+<!-- 리스트-->
+<table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" style="margin-top:40px">
+
+ <tr>
+   <td><img src="../images/design/tit_main_new.gif" title="" alt="" /></td>
+ </tr>
+    
+ <tr>
+   <td height="10px"></td>
+ </tr>
+    
+ <tr>
+   <td style="border-top:2px #C11920 solid; border-left:0; border-right:0; border-bottom:2px
+        #C11920 solid;  "  >{=showDesignDisplay(2)}</td>
+ </tr>
+       
+</table>
+     
+<!-- //리스트--> 
+     
+   
+     
+<!-- 리스트
+<table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" style="margin-top:40px">
+
+ <tr>
+   <td><img src="../images/design/tit_main_best.gif" title="" alt="" /></td>
+ </tr>
+    
+ <tr>
+   <td height="10px"></td>
+ </tr>
+    
+ <tr>
+   <td>{=showDesignDisplay(1)}</td>
+ </tr>
+       
+</table>
+     
+ //리스트-->  
+
+
+
+     
+    

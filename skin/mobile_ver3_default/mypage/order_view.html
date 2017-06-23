@@ -1,0 +1,1081 @@
+<style type="text/css">
+/* 주문자 정보 */
+div.order-info-lay table.order-info-table td {font-weight:bold;background-color:#f5f7f7;color:#4a4a4a;border-bottom:1px solid #d7d7d7;text-align:left;padding-left:10px;font-size:12px;height:30px;}
+div.order-info-lay table.order-info-table td.order-name {text-align:center;font-size:14px;border-right:1px solid #d7d7d7;}
+
+/* 배송 현황 */
+div.shipping-title {font-weight:bold;background-color:#f5f7f7;color:#4a4a4a;border-bottom:1px solid #d7d7d7;text-align:left;padding:10px 0 10px 10px;font-size:12px;border-top:2px solid #d7d7d7;}
+div.multiShippingItem {padding:5px;border-bottom:1px solid #d7d7d7;;}
+div.export-shipping-address {margin:10px 2px 10px 8px;color:#000;}
+
+/* 매출증빙 */
+.sales_tax {background-color:#EAEAEA; border:1px solid #BDBDBD;}
+
+.coupon-export-item {border:3px solid #d6d6d6; margin:5px; color:#000}
+.coupon-export-item-date {height:40px; line-height:37px; background-color:#e2e4e4; padding-left:5px;}
+.coupon-export-item-status {font-size:17px; font-weight:bold; color:#000; background-color:#d6d6d6; width:100%; height:40px;}
+
+.btn-coupon-use { width:100px; }
+</style>
+
+{? config_system.pgCompany == "lg"}<script type="text/javascript" src="http://pgweb.uplus.co.kr/WEB_SERVER/js/receipt_link.js"></script>{/}
+{? config_system.pgCompany == "allat"} {/}
+<script type="text/javascript">
+$(function(){
+	//매출전표처리
+	$("#pgreceiptbtn").click(function(){
+		var tno= $(this).attr('tno');
+		var shopid= '{pg.mallCode}';
+		var ordno= $(this).attr('order_seq');
+		var pg_kind = $(this).attr('pg_kind');
+		var authdata= $(this).attr('authdata');
+		receiptView(tno, shopid, ordno, pg_kind, authdata);
+	});
+
+	//현금영수증처리
+	$("#pgcashbtn2").click(function(){
+		var cash_no= $(this).attr('cash_no');
+		var shopid= '{pg.mallCode}';
+		var ordno= $(this).attr('order_seq');
+		var pg_kind = $(this).attr('pg_kind');
+		var settleprice= $(this).attr('settleprice');
+		var  tax_bank = '';
+		var cst_platform = '';
+		if(pg_kind){
+			if(pg_kind=="lg"){
+				$.ajax({
+					'url' : '../mypage_process/order_pg_info',
+					'data' : {'order_seq':ordno},
+					'type' : 'post',
+					'dataType' : 'json',
+					'success' : function(data) {
+						if(data.result) {
+							var  tax_bank = data.tax_bank;
+							var cst_platform = data.cst_platform;
+							cashView(cash_no, shopid, ordno, settleprice, tax_bank, cst_platform, pg_kind);
+						}
+					}
+				});
+			}else{
+				var  tax_bank		= '';
+				var cst_platform	= '';
+				cashView(cash_no, shopid, ordno, settleprice, tax_bank, cst_platform, pg_kind);
+			}
+		}else{
+			{? config_system.pgCompany == 'lg' }
+				$.ajax({
+					'url' : '../mypage_process/order_pg_info',
+					'data' : {'order_seq':ordno},
+					'type' : 'post',
+					'dataType' : 'json',
+					'success' : function(data) {
+						if(data.result) {
+							var  tax_bank = data.tax_bank;
+							var cst_platform = data.cst_platform;
+							cashView(cash_no, shopid, ordno, settleprice, tax_bank, cst_platform, pg_kind);
+						}
+					}
+				});
+			{:}
+				var  tax_bank		= '';
+				var cst_platform	= '';
+				cashView(cash_no, shopid, ordno, settleprice, tax_bank, cst_platform, pg_kind);
+			{/}
+		}
+	});
+
+	// 매출증빙 취소신청
+	$(".cancelBtn").click(function(){
+		if(!confirm("취소하시겠습니까?")) return;
+		var order_seq = $(this).attr('order_seq');
+		$.ajax({
+			'url' : '../mypage_process/cancel_tax',
+			'data' : {'order_seq':order_seq},
+			'type' : 'post',
+			'dataType' : 'json',
+			'success' : function(data) {
+				if(data.result) {
+					document.location.reload();
+				}
+			}
+		});
+	});
+
+	// 영수증 발급을 클릭했을경우
+	$("input:radio[name='typereceipt']").click(function() {
+		// 발급안함
+		if($(this).val() == 0) {
+			$('#cash_container').hide();
+			$('#tax_container').hide();
+			taxRemoveClass();
+			cashRemoveClass();
+		}
+		// 세금계산서 신청일 경우
+		else if($(this).val() == 1) {
+			$('#tax_container').show();
+			$('#cash_container').hide();
+
+			$('#co_name').attr('title', ' ').addClass('required');
+			$('#co_ceo').attr('title', ' ').addClass('required');
+			$('#busi_no').attr('title', ' ').addClass('required').addClass('busiNo');
+			$('#co_zipcode').attr('title', ' ').addClass('required');
+			$('#co_address').attr('title', ' ').addClass('required');
+			$('#co_status').attr('title', ' ').addClass('required');
+			$('#co_type').attr('title', ' ').addClass('required');
+
+			cashRemoveClass();
+		}
+		// 현금영수증 신청일 경우
+		else if($(this).val() == 2) {
+			$('#cash_container').show();
+			$('#tax_container').hide();
+			$('#creceipt_number').attr('title', ' ').addClass('required').addClass('numberHyphen');
+			taxRemoveClass();
+		}
+	});
+
+	/**
+	 * 세금계산서 폼체크를 삭제한다.
+	 */
+	function taxRemoveClass() {
+		$('#co_name').removeClass('required');
+		$('#co_ceo').removeClass('required');
+		$('#busi_no').removeClass('required');
+		$('#co_zipcode').removeClass('required');
+		$('#co_address').removeClass('required');
+		$('#co_status').removeClass('required');
+		$('#co_type').removeClass('required');
+	}
+
+	/**
+	 * 현금영수증 폼체크를 삭제한다.
+	 */
+	function cashRemoveClass() {
+		$('#creceipt_number').removeClass('required');
+	}
+
+	//현금영수증 개인공제용
+	$("#cuse0").click(function(){
+		$("#personallay").show();
+		$("#businesslay").hide();
+	});
+	//현금영수증 사업자지출증빙용
+	$("#cuse1").click(function(){
+		$("#personallay").hide();
+		$("#businesslay").show();
+	});
+
+	// 매출증빙 신청
+	$(".salesBtn").click(function(){
+		if	($("#saleslay").css("display") == 'none')	$("#saleslay").slideDown('slow');
+		else											$("#saleslay").hide();
+//		openDialog("매출증빙", "saleslay", {"width":500,"height":400});
+	});
+
+	// 구매확정
+	$(".exportbuyconfirm").live('click',function(){
+		document.location.href	= "./buy_confirm?export_code="+$(this).attr('export_code');
+	});
+
+	$(".title-line-lay").each(function(){
+		var targetLay	= $(this).attr("targetLay");
+		var imgObj		= $(this).find("img.arrow-img");
+		$(this).find("td.line-title").click(function(){
+			set_onoff_layer(targetLay, imgObj);
+		});
+		$(this).find("span.arrow-btn").click(function(){
+			set_onoff_layer(targetLay, imgObj);
+		});
+	});
+
+	$(".go-list-btn").click(function(){
+		document.location.href	= "./order_catalog?step_type=order";
+	});
+
+	$(".export-detail-view").click(function(){
+		document.location.href	= "./export_view?no={orders.order_seq}";
+	});
+
+	$(".coupon-detail-view").click(function(){
+		document.location.href	= "./coupon_view?code="+$(this).attr('exportCode');
+	});
+
+	//티켓상품 사용하기
+	$(".btn-coupon-use").bind('click', function(){
+		if	($(this).attr('exportCode')){
+			document.location.href = "./coupon_use?code=" + $(this).attr('exportCode');
+		}
+	});
+
+	$(".price_area").click(function(){
+		$(this).parents().find(".sale_price_layer").toggle();
+	});
+
+	$(".shipping_price_area").click(function(){
+		$(this).parents().find(".shipping_price_layer").toggle();
+	});
+
+
+
+});
+
+function set_onoff_layer(lay, arrowImg){
+	var layName	= "."+lay+"-lay";
+	var imgSrc	= $(arrowImg).attr("src");
+	if	($(layName).css("display") != 'none'){
+		$(layName).hide();
+		$(arrowImg).attr("src", imgSrc.replace('_up_', '_dn_'));
+	}else{
+		$(layName).slideDown("slow");
+		$(arrowImg).attr("src", imgSrc.replace('_dn_', '_up_'));
+	}
+}
+
+function goods_review_write(goodsseq,order_seq){
+	if(goodsseq){
+		location.href = '/mypage/mygdreview_write?goods_seq='+goodsseq+'&order_seq='+order_seq;
+	}
+}
+
+// 주문 무효처리
+function order_cancel(order_seq){
+	if(confirm('주문을 무효처리 합니다.'))
+	{
+		actionFrame.location.href = '../mypage_process/cancel?order_seq={orders.order_seq}';
+	}
+}
+
+// 결제취소 신청
+function order_refund(order_seq){
+	/*
+	$("#order_refund_layer").load("order_refund",{'order_seq':order_seq},function(){
+		openDialog("결제취소/환불 신청", "order_refund_layer", {"width":800,"height":650});
+		setDefaultText();
+	});
+	*/
+	document.location.href='order_refund?order_seq='+order_seq+'&use_layout=1';
+}
+
+// 배송조회 및 티켓사용
+function export_list(order_seq, type){
+	document.location.href	= 'export_list?seq=' + order_seq + '&type=' + type;
+}
+
+
+function order_return_coupon(order_seq){
+	/*$("#order_refund_layer").load("order_return?mode=return_coupon",{'order_seq':order_seq,'type':'return'},function(){
+		openDialog("티켓상품 환불신청", "order_refund_layer", {"width":1000,"height":760});
+		setDefaultText();
+	});*/
+	document.location.href='order_return?mode=return_coupon&order_seq='+order_seq+'&type=return&use_layout=1';
+}
+
+
+function order_return(order_seq){
+	/*
+	$("#order_refund_layer").load("order_return",{'order_seq':order_seq,'type':'return'},function(){
+		openDialog("반품 신청", "order_refund_layer", {"width":1000,"height":760});
+		setDefaultText();
+	});
+	*/
+	document.location.href='order_return?order_seq='+order_seq+'&type=return&use_layout=1';
+}
+
+function order_exchange(order_seq){
+	/*
+	$("#order_refund_layer").load("order_return?mode=exchange",{'order_seq':order_seq,'type':'exchange'},function(){
+		openDialog("반품/교환신청", "order_refund_layer", {"width":1000,"height":760});
+		setDefaultText();
+	});
+	*/
+	document.location.href='order_return?mode=exchange&order_seq='+order_seq+'&type=exchange&use_layout=1';
+}
+
+//환불신청 상세보기
+function refund_view(refund_code){
+	document.location.href='refund_view?refund_code='+refund_code+'';
+}
+
+//반품신청 상세보기
+function return_view(return_code){
+	document.location.href='return_view?return_code='+return_code+'';
+}
+
+//매출전표 처리
+function receiptView(tno, shopid, ordno, pg_kind, authdata)
+{
+	if(pg_kind){
+		if(pg_kind=='kcp'){
+			receiptWin = "http://admin.kcp.co.kr/Modules/Sale/Card/ADSA_CARD_BILL_Receipt.jsp?c_trade_no=" + tno;
+			window.open(receiptWin , "" , "width=420, height=670");
+		}else if(pg_kind=='inicis'){
+			receiptWin = "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid="+ tno + "&noMethod=1";
+			window.open(receiptWin , "" , "width=410,height=715, scrollbars=no,resizable=no");
+		}else if(pg_kind=='lg'){
+			showReceiptByTID(shopid, tno, authdata);
+		}else if(pg_kind=='allat'){
+			var allat_urls = "http://www.allatpay.com/servlet/AllatBizPop/member/pop_card_receipt.jsp?shop_id="+shopid+"&order_no="+ordno;
+			window.open(allat_urls,"app","width=410,height=650,scrollbars=0");
+		}else if(pg_kind=='kspay'){
+			var allat_urls = "http://nims.ksnet.co.kr/pg_infoc/src/bill/credit_view_print.jsp?tr_no="+tno;
+			window.open(allat_urls,"app","width=456,height=700,scrollbars=1");
+		}else if(pg_kind=='kakaopay'){
+			var status = "toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,width=420,height=540";
+
+			var url = "https://mms.cnspay.co.kr/trans/retrieveIssueLoader.do?TID="+tno+"&type=0";
+			window.open(url,"popupIssue",status);
+		}
+	}else{
+		{? config_system.pgCompany == 'kcp'}
+			receiptWin = "http://admin.kcp.co.kr/Modules/Sale/Card/ADSA_CARD_BILL_Receipt.jsp?c_trade_no=" + tno;
+			window.open(receiptWin , "" , "width=420, height=670");
+		{: config_system.pgCompany == 'inicis' }
+			receiptWin = "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid="+ tno + "&noMethod=1";
+			window.open(receiptWin , "" , "width=410,height=715, scrollbars=no,resizable=no");
+		{: config_system.pgCompany == 'lg' }
+			showReceiptByTID(shopid, tno, authdata);
+		{: config_system.pgCompany == 'allat' }
+			var allat_urls = "http://www.allatpay.com/servlet/AllatBizPop/member/pop_card_receipt.jsp?shop_id="+shopid+"&order_no="+ordno;
+			window.open(allat_urls,"app","width=410,height=650,scrollbars=0");
+		{: config_system.pgCompany == 'kspay' }
+			var allat_urls = "http://nims.ksnet.co.kr/pg_infoc/src/bill/credit_view_print.jsp?tr_no="+tno;
+			window.open(allat_urls,"app","width=456,height=700,scrollbars=1");
+		{ / }
+	}
+}
+
+
+//현금영수증처리
+function cashView(cash_no, shopid, ordno, settleprice, tax_bank, cst_platform, pg_kind)
+{
+	if(confirm('발행 후 3일 후에는 "현금영수증.kr"에서 확인이 가능합니다.'))
+	{
+		if(pg_kind){
+			if(pg_kind=="kcp"){
+				receiptWin = receiptWin = "https://admin.kcp.co.kr/Modules/Service/Cash/Cash_Bill_Common_View.jsp?cash_no="+cash_no;
+					window.open(receiptWin , "" , "width=360, height=647");
+			}else if(pg_kind=="inicis"){
+				showreceiptUrl = "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/Cash_mCmReceipt.jsp?noTid="+ cash_no + "&clpaymethod=22";
+					window.open(showreceiptUrl,"showreceipt","width=380,height=540, scrollbars=no,resizable=no");
+			}else if(pg_kind=="lg"){
+				showCashReceipts(shopid, ordno, '01', tax_bank, cst_platform);
+			}else if(pg_kind=="allat"){
+				var cash_no = cash_no.replace( /(^\s*)|(\s*$)/g, "" );
+					var urls ="http://www.allatpay.com/servlet/AllatBizPop/member/pop_cash_receipt.jsp?receipt_seq_no="+ cash_no + "&shop_id="+shopid+"&amt="+settleprice;
+					window.open(urls,"app","width=410,height=650,scrollbars=0");
+			}else if(pg_kind=="kspay"){
+				showreceiptUrl = "http://nims.ksnet.co.kr/pg_infoc/src/bill/ps2.jsp?s_pg_deal_numb="+cash_no;
+					window.open(showreceiptUrl ,"showreceipt","width=435, height=540");
+			}
+		}else{
+			{? config_system.pgCompany === "kcp"}
+					receiptWin = receiptWin = "https://admin.kcp.co.kr/Modules/Service/Cash/Cash_Bill_Common_View.jsp?cash_no="+cash_no;
+					window.open(receiptWin , "" , "width=360, height=647");
+			{ : config_system.pgCompany === "inicis" }
+					showreceiptUrl = "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/Cash_mCmReceipt.jsp?noTid="+ cash_no + "&clpaymethod=22";
+					window.open(showreceiptUrl,"showreceipt","width=380,height=540, scrollbars=no,resizable=no");
+			{ : config_system.pgCompany == 'lg' }
+					showCashReceipts(shopid, ordno, '01', tax_bank, cst_platform);
+			{ : config_system.pgCompany == 'allat' }
+					var cash_no = cash_no.replace( /(^\s*)|(\s*$)/g, "" );
+					var urls ="http://www.allatpay.com/servlet/AllatBizPop/member/pop_cash_receipt.jsp?receipt_seq_no="+ cash_no + "&shop_id="+shopid+"&amt="+settleprice;
+					window.open(urls,"app","width=410,height=650,scrollbars=0");
+			{ : config_system.pgCompany == 'kspay' }
+					showreceiptUrl = "http://nims.ksnet.co.kr/pg_infoc/src/bill/ps2.jsp?s_pg_deal_numb="+cash_no;
+					window.open(showreceiptUrl ,"showreceipt","width=435, height=540");
+			{ / }
+		}
+	}
+}
+
+function taxlayerclose(){
+	$('#saleslay').dialog('close');
+}
+
+function multi_zipcode_popup(obj){
+	var idx = $(".multiShippingItem").index($(obj).closest('.multiShippingItem'));
+	openDialogZipcode('order_multi',idx);
+}
+</script>
+
+<div class="sub_title_bar">
+	<h2>주문상세내역</a></h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" /></a>
+</div>
+<div class="order-date-info">
+	<span class="order-date">{=date('Y.m.d', strtotime(orders.regist_date))}</span>
+	<span class="order-seq">({orders.order_seq})</span>
+	<div class="pdt5 center">
+		<!--{ ? orders.step == 15 }-->
+			<!--{ ? orders.virtual_date_view }-->
+		<span style="float:left;">주문접수 (입금기한 : {orders.virtual_date_view})</span>
+			<!--{ / }-->
+		<span class="btn large"><button type="button"  onclick="order_cancel('{orders.order_seq}');">주문무효</button></span>
+		<!--{ / }-->
+		<!--{ ? refund_able_ea && in_array(orders.step,array(25,35,40,50,60,70)) && !orders.orign_order_seq }-->
+		<span class="btn large"><button type="button" onclick="order_refund('{orders.order_seq}');">결제취소</button></span>
+		<!--{ / }-->
+
+		<!--{ ? items_tot.coupontotal > 0 && in_array(orders.step,array(40,50,55,60,70,75)) }-->
+		<span class="btn large"><button type="button"  onclick="order_return_coupon('{orders.order_seq}');">티켓상품 환불신청</button></span>
+		<!--{ / }-->
+		<!--{ ? return_able_ea && in_array(orders.step, array(55,60,65,70,75)) && !orders.buy_confirm }-->
+			<!--{? ( items_tot.goodstotal && return_able_ea) }-->
+				<!--{? giftorder }-->
+		<span class="btn large"><button type="button"  onclick="order_return('{orders.order_seq}');">반품신청</button></span>
+				<!--{ / }-->
+		<span class="btn large"><button type="button"  onclick="order_exchange('{orders.order_seq}');">교환신청</button></span>
+			<!--{ / }-->
+		<!--{ / }-->
+	</div>
+</div>
+
+<!-- 주문상품 정보 -->
+<div class="sub_division_title">주문상품내역 & 할인/혜택<div class="sub_division_arw"></div></div>
+<div class="sub_division_contents" >
+<ul class="settle_cart_list">
+	<!--{ @ items }-->
+	<div  style="background-color:#E5E7E6; padding: 5px 5px 0 5px;">
+		<div style="background-color:#fff;border:1px solid #AAAAAA;">
+			<div style="border-bottom:1px solid #d9d9d9; background-color:#fff; padding:8px;">
+				<!--{ ? .goods_kind == 'coupon' }-->
+				티켓
+				<!--{: .shipping_policy == 'shop'}-->
+				기본배송비
+				<!--{ : }-->
+				개별배송비
+				<!--{ / }-->
+			</div>
+			<!--{ @ .options }-->
+				<li class="item_option">
+					<div class="fx14 bold goods_name">
+						<!--{ ? .goods_type == 'gift'}-->
+						<img src="../images/common/icon_gift.gif" /> {.goods_name}
+						<!--{ : }-->
+						<a href="../goods/view?no={.goods_seq}">{.goods_name}</a>
+						<!--{ / }-->
+					</div>
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" class="goods-info-table">
+					<tr>
+						<td class="left" width="90" valign="top">
+							<!--{ ? .goods_type == 'gift'}-->
+							<img src="{=viewImg(.goods_seq, 'thumbCart')}" align="absmiddle" width="80" height="80" onerror="this.src='../images/common/noimage_list.gif'"/>
+							<!--{ : }-->
+							<a href="../goods/view?no={.goods_seq}"><img src="{=viewImg(.goods_seq, 'thumbCart')}" align="absmiddle" width="80" height="80" onerror="this.src='../images/common/noimage_list.gif'"/></a>
+							<!--{ / }-->
+						</td>
+						<td valign="top" class="goods-info">
+							<div>
+								<!--{ ? .adult_goods == 'Y' }-->
+								<img src="../images/common/auth_img.png" alt="성인" style="vertical-align: middle;"/>
+								<!--{ / }-->
+								<!--{ ? .option_international_shipping_status == 'y' }-->
+								<img src="../images/common/plane.png" alt="해외배송상품" style="vertical-align: middle;" height="19" />
+								<!--{ / }-->
+								<!--{ ? .cancel_type == '1' }-->
+								<img src="../images/common/nocancellation.gif" alt="청약철회" style="vertical-align: middle;"/>
+								<!--{ / }-->
+								<!--{ ? .tax == 'exempt' }-->
+								<img src="../images/common/taxfree.gif" alt="비과세" style="vertical-align: middle;"/>
+								<!--{ / }-->
+							</div>
+							<!--{ ? ..option1 !=null }-->
+							<div class="goods-option">
+								<!--{ ? ..option1!=null }-->
+									{ ? ..title1 }{ ..title1 }:{ / }{ ..option1 }
+								<!--{ / }-->
+								<!--{ ? ..option2!=null }-->
+									{ ? ..title2 }{ ..title2 }:{ / }{ ..option2 }
+								<!--{ / }-->
+								<!--{ ? ..option3!=null }-->
+									{ ? ..title3 }{ ..title3 }:{ / }{ ..option3 }
+								<!--{ / }-->
+								<!--{ ? ..option4!=null }-->
+									{ ? ..title4 }{ ..title4 }:{ / }{ ..option4 }
+								<!--{ / }-->
+								<!--{ ? ..option5!=null }-->
+									{ ? ..title5 }{ ..title5 }:{ / }{ ..option5 }
+								<!--{ / }-->
+								<!--{ ? ..inputs }-->
+									<!--{ @ ..inputs }-->
+										<!--{ ? ...value }-->
+										<div class="goods_input">
+											<img src="../images/common/icon_input.gif" />
+											<!--{?...title}-->{...title}:<!--{ / }-->
+											<!--{?...type=='file'}-->
+											<a href="/mypage_process/filedown?file={...value}" target="actionFrame" style="color:#848484;"><img src="/mypage_process/filedown?file={...value}" width="13" height="13" title="크게 보기" align="absmiddle" /></a>
+											<!--{:}-->{...value}<!--{ / }-->
+										</div>
+										<!--{ / }-->
+									<!--{ / }-->
+								<!--{ / }-->
+							</div>
+							<!--{ / }-->
+							<!--{ ? .goods_type != 'gift'}-->
+							<div class="clearbox">
+								<div class="sum_ea">수량 : {=number_format(..ea)}개</div>
+								<div class="sum_price bold" style="color:#0050d2;"><span class="cart_price_num">{=number_format(..price*..ea)}</span>원</div>
+							</div>
+							<!--{ / }-->
+						</td>
+					</tr>
+					</table>
+				</li>
+				<li class="item_step_cell">
+					<div class="fleft">
+						<div class="step-info">
+							{..mstep}
+							<!--{ ? ( ..step55 + ..step65 + ..step75 ) > 0 }-->
+							( {=number_format( ..step55 + ..step65 + ..step75 )} / {=number_format( ..ea - ..step85 )} )
+							<!--{ / }-->
+						</div>
+					</div>
+					<div class="fright">
+						<!--{ ? ( ..step55 + ..step65 + ..step75 ) > 0 }-->
+							<!--{ ? .goods_type != 'gift' }-->
+								<span class="btn small"><button type="button" onclick="goods_review_write('{.goods_seq}', '{.order_seq}');">상품후기</button></span>
+							<!--{ / }-->
+							<!--{ ? .goods_kind == 'coupon' }-->
+						<span class="btn small"><button onclick="export_list('{.order_seq}', 'coupon');">티켓사용</button></span>
+							<!--{ : }-->
+						<span class="btn small"><button onclick="export_list('{.order_seq}', 'goods');">배송조회{?cfg_order.buy_confirm_use} / 구매확정{/}</button></span>
+							<!--{ / }-->
+						<!--{ / }-->
+					</div>
+				</li>
+				<!--{ @ ..suboptions }-->
+				<li class="item_suboption">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" class="suboption-table">
+					<tr>
+						<td class="suboption-name">
+							<!--{ ? ...suboption }-->
+								<div>
+									<span class="btn_small_normal">추가</span> { ? ...title }{ ...title }:{ / }{ ...suboption }
+									- {=number_format(...ea)}개
+								</div>
+							<!--{ : }-->
+								<div class="suboption-etc">수량 {=number_format(...ea)}개</div>
+							<!--{ / }-->
+						</td>
+						<td width="94" align="right" class="suboption-price">
+					<!--{ ? ...consumer_price > ...price }-->
+							<!-- <strike>{=number_format(...consumer_price)}</strike> -->
+					<!--{ / }-->
+							{=number_format(...out_price)}원
+						</td>
+					</tr>
+					</table>
+				</li>
+				<li class="item_step_cell">
+					<div class="fleft">
+					<div class="step-info">&nbsp; {...mstep}
+
+							<!--{ ? ( ...step55 + ...step65 + ...step75 ) > 0 }-->
+							( {=number_format( ...step55 + ...step65 + ...step75 )} / {=number_format( ...ea - ...step85 )} )
+							<!--{ / }-->
+							</div>
+					</div>
+					<div class="fright">
+						<!--{ ? ( ..step55 + ..step65 + ..step75 ) > 0 }-->
+						<span class="btn small"><button type="button" onclick="goods_review_write('{.goods_seq}', '{.order_seq}');">상품후기</button></span>
+							<!--{ ? .goods_kind == 'coupon' }-->
+						<span class="btn small"><button onclick="export_list('{.order_seq}', 'coupon');">티켓사용</button></span>
+							<!--{ : }-->
+						<span class="btn small"><button onclick="export_list('{.order_seq}', 'goods');">배송조회{?cfg_order.buy_confirm_use} / 구매확정{/}</button></span>
+							<!--{ / }-->
+						<!--{ / }-->
+					</div>
+				</li>
+				<!--{ / }-->
+			<!--{ / }-->
+		</div>
+	</div>
+	<!--{ / }-->
+	<div  style="padding-top: 5px;"></div>
+</ul>
+<ul>
+	<li class="sub_division_item_sum">
+		<div class="fleft">적립 예정 적립금</div>
+		<div class="fright">
+			<b>{=number_format(items_tot.reserve)}</b> 원
+		</div>
+	</li>
+	<li class="sub_division_item_sum">
+		<div class="fleft">적립 예정 포인트</div>
+		<div class="fright">
+			<b>{=number_format(items_tot.point)}</b> P
+		</div>
+	</li>
+</ul>
+</div>
+<!-- 주문할인 정보 -->
+<div class="total_sum_price">
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<col width="150" /><col />
+	<tr>
+		<th align="left">총 상품금액</th>
+		<td align="right">
+			<span class="sum_price"><span class="total_org_price">{=number_format(items_tot.price)}</span> 원</span>
+		</td>
+	</tr>
+	<tr>
+		<th align="left">총 배송비
+		{? (items_tot.goods_shipping_cost + orders.shipping_cost) > 0 } <span class="btn_small_sale shipping_price_area hand">상세내역</span>{/}
+		</th>
+		<td align="right">
+			<span class="sum_price">(+) <span class="total_shipping_price">{=number_format(items_tot.goods_shipping_cost + orders.shipping_cost)}</span> 원</span>
+		</td>
+	</tr>
+	<!--{ ? items_tot.basic_cost > 0 }-->
+		<tr class="shipping_price_layer hide">
+			<th align="left"> - 기본배송비</th>
+			<td align="right"> <span class="bolds ends prices">{=number_format(items_tot.basic_cost)}원</span></td>
+		</tr>
+	<!--{ / }-->
+
+	<!--{ ? items_tot.goods_cost > 0 }-->
+		<tr class="shipping_price_layer hide">
+			<td class="left"> - 개별배송비</td>
+			<td class="right ends prices">
+				{=number_format(items_tot.goods_cost)}원
+			</td>
+		</tr>
+	<!--{ / }-->
+	<!--{ ? items_tot.add_delivery > 0 }-->
+		<tr class="shipping_price_layer hide">
+			<td class="left"> - 추가배송비</td>
+			<td class="right bolds ends prices">
+				{=number_format(items_tot.add_delivery)}원
+			</td>
+		</tr>
+	<!--{ / }-->
+	<tr>
+		<th align="left">총 할인
+		{? (items_tot.member_sale+items_tot.mobile_sale+items_tot.referer_sale+items_tot.fblike_sale+items_tot.coupon_sale+orders.coupon_sale+items_tot.promotion_code_sale+orders.emoney+orders.cash+orders.enuri) } <span class="btn_small_sale price_area hand">상세내역</span>
+		 {/}
+		</th>
+		<td align="right">
+			<span class="sum_price">(-) <span class="total_sales_price">{=number_format((items_tot.member_sale+items_tot.mobile_sale+items_tot.referer_sale+items_tot.fblike_sale+items_tot.coupon_sale+orders.coupon_sale+items_tot.promotion_code_sale+orders.emoney+orders.cash+orders.enuri))}</span> 원</span>
+			</td>
+	</tr>
+	{ ? (items_tot.coupon_sale + orders.coupon_sale) > 0 }
+	<tr class="sale_price_layer hide" id="total_coupon_sale_tr" >
+		<td class="left"> - 쿠폰</td>
+		<td class="right bolds ends prices">{=number_format((items_tot.coupon_sale + orders.coupon_sale)*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? items_tot.promotion_code_sale > 0 }
+	<tr class="sale_price_layer"  id="total_promotion_code_sale_tr" >
+		<td class="left"> - 코드</td>
+		<td class="right bolds ends prices">{=number_format(items_tot.promotion_code_sale*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? items_tot.member_sale > 0 }
+	<tr class="sale_price_layer"  id="total_member_sale_tr">
+		<td class="left"> - 등급</td>
+		<td class="right bolds ends prices">{=number_format(items_tot.member_sale*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? items_tot.fblike_sale > 0 }
+	<tr class="sale_price_layer" id="total_fblike_sale_tr" >
+		<td class="left"> - 좋아요</td>
+		<td class="right bolds ends prices">{=number_format(items_tot.fblike_sale*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? items_tot.mobile_sale > 0 }
+	<tr class="sale_price_layer" id="total_mobile_sale_tr" >
+		<td class="left"> - 모바일</td>
+		<td class="right bolds ends prices">{=number_format(items_tot.mobile_sale*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? items_tot.referer_sale > 0 }
+	<tr class="sale_price_layer" id="total_promotion_code_sale_tr">
+		<td class="left"> - 유입</td>
+		<td class="right bolds ends prices">{=number_format(items_tot.referer_sale*-1)}원</td>
+	</tr>
+	{ / }
+	{ ? orders.enuri > 0 }
+	<tr>
+		<td class="left"> - 에누리</td>
+		<td class="right bolds ends prices"><span id="enuri">{=number_format(orders.enuri*-1)}</span>원</td>
+	</tr>
+	{ / }
+	<tr>
+		<th align="left">사용 적립금</th>
+		<td align="right">
+			<span class="sum_price">(-) <span id="use_emoney">{=number_format(orders.emoney*-1)}</span> 원</span>
+		</td>
+	</tr>
+	<tr>
+		<th align="left">사용 이머니</th>
+		<td align="right">
+			<span class="sum_price">(-) <span id="use_cash">{=number_format(orders.cash*-1)}</span> 원</span>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="15">
+			<div style="width:100%; margin:auto; height:1px; background-color:#000; opacity:0.2"></div>
+			<div style="width:100%; margin:auto; height:1px; background-color:#fff; opacity:0.2"></div>
+		</td>
+	</tr>
+	<tr>
+		<th align="left">총 결제금액</th>
+		<td align="right">
+			<span class="sum_price"><span class="settle_price">{=number_format(orders.settleprice)}</span> 원</span>
+		</td>
+	</tr>
+	</table>
+</div>
+<!-- /주문할인 정보 -->
+
+</div>
+<!-- /주문상품 정보 -->
+
+<!-- 주문자 정보 -->
+<div class="sub_division_title">주문자 및 배송지 정보<div class="sub_division_arw"></div></div>
+<div class="sub_division_contents">
+	<ul>
+		<li class="sub_division_item_sum">
+			<div class="fleft"><b>주문자정보</b></div>
+		</li>
+	</ul>
+	<div class="pd7">
+		<table class="default_table_style" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="white">
+		<col width="90" />
+		<tr>
+			<th class="order-name" rowspan="2">{orders.order_user_name}</th>
+			<td class="order-email">{orders.order_email}</td>
+		</tr>
+		<tr><td class="order-cellphone">{orders.order_cellphone}</td></tr>
+		</table>
+	</div>
+
+<!-- 출고 정보 -->
+<!--{ ? count(order_shippings) >= 1 }-->
+	<!--{ @ order_shippings }-->
+	<!--{ ? count(order_shippings) > 1 }-->
+		<div class="shipping-title">
+			{=(.index_+1)}. {.recipient_user_name}님에게 { ? .is_goods }상품 및 배송지 정보{ : }티켓 및 발송 정보{ / } {orders.mshipping}
+		</div>
+		<!--{ / }-->
+		<ul>
+			<li class="sub_division_item_sum">
+				<div class="fleft"><b>배송지정보</b></div>
+				<div class="fright">
+					<span class="btn large export-detail-view"><button type="button">상세보기</button></span>
+				</div>
+			</li>
+		</ul>
+		<div style="padding:10px;">
+				{.recipient_user_name}
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<col width="90" />
+				<tr class="domestic goods_delivery_info">
+					<td class="fx12">
+						{? .recipient_address_street}도로명 주소 : ({.recipient_new_zipcode}) {.recipient_address_street} {.recipient_address_detail}<br> 지번주소 : {/}
+						({.recipient_new_zipcode}) {.recipient_address} {.recipient_address_detail}
+					</td>
+				</tr>
+				{?.memo}
+				<tr class="goods_delivery_info"><td height="10"></td></tr>
+				<tr class="goods_delivery_info">
+					<td class="fx12" colspan="3">{.memo}</td>
+				</tr>
+				{/}
+			</table>
+		</div>
+	<!--{ / }-->
+<!--{ / }-->
+<!-- 출고 정보 -->
+
+</div>
+<!-- /주문자 정보 -->
+
+<!-- 결제 정보 -->
+<div class="sub_division_title">결제 정보<div class="sub_division_arw"></div></div>
+<div class="sub_division_contents">
+	<ul>
+		<li class="sub_division_item_sum" {? deposit_css}{deposit_css}{/} >
+			<div class="fleft">{orders.mpayment}</div>
+			<div class="fright">
+			<!--{? (orders.payment =='card' || orders.payment =='cellphone') && orders.pg_transaction_number }-->
+			<!--{ ? orders.payment !='cellphone' || config_system.pgCompany != 'kspay'}-->
+						<span class="btn large"><button type="button" id="pgreceiptbtn" order_seq ="{orders.order_seq }" tno="{orders.pg_transaction_number}" authdata="{orders.authdata}" pg_kind="{cards.pg_kind}">매출전표보기</button></span>
+			<!--{ / }-->
+			<!--{ : }-->
+			<!--{? (creceipt.tstep == 1 || tax.tstep == 1) && orders.step == 15}-->
+						<span class="btn large"><button type="button" class="cancelBtn hand" order_seq="{orders.order_seq}">매출전표취소</button></span>
+			<!--{: creceipt.tstep == 2 || tax.tstep == 2}-->
+				<!--{? orders.typereceipt == 2 }-->
+					<!--{? creceipt.cash_no }-->
+						<span class="btn large"><button type="button" id="pgcashbtn{creceipt.tstep}" class="hand" sales_seq="{creceipt.seq}"  order_seq ="{orders.order_seq }" cash_no="{creceipt.cash_receipts_no}" settleprice="{orders.settleprice}" pg_kind="{creceipt.pg_kind}">현금영수증</button></span>
+					<!--{ / }-->
+				<!--{: orders.typereceipt == 1 }-->
+					<!--{? creceipt.hiworks_no }-->
+						<span class="btn large"><button type="button" pg_kind="{tax.pg_kind}">세금계산서</button></span>
+					<!--{ / }-->
+				<!--{ / }-->
+			<!--{ : }-->
+						<span class="btn large"><button type="button" class="salesBtn hand" order_seq="{orders.order_seq}" step="{orders.step}">매출증빙신청</button></span>
+			<!--{ / }-->
+			<!--{ / }-->
+			</div>
+			<!--{? deposit_info }--><div class="cboth" style="line-height:12px;font-size:12px;">{deposit_info}</div><!--{ / }-->
+		</li>
+	</ul>
+</div>
+<div id="saleslay" class="hide">
+	<table width="100%" border="0" class="sales_tax">
+	<col width="90px"/>
+	<tr>
+		<td class="pdl10" rowspan="{? cfg_order.cashreceiptuse > 0 && cfg_order.taxuse > 0}3{: cfg_order.cashreceiptuse > 0 || cfg_order.taxuse > 0}2{:}1{/}">매출증빙</td>
+		<td class="fx12">
+			<label for="typereceipt0"><input type="radio" name="typereceipt" id="typereceipt0" value="0" checked="checked" /> 발급안함 </label>
+		</td>
+	</tr>
+	<!--{ ? cfg_order.cashreceiptuse > 0 }-->
+	<tr>
+		<!-- 현금영수증 발행설정 -->
+		<td class="fx12">
+			<label for="typereceipt2">	<input type="radio" name="typereceipt" id="typereceipt2" value="2" {? orders.typereceipt == 2 } checked="checked" {/}> 현금영수증 </label>
+		</td>
+	</tr>
+	<!--{ / }-->
+	<!--{ ? cfg_order.taxuse > 0 }-->
+	<tr>
+		<td class="fx12">
+			<!-- 세금계산서 발행설정 -->
+			<label for="typereceipt1">	<input type="radio" name="typereceipt" id="typereceipt1" value="1"  {? orders.typereceipt == 1 } checked="checked" {/}> 세금계산서 </label>
+		</td>
+	</tr>
+	<!--{ / }-->
+
+	<tr>
+		<td colspan="2">
+			<!-- ~~~~~~~ 현금영수증 신청 부분 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<div id="cash_container" class="{? !(cfg_order.cashreceiptuse > 0 && creceipt.seq && creceipt.tstep == 2) &&  orders.typereceipt != 2 }hide{/}">
+				<form  name="CreceiptForm" method="post" action="../sales_process/cashreceiptwrite" target="actionFrame">
+				<input type="hidden" name="order_seq" value="{orders.order_seq}" />
+				<input type="hidden" name="settleprice" value="{orders.settleprice}" />
+				<input type="hidden" name="creceipt_seq" value="{creceipt.seq}" />
+				<input type="hidden" name="goods_name" value="{creceipt.goods_name}" />
+				<input type="hidden" name="order_user_name" value="{orders.order_user_name}" />
+				<input type="hidden" name="order_step" value="{orders.step}" />
+				<table width="100%" border="0"  class="list_table_style" style="padding-top:15px;">
+				<colgroup>
+				<col width="80px">
+				<col>
+				</colgroup>
+				<tr>
+					<td align="center">발행용도</td>
+					<td>
+<!--{ ? creceipt.tstep == 2 }-->
+						{ ? creceipt.cuse == 1 }개인 소득공제용{ : }사업자지출 증빙용{ / }
+<!--{ : }-->
+						<label for="cuse0"><input type="radio" name="cuse"  id="cuse0"  value="0" {? creceipt.cuse != 1 || !creceipt.seq} checked="checked" {/} />개인 소득공제용</label>
+						<label for="cuse1"><input type="radio" name="cuse"  id="cuse1"  value="1" {? creceipt.cuse == 1 }checked="checked" {/}/>사업자지출 증빙용</label>
+<!--{ / }-->
+					</td>
+				</tr>
+				<tr>
+					<td align="center">인증번호</td>
+					<td>
+<!--{ ? creceipt.tstep == 2 }-->
+						{ ? creceipt.cuse == 1 }사업자번호 : {creceipt.creceipt_number}
+						{ : }휴대폰번호 : {creceipt.creceipt_number}{ / }
+<!--{ : }-->
+						<div id="personallay" class="{? creceipt.cuse == 1 }hide{/}">  휴대폰번호 <input type="text" name="creceipt_number[0]" class="line number" maxlength="13" value="{creceipt.creceipt_number}" /><br/>(<span class="comment">"-" 없이 입력.</span>)</div>
+						<div id="businesslay" class="{? creceipt.cuse != 1 }hide{/}"> 사업자번호 <input type="text" name="creceipt_number[1]" class="line number" maxlength="10"  value="{creceipt.creceipt_number}" /><br/>(<span class="comment">"-" 없이 입력</span>)</div>
+<!--{ / }-->
+					</td>
+				</tr>
+				<tr>
+					<td align="center" >이메일주소</td>
+					<td class="pdt5">
+						<div id="personallay"  >
+						  <input type="text" name="email" class="line" style="width:90%;" value="{creceipt.email}"/>
+						</div>
+					</td>
+				</tr>
+
+<!--{ ? creceipt.tstep != 2 }-->
+				<tr>
+					<td class="fx12" colspan="4">
+						<div style="height:15px"></div>
+						<div class="center"><span class="btn large black"><input type="submit" value="{? creceipt.seq}수정하기{:}신청하기{/}" /></span></div>
+						<div style="height:15px"></div>
+					</td>
+				</tr>
+<!--{ / }-->
+				</table>
+				</form>
+			</div>
+			<!-- ~~~~~~~ 세금계산서 신청 부분 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<div id="tax_container" class="{? !(cfg_order.taxuse > 0 && tax.seq && tax.tstep == 2)  &&  orders.typereceipt != 1}hide{/}">
+				<form  name="TaxForm" method="post" action="../sales_process/taxwrite" target="actionFrame">
+				<input type="hidden" name="order_seq" value="{orders.order_seq}" />
+				<input type="hidden" name="settleprice" value="{orders.settleprice}" />
+				<input type="hidden" name="tax_seq" value="{tax.seq}" />
+				<input type="hidden" name="order_step" value="{orders.step}" />
+				<table width="100%" border="0"  class="list_table_style" style="padding-top:15px;">
+				<colgroup>
+				<col width="80px">
+				<col>
+				</colgroup>
+				<tr>
+					<td align="center">상호명</td>
+					<td  class="fx12">
+						<input type="text" name="co_name" id="co_name" value="{? tax.seq}{tax.co_name}{:}{business_info.bname}{/}" />
+					</td>
+				</tr>
+				<tr>
+					<td align="center">대표자</td>
+					<td  class="fx12">
+						<input type="text" name="co_ceo" id="co_ceo" value="{? tax.seq}{tax.co_ceo}{:}{business_info.bCEO}{/}"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">업태/업종</td>
+					<td  class="fx12">
+						<input type="text" name="co_status" id="co_status" value="{? tax.seq}{tax.co_status}{:}{business_info.bstatus}{/}"/> -
+						<input type="text" name="co_type" id="co_type" value="{? tax.seq}{tax.co_type}{:}{business_info.bitem}{/}"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">사업자번호</td>
+					<td  class="fx12">
+						<input type="text" name="busi_no" id="busi_no" value="{? tax.seq}{tax.busi_no}{:}{business_info.bno}{/}"/> ex)123-12-12345
+					</td>
+				</tr>
+				<tr>
+					<td align="center">주소</td>
+					<td class="fx12">
+						<input type="text" name="new_zipcode" value="{? tax.seq}{tax.new_zipcode}{:}{business_info.co_new_zipcode}{/}" size="10" />
+						<img src="../images/common/ad_number_bt.gif" hspace="1" alt="우편번호검색" class="hand" onclick="window.open('../popup/zipcode','popup_zipcode','width=500,height=350')" /> <br />
+						<input type="hidden" name="address_type" value="{? tax.seq}{tax.address_type}{:}{business_info.baddress_type}{/}">
+						<input type="text" name="address" id="address" size="40" {? tax.seq}{? tax.address_type == "street"}class="hide"{/}{:}{? business_info.baddress_type=='street' }class="hide"{/}{/} value="{? tax.seq}{tax.address}{:}{business_info.baddress1}{/}"/>
+						<input type="text" name="address_street" id="address_street" size="40" {? tax.seq}{? tax.address_type != "street"}class="hide"{/}{:}{? business_info.baddress_type!='street' }class="hide"{/}{/} value="{? tax.seq}{tax.address_street}{:}{business_info.baddress1}{/}"/>(기본주소)
+						<input type="text" name="address_detail" size="40" value="{? tax.seq}{tax.address_detail}{:}{business_info.baddress2}{/}">(상세주소)
+					</td>
+				</tr>
+				<tr>
+					<td align="center">담당자</td>
+					<td  class="fx12">
+						<input type="text" name="person" id="person" value="{? tax.seq}{tax.person}{:}{business_info.bperson}{/}"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">이메일</td>
+					<td  class="fx12">
+						<input type="text" name="email" id="email" value="{? tax.seq}{tax.email}{:}{members.email}{/}"/>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">연락처</td>
+					<td  class="fx12">
+						<input type="text" name="phone" id="phone" value="{? tax.seq}{tax.phone}{:}{business_info.bphone}{/}"/>
+					</td>
+				</tr>
+<!--{ ? tax.tstep != 2 }-->
+				<tr>
+					<td class="fx12" colspan="4">
+						<div style="height:15px"></div>
+
+						<div class="center"><span class="btn large black"><input type="submit" value="{? tax.seq}수정하기{:}신청하기{/}" /></span></div>
+
+						<div style="height:15px"></div>
+					</td>
+				</tr>
+<!--{ / }-->
+				</table>
+				</form>
+			</div>
+		</td>
+	</tr>
+	</table>
+</div>
+<!-- /결제 정보 -->
+
+<!--{ ? cancel_log || data_return || data_refund }-->
+<!-- 무효/취소/반품/환불 정보 -->
+<div class="sub_division_title">무효/취소/반품/환불 정보<div class="sub_division_arw"></div></div>
+<div class="sub_division_contents cancel-lay">
+	<!--{ @ data_refund }-->
+	<div class=" white">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+		<col /><col width="80" />
+		<tr>
+			<th class="cell" colspan="2" onclick="document.location.href='refund_view?refund_code={.refund_code}'">{=date('Y.m.d',strtotime(.regist_date))} (환불코드:<b>{.refund_code}</b>)</th>
+		</tr>
+		<tr>
+			<td class="cell left">
+				{.goods_name}
+				<!--{ ? .ea > 1 }--><div style="color:#999">외 {=.ea-1}건</div><!--{ / }-->
+				<!--{ ? .refund_price }-->
+					<div class="pdt5 fx12 bold">환불금액 : {=number_format(.refund_price)}원</div>
+				<!--{ / }-->
+			</td>
+			<td class="cell center">
+			<span class="bold" style="color:#e68b00">{.mstatus}</span>
+			<div class="pdt5"><button onclick="document.location.href='/mypage/myqna_write?category={=urlencode('환불문의')}'" class="btn_style">문의</button></div>
+			</td>
+		</tr>
+		</table>
+	</div>
+	<!--{ / }-->
+
+	<!--{ @ data_return }-->
+	<div class=" white">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+		<col /><col width="90" />
+		<tr>
+			<th class="cell" colspan="2"  onclick="return_view('{.return_code}');">{=date('Y.m.d',strtotime(.regist_date))} ( {=.mtype} / 반품코드:<b>{.return_code}</b>)</th>
+		</tr>
+		<tr>
+			<td class="cell left">
+				{.goods_name}
+				<!--{ ? .ea > 1 }--><div style="color:#999">외 {=.ea-1}건</div><!--{ / }-->
+
+			</td>
+			<td class="cell center">
+			<span class="bold" style="color:#e68b00">{.mstatus}</span>
+			<div class="pdt5"><button onclick="document.location.href='/mypage/myqna_write?category={=urlencode('반품문의')}'" class="btn_style">문의</button></div>
+			</td>
+		</tr>
+		</table>
+	</div>
+	<!--{ / }-->
+</div>
+<!--{ / }-->
+
+<div style="text-align:center;margin:10px 0;">
+	<input type="button" value="목록" class="btn_normal_large hand go-list-btn" style="width:95%;" />
+</div>
+
+<div id="order_refund_layer" class="hide"></div>
+
+
+<div id="order_return_msg" class="hide">
+	교환/ 반품 신청이 접수 되었습니다.<br />
+	고객센터에서 확인 후 순차적으로 처리 및<br />
+	답변 또는 연락을 드리겠습니다.<br />
+	<br />
+	<div class="center"><span class="btn small"><input type="button" value="확인" onclick="closeDialog('order_refund_layer');document.location.reload();" /></span></div>
+</div>
+
+<div id="coupon_use_guide" class="hide">
+	<table cellpadding="0" cellspacing="0" border="0" class="coupon_use_guide_tb">
+	<tr><td>발행된 티켓은 2가지 방법으로 사용할 수 있습니다.</td></tr>
+	<tr><th>1. 스마트폰 인증을 통한 사용</th></tr>
+	<tr><td class="contents">가지고 있는 휴대폰을 통해 간편한 인증을 거쳐 사용할 수 있습니다.</td></tr>
+	<tr><td class="list_contents">
+		① 스마트폰을 통해  쇼핑몰에 접속후 my페이지>주문배송조회로 이동<br/>
+		② 해당 상품의 “사용하기’ 버튼 클릭<br/>
+		③ 매장 직원 인증 확인
+	</td></tr>
+	<tr><td class="guide_img"><img src="../images/design/guide_img_cpn.jpg" /></td></tr>
+	<tr><th>2. 티켓 번호 인증을 통한 사용</th></tr>
+	<tr><td class="contents">스마트폰이 없을 때는 발급받은 티켓 번호를 직접 매장 직원에게 알려줘서 사용가능합니다. 단 매장에 티켓 번호를 확인할 수 있는 인터넷 환경이 있어야 합니다.(인터넷이 연결된 PC 가 있어야 함)</td></tr>
+	</table>
+</div>
+<div id="coupon_use_lay"></div>

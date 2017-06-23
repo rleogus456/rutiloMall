@@ -1,0 +1,551 @@
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/swfobject.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/jquery.uploadify.v2.1.4.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery.fmupload.js"></script>
+<link rel="stylesheet" type="text/css" href="/app/javascript/plugin/jquploadify/uploadify.css" />
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.mobile.css" type="text/css" rel="stylesheet" />
+<link href="/data/skin/{skin}/css/buttons.css" type="text/css" rel="stylesheet" />
+<style type="text/css">
+
+#recently_select_option_lay {background-color:#fbfbfb;}
+#recently_total_goods_price {font-size:18px;font-family:tahoma;color:#ed2b07;font-weight:bold;letter-spacing:-1px;}
+.recently_total_goods_price {padding-right:10px;}
+.recently_total_goods_price font {font-family:tahoma;color:#ed2b07;font-weight:bold;font-size:12px;}
+.recently_sale_price			{color:#ff5500;}
+
+.goods_option_table {padding:10px 0; background-color:#fbfbfb;}
+.goods_option_table th {padding:3px 0 3px 15px; height:32px; text-align:left; font-weight:bold; color:#515151; font-size:12px; border-bottom:1px solid #e0e0e0; border-top:1px solid #e0e0e0; letter-spacing:-1px}
+.goods_option_table tr:first-child th {border-top:0px;}
+.goods_option_table td {text-align:left; color:#616161; min-height:20px; padding-left:4px;}
+.goods_option_table .desc {font-size:12px; font-family:dotum; color:#9a9a9a;}
+.goods_option_table select {width:98%; border:none}
+.goods_option_table .btn_pm_td { text-align:right; padding-left:0px !important;}
+.goods_option_table tr.optionTr td {padding:5px 10px 5px 10px; background-color:#f1f2f5}
+.goods_option_table tr.inputoptionTr td {padding:5px 10px 5px 10px; background-color:#f1f2f5}
+.goods_option_table tr.suboptionTr td {padding:5px 10px 5px 10px; background-color:#f1f2f5}
+
+.recently_goods_quantity_table_container {padding:10px 10px 10px 10px; background-color:#f1f2f5}
+.recently_goods_quantity_table {border-collapse:collapse; background-color:#fff; border:1px solid #d0d0d0; }
+.recently_goods_quantity_table .quantity_cell {padding:0 10px; line-height:20px;border-top:1px solid #d0d0d0; }
+.recently_goods_quantity_table .option_col_text {padding-top:5px; padding-bottom:5px;}
+.recently_goods_quantity_table .option_col_price {width:150px}
+.recently_goods_quantity_table .quantity_cell_sub {padding:10px; line-height:20px; border-top:1px solid #d0d0d0; }
+.recently_goods_quantity_table .quantity_cell_sub_price {padding:10px; width:150px; border-top:1px solid #d0d0d0}
+.recently_goods_quantity_table .quanity_row:first-child .quantity_cell {border-top:0px}
+.recently_goods_quantity_table .quanity_row:first-child .quantity_cell_sub {border-top:0px}
+.recently_goods_quantity_table .quanity_row:first-child .quantity_cell_sub_price {border-top:0px}
+.recently_goods_quantity_table .quanity_row:first-child .quantity_cell {border-top:0px}
+.recently_goods_quantity_table .option_text {letter-spacing:-1px;color:#2253cd;}
+.goods_quantity_table .option_col_price {width:150px}
+.goods_quantity_table .out_option_price {font-size:12px;color:#181817;}
+.goods_quantity_table .removeOption {padding-left:10px;}
+.goods_quantity_table tr.inputoption_tr td {padding-bottom:4px;}
+
+.total_price {color:#cc0000;}
+.recently_viewOptionsspecialays {margin-top:5px;}
+option.soldout {color:#bcbcbc;}
+.recently_viewOptionsspecialbtn {width:30px; height:30px; margin-left:2px; border:0px solid #e8e8e8;padding:0;}
+.recently_viewOptionsspecialbtn font {display:inline-block;width:30px; height:30px; border:1px solid #ccc;cursor:pointer;}
+.recently_viewOptionsspecialbtnDisable {width:30px; height:30px;  margin-left:2px; border:0px solid #e8e8e8;}
+.recently_viewOptionsspecialbtnDisable font {display:inline-block;width:30px; height:30px; border:1px solid #ccc;cursor:pointer;}
+.recently_viewSubOptionsspecialays { margin-top:3px; }
+.recently_viewSubOptionsspecialbtn {width:30px; height:30px; margin-left:2px; border:0px solid #e8e8e8;padding:0; }
+.recently_viewSubOptionsspecialbtn font {display:inline-block;width:30px; height:30px; border:1px solid #ccc;cursor:pointer;}
+.recently_viewSubOptionsspecialbtnDisable {width:30px; height:30px;  margin-left:2px; border:0px solid #e8e8e8;}
+.recently_viewSubOptionsspecialbtnDisable font {display:inline-block;width:30px; height:30px; border:1px solid #ccc;cursor:pointer;}
+.viewInputLay input {padding:0;box-sizing:border-box; width:100%;height:40px; line-height:40px; text-indent:8px;border:1px solid #ddd;}
+.viewInputTextareaLay	{padding:6px 8px;border:1px solid #ddd;background-color:#fff;}
+.viewInputTextareaLay textarea {padding:0;width:100%;resize:none;overflow:auto;border:none;}
+.inputsFileWrap {display:block; border:1px solid #ddd; height:40px; line-height:40px; text-indent:8px;}
+.hide {display:none;}
+</style>
+<script type="text/javascript" src="/app/javascript/js/goods.option.0.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	gl_option_select_ver	= $("input[name='gl_option_select_ver']").val();
+
+	var recently_optObj		= new jscls_option_select();
+	recently_optObj.set_prefix_all_selector('recently_');
+	recently_optObj.set_init(
+					'{=count(goods.option_divide_title)}',
+					'{goods.goods_seq}',
+					'{ ? goods.price > goods.sale_price }{goods.sale_price}{ : goods.price }{goods.price}{ : }0{ / }',
+					'{ ? goods.string_price_use }{goods.string_price_use}{/}',
+					'{skin}',
+					true,
+					'{goods.min_purchase_ea}',
+					'{goods.max_purchase_ea}',
+					'{userInfo.member_seq}',
+					'{userInfo.group_seq}',
+					'{goods.option_view_type}',
+					'{goods.suboption_layout_group}',
+					'{goods.suboption_layout_position}',
+					'{goods.inputoption_layout_group}',
+					'{goods.inputoption_layout_position}');
+
+
+	{ ? goods.multi_discount && goods.multi_discount_ea }
+	recently_optObj.set_multi_sale('{goods.multi_discount_use}', '{goods.multi_discount_ea}', '{goods.multi_discount}', '{goods.multi_discount_unit}');
+	{ / }
+
+	{ ? is_numeric(config_system.cutting_sale_price) && config_system.cutting_sale_use != 'none' }
+	recently_optObj.set_cutting_sale_price('{config_system.cutting_sale_price}', '{config_system.cutting_sale_action}');
+	{ / }
+
+	{ ? cart_options }
+	recently_optObj.set_option_change_type(true);
+		{ ? count(options) > 0 && options[0].option_title }
+	recently_optObj.set_apply_option_seq('{=count(cart_options)}');
+		{ / }
+	{ / }
+
+	{ ? goods.inputoption_layout_position == 'down' }
+	var inputoptionData	= {=json_encode(inputs)};
+	recently_optObj.set_inputoption_data(inputoptionData);
+	{ / }
+
+	recently_optObj.set_bind_option();
+	apply_input_style();
+});
+</script>
+
+<div id="recently_select_option_lay" style="padding:10px 6px;background-color:#fbfbfb;">
+	<form name="optional_changes_form_{goods.goods_seq}" id="optional_changes_form_{goods.goods_seq}" method="post" action="/order/add" target="actionFrame">
+
+	<input type="hidden" name="gl_option_select_ver" value="0.1" />
+	<input type="hidden" name="recently_option_select_goods_seq" value="{goods.goods_seq}" />
+	<!--{ ? (count(options) > 0 && options[0].option_title) && ( suboptions || inputs ) }-->
+	<input type="hidden" name="recently_use_add_action_button" value="y" />
+	<!--{ : }-->
+	<input type="hidden" name="recently_use_add_action_button" value="n" />
+	<!--{ / }-->
+
+	<!-- 옵션 선택 영역 시작 -->
+	<!--{ ? !(count(options) > 0 && options[0].option_title) && !goods.string_price_use }-->
+	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+	<colgroup>
+		<col width="100" />
+		<col />
+	</colgroup>
+	<tr><td colspan="2" style="height:2px"></td></tr>
+	<tr>
+		<th style="text-align:center;">수량</th>
+		<td>
+			<input type="hidden" name="recently_option[0][0]" class="selected_options" type="hidden" value="" opt_seq="0" opt_group="0" />
+			<input type="hidden" name="recently_optionTitle[0][0]" class="selected_options_title" type="hidden" value="" opt_seq="0" opt_group="0" />
+			<!--{ ? cart_options[0]['cart_option_seq'] > 0}-->
+			<input type="hidden" name="exist_option_seq[]" class="cart_option_seq" value="{cart_options[0]['cart_option_seq']}" />
+			<!--{ / }-->
+			<table align="left" border="0" cellpadding="1" cellspacing="0">
+			<tr>
+				<td style="white-space:nowrap;">
+					<button type="button" class="btn_graybox recently_eaMinus">-</button><input type="text" name="recently_optionEa[0]" value="{?cart_options[0]['ea']>0}{cart_options[0]['ea']}{:}1{/}" class="onlynumber recently_ea_change" style="text-align:center; width:31px; height:31px; border:1px solid #d0d0d0;" /><button type="button" class="btn_graybox recently_eaPlus">+</button>
+					<div style="display:none" class="recently_optionPrice">{goods.sale_price}</div>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+	<!--{ / }-->
+	<!--{ ? (count(options) > 0 && options[0].option_title) || suboptions || inputs }-->
+	<table class="goods_option_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+	<colgroup>
+		<col />
+		<col width="50" />
+	</colgroup>
+	<tr><td colspan="2" style="min-height:0;height:2px;line-height:2px;"></td></tr>
+
+		<!-- 필수옵션 시작 -->
+		<!--{ ? count(options) > 0 && options[0].option_title }-->
+			<!--{ ? !minimize }-->
+	<tr>
+		<th colspan="2">상품옵션</th>
+	</tr>
+			<!--{ / }-->
+		<!--{ / }-->
+
+		<!--{ @ option_data }-->
+	<tr class="optionTr">
+		<td colspan="2">
+			<span class="optionTitle hide">{.title}</span>
+			<select name="recently_viewOptions[]" id="{.key_}" opttype="{.newtype}">
+				<option value="">- {.title} 선택 -</option>
+			<!--{ ? .options && .index_ == 0 }-->
+				<!--{ @ .options }-->
+				<option value="{..opt}" price="{..price}" opt1="{..option1}" opt2="{..option2}" opt3="{..option3}" opt4="{..option4}" opt5="{..option5}" infomation="{..infomation}" class="{..chk_stock_class}">{..opt_string}</option>
+				<!--{ / }-->
+			<!--{ / }-->
+			</select>
+
+			<!--{ ? .newtype && .newtype == 'color' && goods.option_view_type == 'divide' }-->
+			<div class="recently_viewOptionsspecialays {.newtype}" style="padding-bottom:9px;">
+				<!--{ @ .options }-->
+					<!--{ ? ..chk_stock }-->
+				<span  class="{..color}"><span name="recently_viewOptionsspecialbtn" class="recently_viewOptionsspecialbtn hand bbs_btn {..color}"  style="color:{..color};"  value="{..opt}"  optvalue="{..opt}" price="{..price}" opt1="{..option1}" opt2="{..option2}" opt3="{..option3}" opt4="{..option4}" opt5="{..option5}" infomation="{..infomation}"  eqindex='0'><font style="background-color:{..color};">■</font></span></span>
+					<!--{ : }-->
+				<span  class="{..color}"><span name="" class="recently_viewOptionsspecialbtnDisable hand bbs_btn {..color}"  style="color:{..color};"  value="{..opt}"  optvalue="{..opt}" price="{..price}" opt1="{..option1}" opt2="{..option2}" opt3="{..option3}" opt4="{..option4}" opt5="{..option5}" infomation="{..infomation}"  eqindex='0'><font style="background-color:{..color};">■</font>(품절)</span></span>
+					<!--{ / }-->
+				<!--{ / }-->
+			</div>
+			<!--{ / }-->
+		</td>
+	</tr>
+		<!--{ / }-->
+		<!-- 필수옵션 끝 -->
+
+		<!-- 입력옵션 시작 -->
+		<!--{ ? inputs && goods.inputoption_layout_position != 'down' }-->
+			<!--{ ? !(count(options) > 0 && options[0].option_title) && cart_options }-->
+				<!--{ @ cart_options[0].cart_inputs }-->
+	<tr class="inputoptionTr">
+		<td colspan="2">
+			<span class="inputsTitle hide">{.title}</span>
+			<input type="hidden" name="recently_viewInputsTitle[]" value="{.input_title}" />
+					<!--{ ? .type == 'edit' }-->
+			<div class="viewInputTextareaLay"><textarea name="recently_viewInputs[]" rows="4" limit="{.input_limit}" {?.input_require}isrequired="y"{/} title="{.title}을 입력하세요{? .input_require && .input_limit>0} (필수, {.input_limit}자 이내){: .input_require }(필수) {/}">{.input_value}</textarea></div>
+					<!--{ : .type == 'text' }-->
+			<div class="viewInputLay"><input type="text" name="recently_viewInputs[]" limit="{.input_limit}" {?.input_require}isrequired="y"{/} title="{.title}을 입력하세요{? .input_require && .input_limit>0} (필수, {.input_limit}자 이내){: .input_require }(필수) {/}" value="{.input_value}" /></div>
+					<!--{ : .type == 'file' }-->
+			<table class="upload-tb" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>{.title}</td>
+				<td><div class="recently_inputsUploadButton" id="recently_fmupload_{.index_}" uploadType="fmupload"></div></td>
+				<!--{ ? .input_value }-->
+				<td><img src="/data/order/{.input_value}" id="prevImg" style="height:20px;" /></td>
+				<!--{ : }-->
+				<td><img src="about:blank;" class="prevImg" style="display:none;height:20px;" /></td>
+				<!--{ / }-->
+				<td><span class="prevTxt"></span><input type="hidden" name="recently_viewInputs[]" class="fmuploadInputs" {?.input_require}isrequired="y"{/} value="{.input_value}" /></td>
+			</tr>
+			</table>
+					<!--{ / }-->
+		</td>
+	</tr>
+				<!--{ / }-->
+			<!--{ : }-->
+				<!--{ @ inputs }-->
+	<tr class="inputoptionTr">
+		<td colspan="2">
+			<span class="inputsTitle hide">{.input_name}</span>
+			<input type="hidden" name="recently_viewInputsTitle[]" value="{.input_name}" />
+					<!--{ ? .input_form == 'edit' }-->
+			<div class="viewInputTextareaLay"><textarea name="recently_viewInputs[]" rows="4" limit="{.input_limit}" {?.input_require}isrequired="y"{/} title="{.input_name}을 입력하세요{? .input_require && .input_limit>0} (필수, {.input_limit}자 이내){: .input_require }(필수) {/}"></textarea></div>
+					<!--{ : .input_form == 'text' }-->
+			<div class="viewInputLay"><input type="text" name="recently_viewInputs[]" limit="{.input_limit}" {?.input_require}isrequired="y"{/} title="{.input_name}을 입력하세요{? .input_require && .input_limit>0} (필수, {.input_limit}자 이내){: .input_require }(필수) {/}" /></div>
+					<!--{ : .input_form == 'file' }-->
+			<table class="upload-tb" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>{.input_name}</td>
+				<td><div class="recently_inputsUploadButton" id="recently_fmupload_{.index_}" uploadType="fmupload"></div></td>
+				<td><img src="about:blank;" class="prevImg" style="display:none;height:20px;" /></td>
+				<td><span class="prevTxt"></span><input type="hidden" name="recently_viewInputs[]" class="fmuploadInputs" {?.input_require}isrequired="y"{/}  /></td>
+			</tr>
+			</table>
+					<!--{ / }-->
+		</td>
+	</tr>
+				<!--{ / }-->
+			<!--{ / }-->
+		<!--{ / }-->
+		<!-- 입력옵션 끝 -->
+
+
+		<!-- 추가옵션 시작 -->
+		<!--{ ? suboptions && goods.suboption_layout_group != 'first' }-->
+			<!--{ ? !minimize }-->
+	<tr>
+		<th colspan="2">추가구성</th>
+	</tr>
+			<!--{ / }-->
+			<!--{ @ suboptions }-->
+				<!--{?.value_[0].sub_required=='y'}-->
+	<input type="hidden" name="suboption_title_required[]" value="{.value_[0].suboption_title}" />
+				<!--{ / }-->
+	<tr class="suboptionTr" subGroupIdx="{.index_}">
+		<td { ? count(options) > 0 && options[0].option_title }{ : }colspan="2"{ / }>
+			<span class="suboptionTitle hide">{.value_[0].suboption_title}</span>
+			<select name="recently_viewSuboption[]" requiredgroup="{.index_}" {?.value_[0].sub_required=='y'}isrequired="y"{/}>
+				<option value="">- {.value_[0].suboption_title} 선택{?.value_[0].sub_required=='y'} (필수){/} -</option>
+				<!--{ @ .value_ }-->
+					<!--{ ? ..chk_stock }-->
+						<!--{ ? ..price > 0 }-->
+					<option value="{..suboption}" price="{..price}">{..suboption} (추가 {=number_format(..price)}원)</option>
+						<!--{ : }-->
+					<option value="{..suboption}" price="0">{..suboption}</option>
+						<!--{ / }-->
+					<!--{ : }-->
+					<option value="{..suboption}" price="0" disabled>{..suboption} (품절)</option>
+					<!--{ / }-->
+				<!--{ / }-->
+			</select>
+				<!--{ ? .value_[0].newtype == 'color' }-->
+			<div class="recently_viewSubOptionsspecialays">
+					<!--{ @ .value_ }-->
+						<!--{ ? ..newtype == 'color' }-->
+							<!--{ ? ..chk_stock }-->
+				<span  class="{..color}"><span name="recently_viewSubOptionsspecialbtn" opspecialtype="color" class="recently_viewSubOptionsspecialbtn hand bbs_btn {..color}" style="color:{..color};"  value="{..suboption}"  suboptvalue="{..suboption}" price="{..price}" eqindex="{.index_}" opspecial_location="1"><font style="background-color:{..color};">■</font></span></span>
+							<!--{ : }-->
+				<span  class="{..color}"><span name="" opspecialtype="color" class="recently_viewSubOptionsspecialbtnDisable hand bbs_btn {..color}" style="color:{..color};" value="{..suboption}" suboptvalue="{..suboption}" price="{..price}" eqindex="{.index_}" opspecial_location="1"><font style="background-color:{..color};">■</font>(품절)</span></span>
+							<!--{ / }-->
+						<!--{ / }-->
+					<!--{ / }-->
+			</div>
+				<!--{ / }-->
+		</td>
+				<!--{ ? count(options) > 0 && options[0].option_title }-->
+		<td class="btn_pm_td">
+			<button class="recently_btn_add_suboption btn_graybox" type="button">+</button>
+		</td>
+				<!--{ / }-->
+	</tr>
+			<!--{ / }-->
+		<!--{ / }-->
+		<!-- 추가옵션 끝 -->
+
+
+	<tr id="viewoptionsInfoTr" class="hide">
+		<td id="viewOptionsInfo" style="word-break:break-all; text-align:center;" colspan="2"></td>
+	</tr>
+
+		<!--{ ? (count(options) > 0 && options[0].option_title) && ( ( suboptions && goods.suboption_layout_group != 'first' ) || ( inputs && goods.inputoption_layout_position != 'down' ) ) }-->
+	<tr><td colspan="2" style="min-height:0;height:0;line-height:0;border-top:1px solid #ccc;"></td></tr>
+	<tr><td colspan="2" style="min-height:0;height:10px;line-height:5px;"></td></tr>
+	<tr>
+		<td colspan="2" align="center" style="text-align:center;">
+			<span class="btn large black"><button type="button" class="recently_viewOptionsApply">입력한 정보로 선택</button></span>
+		</td>
+	</tr>
+	<tr><td colspan="2" style="min-height:0;height:5px;line-height:5px;"></td></tr>
+		<!--{ / }-->
+
+	</table>
+	<!--{ / }-->
+	<!-- 옵션 선택 영역 끝 -->
+
+	<!-- 추가옵션 시작 -->
+	<!--{ ? goods.suboption_layout_group == 'first' }-->
+	<table class="goods_option_table" width="100%" cellpadding="0" cellspacing="5" border="0">
+	<colgroup>
+		<col />
+		<col width="15" />
+	</colgroup>
+		<!--{ @ suboptions }-->
+			<!--{?.value_[0].sub_required=='y'}-->
+	<input type="hidden" name="suboption_title_required[]" value="{.value_[0].suboption_title}" />
+			<!--{ / }-->
+	<tr class="suboptionTr" subGroupIdx="{.index_}">
+		<td { ? count(options) > 0 && options[0].option_title }{ : }colspan="2"{ / }>
+			<span class="suboptionTitle hide">{.value_[0].suboption_title}</span>
+			<select name="recently_viewSuboption[]" requiredgroup="{.index_}" {?.value_[0].sub_required=='y'}isrequired="y"{/}>
+				<option value="">- {.value_[0].suboption_title} 선택{?.value_[0].sub_required=='y'} (필수){/} -</option>
+				<!--{ @ .value_ }-->
+					<!--{ ? ..chk_stock }-->
+						<!--{ ? ..price > 0 }-->
+					<option value="{..suboption}" price="{..price}">{..suboption} (추가 {=number_format(..price)}원)</option>
+						<!--{ : }-->
+					<option value="{..suboption}" price="0">{..suboption}</option>
+						<!--{ / }-->
+					<!--{ : }-->
+					<option value="{..suboption}" price="0" disabled>{..suboption} (품절)</option>
+					<!--{ / }-->
+				<!--{ / }-->
+			</select>
+				<!--{ ? .value_[0].newtype == 'color' }-->
+			<div class="recently_viewSubOptionsspecialays">
+					<!--{ @ .value_ }-->
+						<!--{ ? ..newtype == 'color' }-->
+							<!--{ ? ..chk_stock }-->
+				<span  class="{..color}"><span name="recently_viewSubOptionsspecialbtn" opspecialtype="color" class="recently_viewSubOptionsspecialbtn hand bbs_btn {..color}" style="color:{..color};"  value="{..suboption}"  suboptvalue="{..suboption}" price="{..price}" eqindex="{.index_}" opspecial_location="1"><font style="background-color:{..color};">■</font></span></span>
+							<!--{ : }-->
+				<span  class="{..color}"><span name="" opspecialtype="color" class="recently_viewSubOptionsspecialbtnDisable hand bbs_btn {..color}" style="color:{..color};" value="{..suboption}" suboptvalue="{..suboption}" price="{..price}" eqindex="{.index_}" opspecial_location="1"><font style="background-color:{..color};">■</font>(품절)</span></span>
+							<!--{ / }-->
+						<!--{ / }-->
+					<!--{ / }-->
+			</div>
+				<!--{ / }-->
+		</td>
+	</tr>
+		<!--{ / }-->
+	</table>
+	<!--{ / }-->
+	<!-- 추가옵션 끝 -->
+
+
+	<!-- 선택된 옵션 노출 영역 시작 -->
+	<!--{ ? !goods.string_price_use }-->
+	<div class="recently_goods_quantity_table_container" { ? !cart_options }style="display:none"{ / }>
+		<table class="recently_goods_quantity_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+		<col /><col width="90" />
+		<!--{ ? cart_options }-->
+		<tbody>
+			<!--{ @ cart_options }-->
+		<input type="hidden" name="recently_exist_option_seq[{.index_}]" class="cart_option_seq" value="{.cart_option_seq}" />
+				<!--{ ? count(options) > 0 && options[0].option_title }-->
+		<tr class="quanity_row option_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_col_text">
+				<table align="left" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="option_text">
+					<!--{ ? .option1 }-->
+						{.title1} : {.option1}
+						<input name="recently_option[{.index_}][0]" class="selected_options" type="hidden" value="{.option1}" opt_seq="0" opt_group="{.index_}" />
+						<input name="recently_optionTitle[{.index_}][0]" class="selected_options_title" type="hidden" value="{.title1}" opt_seq="0" opt_group="{.index_}" />
+					<!--{ / }-->
+					<!--{ ? .option2 }-->
+						<br />
+						{.title2} : {.option2}
+						<input name="recently_option[{.index_}][1]" class="selected_options" type="hidden" value="{.option2}" opt_seq="1" opt_group="{.index_}" />
+						<input name="recently_optionTitle[{.index_}][1]" class="selected_options_title" type="hidden" value="{.title2}" opt_seq="1" opt_group="{.index_}" />
+					<!--{ / }-->
+					<!--{ ? .option3 }-->
+						<br />
+						{.title3} : {.option3}
+						<input name="recently_option[{.index_}][2]" class="selected_options" type="hidden" value="{.option3}" opt_seq="2" opt_group="{.index_}" />
+						<input name="recently_optionTitle[{.index_}][2]" class="selected_options_title" type="hidden" value="{.title3}" opt_seq="2" opt_group="{.index_}" />
+					<!--{ / }-->
+					<!--{ ? .option4 }-->
+						<br />
+						{.title4} : {.option4}
+						<input name="recently_option[{.index_}][3]" class="selected_options" type="hidden" value="{.option4}" opt_seq="3" opt_group="{.index_}" />
+						<input name="recently_optionTitle[{.index_}][3]" class="selected_options_title" type="hidden" value="{.title4}" opt_seq="3" opt_group="{.index_}" />
+					<!--{ / }-->
+					<!--{ ? .option5 }-->
+						<br />
+						{.title5} : {.option5}
+						<input name="recently_option[{.index_}][4]" class="selected_options" type="hidden" value="{.option5}" opt_seq="4" opt_group="{.index_}" />
+						<input name="recently_optionTitle[{.index_}][4]" class="selected_options_title" type="hidden" value="{.title5}" opt_seq="4" opt_group="{.index_}" />
+					<!--{ / }-->
+					</td>
+				</tr>
+				<tr>
+					<td style="white-space:nowrap;"><button type="button" class="btn_graybox recently_eaMinus">-</button><input type="text" name="recently_optionEa[{.index_}]" value="1" class="onlynumber recently_ea_change" style="text-align:center; width:31px; height:31px; border:1px solid #d0d0d0;" value="{.ea}" /><button type="button" class="btn_graybox recently_eaPlus">+</button></td>
+				</tr>
+				</table>
+			</td>
+			<td class="quantity_cell option_col_price" align="right">
+				<span class="recently_optionPrice hide">{.price}</span><strong class="recently_out_option_price">{=number_format(.price * .ea)}</strong>원 <button type="button" class="btn_graybox recently_removeOption">x</button>
+			</td>
+		</tr>
+
+					<!--{ @ .cart_inputs }-->
+						<!--{ ? goods.inputoption_layout_position == 'down' }-->
+							<!--{ ? ..type == 'file' }-->
+		<tr class="quanity_row inputoption_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_text" style="border-top:none;" colspan="2">
+				<input name="inputsTitle[{.index_}][{..index_}]" class="selected_inputs_title" type="hidden" value="{ ..input_title }" opt_seq="{..index_}" opt_group="{.index_}" />
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="width:{=(strlen(..input_title * 10 + 20)}px;max-width:200px;">
+						{ ..input_title }
+					</td>
+					<td>
+						<table class="upload-tb" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td><div class="inputsUploadButton" id="fmupload_{.index_}_{..index_}" uploadType="fmupload"></div></td>
+										<!--{ ? ..input_value }-->
+							<td><img src="/data/order/{..input_value}" class="prevImg" style="height:20px;" /></td>
+										<!--{ : }-->
+							<td><img src="about:blank;" class="prevImg" style="display:none;height:20px;" /></td>
+										<!--{ / }-->
+							<td><span class="prevTxt">{ ..input_value }</span><input type="hidden" name="inputsValue[{.index_}][{..index_}]" class="selected_inputs fmuploadInputs" type="hidden" value="{ ..input_value }" opt_seq="{..index_}" opt_group="{.index_}" /></td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+							<!--{ : }-->
+		<tr class="quanity_row inputoption_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_text" style="border-top:none;" colspan="2">
+				<input name="inputsTitle[{.index_}][{..index_}]" class="selected_inputs_title" type="hidden" value="{ ..input_title }" opt_seq="{..index_}" opt_group="{.index_}" />
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>{ ..input_title }</td>
+					<td style="text-align:right;color:#6c6c6c;{?..input_limit > 0}{:}display:none;{/}"><span class="inputByte_{.index_}_{..index_}">0</span>/{..input_limit}</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr class="quanity_row inputoption_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_text" style="border-top:none;" colspan="2">
+								<!--{ ? ..type == 'edit' }-->
+				<div class="viewInputTextareaLay"><textarea rows="4" name="inputsValue[{.index_}][{..index_}]" class="selected_inputs inputlimit" inputlimit="{..input_limit}"  {?..input_require}isrequired="y" title="(필수)"{/}>{..input_value}</textarea></div>
+								<!--{ : }-->
+				<div class="viewInputLay" style="width:100%;"><input type="text" name="inputsValue[{.index_}][{..index_}]" class="selected_inputs inputlimit" inputlimit="{..input_limit}" {?..input_require}isrequired="y" title="(필수)"{/}  opt_seq="{..index_}" opt_group="{.index_}" value="{..input_value}"  style="width:100%;"/></div>
+								<!--{ / }-->
+			</td>
+		</tr>
+							<!--{ / }-->
+						<!--{ : }-->
+		<tr class="quanity_row inputoption_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_text" style="border-top:none;" colspan="2">
+				{ ..input_title }
+				<input name="inputsTitle[{.index_}][{..index_}]" class="selected_inputs_title" type="hidden" value="{ ..input_title }" opt_seq="{..index_}" opt_group="{.index_}" />
+			</td>
+		</tr>
+		<tr class="quanity_row inputoption_tr" opt_group="{.index_}">
+			<td class="quantity_cell option_text" style="border-top:none;" colspan="2">
+				<div style="width:100%;">{ ..input_value }</div>
+				<input name="inputsValue[{.index_}][{..index_}]" class="selected_inputs" type="hidden" value="{ ..input_value }" opt_seq="{..index_}" opt_group="{.index_}" />
+			</td>
+		</tr>
+						<!--{ / }-->
+					<!--{ / }-->
+				<!--{ / }-->
+
+				<!--{ @ .cart_suboptions }-->
+		<tr class="quanity_row suboption_tr" opt_group="{.index_}">
+			<td class="quantity_cell_sub">
+				<table align="left" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="option_text">
+						- {..suboption_title} : {..suboption}
+						<input name="recently_suboption[{.index_}][{..index_}]" class="suboption selected_suboptions" type="hidden" value="{..suboption}" opt_seq="{..index_}" opt_group="{.index_}" />
+						<input name="recently_suboptionTitle[{.index_}][{..index_}]" class="selected_suboptions_title" type="hidden" value="{..suboption_title}" opt_seq="{..index_}" opt_group="{.index_}" />
+					</td>
+				</tr>
+				<tr>
+					<td><button type="button" class="btn_graybox recently_eaMinus">-</button><input type="text" name="recently_suboptionEa[{.index_}][{..index_}]" value="1" class="onlynumber recently_ea_change" style="text-align:center; width:31px; height:31px; border:1px solid #d0d0d0;" /><button type="button" class="btn_graybox recently_eaPlus">+</button></td>
+				</tr>
+				</table>
+			</td>
+			<td class="quantity_cell_sub_price" align="right" >
+				<span class="recently_suboptionPrice hide">{..price}</span><strong class="recently_out_suboption_price">{=number_format(..price * ..ea)}</strong>원 <button type="button" class="btn_graybox recently_removeOption">x</button>
+			</td>
+		</tr>
+				<!--{ / }-->
+			<!--{ / }-->
+		</tbody>
+		<!--{ / }-->
+		</table>
+	</div>
+	<!--{ / }-->
+	<!-- 선택된 옵션 노출 영역 끝 -->
+
+	<!-- 총 상품 금액 표기 시작-->
+	<!--{ ? !goods.string_price_use && select_option_mode != 'optional_change' }-->
+	<table  align="right" cellpadding="0" cellspacing="0" border="0">
+	<tr><td style="height:15px;line-height:15px;"></td></tr>
+	<tr>
+		<td valign="bottom" class="fx12"><b>총 상품금액</b></td>
+		<td width="25"></td>
+		<td class="recently_total_goods_price">
+		<!--{ ? (goods.price > goods.sale_price) || (goods.consumer_price > goods.sale_price && goods.event.target_sale == 1 ) }-->
+			<span id="recently_total_goods_price">{? goods.sale_price > 0 }{=number_format(goods.sale_price)}{:}0{/}</span><font>원</font>
+		<!--{ : }-->
+			<span id="recently_total_goods_price">{=number_format(goods.price)}</span><font>원</font>
+		<!--{ / }-->
+		</td>
+	</tr>
+	<tr><td style="height:15px;line-height:15px;"></td></tr>
+	</table>
+	<!--{ / }-->
+	<!-- 총 상품 금액 표기 끝-->
+
+	</form>
+
+	<br style="line-height:30px;" />
+</div>

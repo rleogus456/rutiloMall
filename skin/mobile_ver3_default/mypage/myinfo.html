@@ -1,0 +1,898 @@
+{is_file_kakao_tag}
+<style>
+#layout_body {background-color:#f5f7f6;}
+.myinfo_table {border-collapse:collapse; border-bottom:1px solid #d7d7d7}
+.myinfo_table>tbody>tr>th {min-height:20px; padding:8px 10px; text-align:left;}
+.myinfo_table>tbody>tr>th {border-top:2px solid #d7d7d7; background-color:#f5f7f6; font-weight:normal;}
+.myinfo_table>tbody>tr:first-child>th {border-top:none;}
+</style>
+
+{?!mobileAjaxCall}
+	{#common_mypage_myinfo_top}
+{/}
+
+<table class="myinfo_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<th><b>내 정보 수정</b></th>
+</tr>
+</table>
+
+<form name="registFrm" id="registFrm" target="actionFrame" method="post" action="{=sslAction('../member_process/myinfo_modify')}">
+<input type="hidden" name="seq" value="{member_seq}"/>
+<input type="hidden" name="rute" value="{rute}"/>
+	<!-- 가입폼 -->
+	<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="pd10">{# form_member}</td>
+	</tr>
+	<tr><td height="2"></td></tr>
+	<tr><td height="1" bgcolor="cbcbcb"></td></tr>
+	<tr><td height="20"></td></tr>
+	<tr>
+		<td align="center" class="pdl10 pdr10">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td><button type="button" class="btn_cancel_large" style="width:100%" onclick="document.registFrm.reset()">취소</button></td>
+				<td width="4"></td>
+				<td width="50%"><input type="submit" value="정보수정" class="btn_important_large" style="width:100%" /></td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr><td height="20"></td></tr>
+	</table>
+</form>
+
+<!-- //SNS 가입폼 : SNS이용할 경우시작 -->
+<!--{? count(joinform.use_sns) > 0 }-->
+<style> 
+.myinfosns{ width:100%;background-color:#fff;padding-bottom:15px; }
+.myinfosns h3 {border-top:1px solid #ddd;border-bottom:2px solid #545454;padding:10px;}
+.myinfosns .txt{ background-color:#fff; padding:10px;}
+.sns_login_ul {text-align:left;margin-top:10px;padding-left:5px;}
+.sns_login_ul li{display:inline-block;width:55px;height:45px;padding:0px;margin-bottom:5px;border-left:1px solid #ccc;text-align:center;overflow:hidden;}
+.sns_login_ul li:first-child{ border:0px; }
+.sns_login_ul li img{width:45px;height:45px;}
+</style>
+<div class="myinfosns">
+	
+	<h3>SNS 및 외부 계정 사용</h3>
+
+	<div class="txt">
+		SNS 및 외부 계정으로 간편하게 로그인 할 수 있습니다.<br />
+	    아래의 버튼을 클릭하세요. 여러 개를 함께 이용하실 수도 있습니다.
+	</div>
+	<!--{= this->assign('sns_cnt', snslist.size_) }-->
+	<ul class="sns_login_ul">
+		<!--{@ joinform.use_sns }-->
+		{? .key_ }
+		 <li class="sns-login-button" snstype="{=.key_}"><img src="../images/design/sns_icon_{=.key_}{? !.key}_off{/}.png"  class="{? !.key}fb-login-button-mbconnect-direct{:}{? (rute =='none' && 0 < sns_cnt) || (rute !='none' && 1 < sns_cnt) || (rute !='none' && sns_cnt > 0 && sns_change == 1) }sns-login-button-disconnect{:}sns-login-button-only{/}{/} hand" snstype="{=.key_}" snstype2="sns_{=substr(.key_,0,1)}" snsrute="{=.key_}" alt="{=.nm}"  title="{=.nm}"  /></li>
+		{/}
+		<!--{ / }-->
+	</ul>
+</div>
+<!--{/}-->
+<!-- //SNS 가입폼 : SNS이용할 경우 끝 //-->
+
+
+<div id="snsdisconnectlay" class="hide snsdisconnectlay">
+	<div class="ibox">
+		<table border="0" width="100%" cellspacing="0" cellpadding="5">
+		<tr>
+			<td>
+			<div class="msg">
+				<div>
+					SNS계정 정보를 삭제하여 연결을 해제할 수 있습니다<br />
+					연결이 해제되면 해당 SNS계정으로 쇼핑몰을 더 이상 이용할 수 없습니다.
+				</div>
+			</div></td>
+		</tr>
+		<tr><td>
+			<table border="0" width="100%" cellspacing="0" cellpadding="0">
+			<tr >
+				<!--{? sns_f }--><td align="center" >
+				<img src="../images/common/mypage_sns_f.gif" class="hand" snstype="sns_f"  snsrute="facebook" alt="페이스북"  title="페이스북"  />
+				<br /> <div style="color:red;margin-top:5px;"><!--{? sns_f }--><img src="../images/common/btn_disconnect.gif" class="fb-login-button-disconnect hand " alt="페이스북"  title="페이스북" /><!--{/}--></div></td><!--{/}-->
+
+				<!--{? sns_t }--><td align="center" > <img src="../images/common/mypage_sns_t.gif"  class=" hand" snstype="sns_t"  snsrute="twitter"  alt="트위터"  title="트위터"  />
+				<br /> <div style="color:red;margin-top:5px;"><!--{? sns_t }--><img src="../images/common/btn_disconnect.gif" class="sns-login-button-disconnect hand"  snstype="sns_t"  snsrute="twitter" alt="트위터"  title="트위터" /><!--{/}--></div></td><!--{/}-->
+
+				<!--{? sns_m }--><td align="center" > <img src="../images/common/mypage_sns_m.gif"  class=" hand" snstype="sns_m" snsrute="me2day"  alt="미투데이"  title="미투데이"  />
+				<br /> <div style="color:red;margin-top:5px;"><!--{? sns_m }--><img src="../images/common/btn_disconnect.gif" class="sns-login-button-disconnect hand" snstype="sns_m" snsrute="me2day"  alt="미투데이"  title="미투데이"  /><!--{/}--></div></td><!--{/}-->
+
+				<!--{? sns_y}--><td align="center" > <img src="../images/common/mypage_sns_y.gif"  class=" hand" snstype="sns_y" snsrute="yozm"  alt="요즘" title="요즘"  />
+				<br /> <div style="color:red;margin-top:5px;"><!--{? sns_y }--><img src="../images/common/btn_disconnect.gif" class="sns-login-button-disconnect hand" snstype="sns_y"  snsrute="yozm"  alt="요즘" title="요즘"  /><!--{/}--></div></td><!--{/}-->
+
+				<!--{? sns_c}--><td align="center" > <img src="../images/common/mypage_sns_c.gif"  class=" hand" snstype="sns_c" snsrute="cyworld"  alt="싸이월드" title="싸이월드"  />
+				<br /> <div style="color:red;margin-top:5px;"><!--{? sns_c }--><img src="../images/common/btn_disconnect.gif" class="sns-login-button-disconnect hand" snstype="sns_c"  snsrute="cyworld"  alt="싸이월드" title="싸이월드"  /><!--{/}--></div></td><!--{/}-->
+			</tr>
+			</tr>
+		</table>
+		</tr>
+	</table>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("input[name='userid']").blur(function() {
+		if($(this).val()){
+			$.post("../member_process/id_chk", { userid : $(this).val() }, function(response){
+				//debug(response);
+				var text = response.return_result;
+				var userid = response.userid;
+				$("#id_info").html(text);
+				$("input[name='userid']").val(userid);
+			},'json');
+		}
+    });
+
+	$('#find_email').change(function() {
+		$("input[name='email[1]']").val(this.value);
+	});
+
+});
+
+
+
+function filterKey(e) {//11
+	var keycode;
+	var prevent = null; 
+	var filter = "[0-9a-z]";
+	if(filter){
+		// for something else IE
+		if (e != null) {
+			keycode = e.which;
+			prevent = function() {
+				e.which = 0;
+				e.preventDefault();
+			};
+		}
+		// for IE
+		else {
+			keycode = window.event.keyCode;
+			prevent = function() {
+				window.event.keyCode = 0;
+				window.event.returnValue = false;
+			};
+		}
+
+		// fromCharCode : 매개 변수에서 ASCII 값이 나타내는 문자들로 구성된 문자열을 반환합니다
+		var sKey = String.fromCharCode(keycode);
+		// RegExp
+		// 정규표현을 취급하는 객체로 new를 사용하지 않고 정규표현 문자열을 변수에 대입하는 것으로도 동일한 결과
+		var re = new RegExp(filter);
+		// test() : 일치하는 문자열이 있는 경우 true, 없으면 false
+		if(!re.test(sKey)) { 
+			prevent();
+		}
+	}
+}
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".sns-login-button-only").click(function(){
+		alert("연동된 SNS계정이 1개 일때에는 연동해제를 할 수가 없습니다.");
+	});
+
+	//기존멤버-SNS통합하기
+	$(".sns-login-button-mbconnect-direct, .fb-login-button-mbconnect-direct").click(function(){
+		var snstype = $(this).attr('snstype');
+		loginwindowopen(snstype);
+	});
+
+	$("input[name='userid']").blur(function() {
+		if($(this).val()){
+			$.post("../member_process/id_chk", { userid : $(this).val() }, function(response){
+				var text = response.return_result;
+				var userid = response.userid;
+				$("#id_info").html(text);
+				$("input[name='userid']").val(userid);
+			},'json');
+		}
+    });
+
+	$('#find_email').change(function() {
+		$("input[name='email[1]']").val(this.value);
+	});
+
+	if('{mailing}'=='y') {
+		$("input:checkbox[name='mailing']").attr('checked','checked');
+		$("input:checkbox[name='mailing']").ezMark({checkedCls: 'ez-checkbox-on'});
+	}
+	if('{sms}'=='y') {
+		$("input:checkbox[name='sms']").attr('checked','checked');
+		$("input:checkbox[name='sms']").ezMark({checkedCls: 'ez-checkbox-on'});
+	}
+
+
+	//기존회원 facebook 계정통합 해제하기
+	/*
+	$(".fb-login-button-disconnect").click(function(){
+		if(confirm("정말로 facebook 연결을 해제하시겠습니까?")){
+			facebookdisconnect();
+		}
+	});
+	*/
+
+	//기존회원 sns 계정통합 해제하기
+	$(".snsbuttondisconnectlay").click(function(){
+		openDialog("SNS계정 연결해제", "snsdisconnectlay", {"width":"500","height":"200"});
+	});
+
+	//기존회원 sns 계정통합 해제하기
+	$(".sns-login-button-disconnect").click(function(){
+		var snstype	= $(this).attr('snstype2');
+		var snsrute	= $(this).attr('snsrute');
+		var title	= $(this).attr('alt');
+		if(confirm("정말로 "+ title + "의 연결을 해제하시겠습니까?")){
+			if(snstype == "sns_f"){
+				facebookdisconnect();
+			}else{
+				snsdisconnect(snstype, snsrute);
+			}
+		}
+	});
+
+
+	//기존멤버-통합하기
+	$("#facebookmbconnectalertmyinfo").click(function(){
+		<!--{? empty(sns_f) }-->
+			openDialogAlert('facebook 친구들을 쇼핑몰에 초대하기 위해서는 facebook계정으로 쇼핑몰을 이용해 주셔야 합니다.<br>회원정보수정에서 "SNS계정사용"을 수락해 주세요. <br>친구들을 초대하시면 다양한 혜택을 받으실 수 있습니다.','650','200',function(){});
+		<!--{:}-->
+				document.location.href="../mypage/myfbrecommend";
+		<!--{/}-->
+	});
+	
+	$("#registFrm").submit(function(){
+		$("input[name='bcellphone[]']").attr("disabled",false);
+		$("input[name='cellphone[]']").attr("disabled",false);
+		return true;
+	});
+});
+</script>
+
+<script type="text/javascript">
+function loginwindowopen(sns) {
+	var w;var h;
+	switch(sns) {
+		case 'twitter':
+			w = 810;h = 550;
+			break;
+		case 'me2day':
+			w = 900;h = 500;
+			break;
+		case 'yozm':
+			w = 600;h = 450;
+			break;
+		case 'cyworld':
+			w = 430;h = 560;
+			break;
+		case 'naver':
+			w = 460;h = 517;
+			break;
+		case 'kakao':
+			loginWithKakao();
+			return false;
+		break;
+		case 'daum':
+			w = 460;h = 517;
+			break;
+		default:
+			w = 800;h=400;
+	}
+	{? _SERVER.HTTP_HOST==APP_DOMAIN  }
+		if(sns == 'facebook' ) {//경고문구창사이즈
+			FB.login(handelStatusChangeMbconnect,{scope:'{fbuserauth}'});
+		}else{
+			SnsMbconnect(sns);
+		}
+	{:}
+		if(sns == 'me2day' || sns == 'cyworld' || sns == 'naver' || sns == 'daum' ) {
+			{? sns == 'cyworld' && TW_APP_ID == 'ifHWJYpPA2ZGYDrdc5wQ' }
+				window.open('http://{config_system.domain}/member/register_sns_form?popup=1&formtype=myinfojoin&firstmallcartid={firstmallcartid}&snstype='+sns+'&snsreferer={_SERVER.HTTP_HOST}','snspopup','width=410px,height=150px,statusbar=no,scrollbars=no,toolbar=no');
+			{:}
+				SnsMbconnect(sns);
+			{/}
+		}else{
+			window.open('http://{config_system.subDomain}/member/register_sns_form?popup=1&formtype=myinfojoin&firstmallcartid={firstmallcartid}&snstype='+sns+'&snsreferer={_SERVER.HTTP_HOST}','snspopup','width='+w+'px,height='+h+'px,statusbar=no,scrollbars=no,toolbar=no');
+		}
+	{/}
+
+}
+
+//FACEBOOK 해지하기
+function facebookdisconnect(){
+	{? defined('__ISUSER__')}
+		$.ajax({
+		'url' : '../sns_process/facebookdisconnect',
+		'dataType': 'json',
+		'success': function(res) {
+			if(res.result == true){
+				{? isdomain }
+					openDialogAlert(res.msg,'400','140',function(){document.location.reload();});
+				{:}
+					openDialogAlert(res.msg,'400','140',function(){document.location.reload();});
+				{/}
+			}else{
+				document.location.reload();
+			}
+		}
+		});
+	{/}
+}
+
+
+//SNS 해지하기
+function snsdisconnect(snstype,snsrute){
+	{? defined('__ISUSER__')}
+		$.ajax({
+		'url' : '../sns_process/snsdisconnect',
+		'data' : {'snstype':snstype,'snsrute':snsrute},
+		'type' : 'post',
+		'dataType': 'json',
+		'success': function(res) {
+			if(res.result == true){
+				openDialogAlert(res.msg,'400','140',function(){document.location.reload();});
+			}else{
+				document.location.reload();
+			}
+		}
+		});
+	{/}
+}
+//기존 회원통합을 위한 facebook login
+function handelStatusChangeMbconnect(response) {
+	if (response && response.status == 'connected') {
+	// 로그인
+	isLogin = true;
+	initializeFbTokenValues();
+	initializeFbUserValues();
+	if(response.authResponse){
+		fbId = response.authResponse.userID;
+		fbAccessToken = response.authResponse.accessToken;
+	}
+	FB.api('/me', function(response) {
+		 fbUid = response.email;
+		 fbName = response.name;
+		 if (fbName != "") {
+			loadingStart("body",{segments: 12, width: 15.5, space: 6, length: 13, color: '#000000', speed: 1.5});
+			$.ajax({
+			'url' : '../sns_process/facebookloginck',
+			'data' : {'facebooktype':'mbconnect_direct'},
+			'type' : 'post',
+			'dataType': 'json',
+			'success': function(res) {
+				if(res.result == true){
+					loadingStop("body",true);
+					if	(res.msg)
+						openDialogAlert(res.msg,'400','160',function(){document.location.href='../mypage/myinfo';});
+					else
+						document.location.href='../mypage/myinfo';
+				}else{
+					loadingStop("body",true);
+					openDialogAlert(res.msg,'400','140',function(){FB.logout();});
+				}
+			}
+			});
+		}
+	});
+   } else if (response.status == 'not_authorized' || response.status == 'unknown') {
+		// 로그아웃된 경우
+		isLogin = false;
+		if (fbId != "")  initializeFbTokenValues();
+		if (fbUid != "") initializeFbUserValues();
+			loadingStop("body",true);
+		openDialogAlert('연결을 취소하셨습니다.','400','160',function(){});
+	}else{
+			loadingStop("body",true);
+		openDialogAlert('연결을 취소하셨습니다.','400','160',function(){});
+	}
+}
+//기존 회원통합을 위한 SNS join
+function SnsMbconnect(snstype) {
+	loadingStart("body",{segments: 12, width: 15.5, space: 6, length: 13, color: '#000000', speed: 1.5});
+	$.ajax({
+	'url' : '../sns_process/'+snstype+'loginck',
+	'data' : {'mform':'join','facebooktype':'mbconnect_direct','m':'myinfo'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true) {
+			var w;var h;var pramlink='';
+			switch(snstype) {
+				case 'twitter':
+					w = 810;h = 550;
+					break;
+				case 'me2day':
+					w = 1000;h = 750;
+					popupResize(w,h);
+					break;
+				case 'cyworld':
+					w = 430;h = 560;
+					break;
+				case 'naver':
+					w = 460;h = 517;
+					pramlink = '&mtype=naver';
+				break;
+				case 'daum':
+					w = 460;h = 517;
+				break;
+				case 'instagram':
+					w = 460;h = 517;
+				break;
+			}
+			{? _SERVER.HTTPS == 'on'}
+				var openurl = 'https://{_SERVER.HTTP_HOST}'
+			{:}
+				var openurl = 'http://{_SERVER.HTTP_HOST}'
+			{/}
+			window.open(openurl+'/sns_process/snsredirecturl?snsurl='+res.loginurl+''+pramlink,'snsredirecturl','width='+w+'px,height='+h+'px,statusbar=no,scrollbars=no,toolbar=no');
+			loadingStop("body",true);
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	}
+	});
+}
+
+//트위터 쇼핑몰회원가입(새창에서이뤄짐)
+
+//미투데이 쇼핑몰회원통합
+function me2dayjoginlogin() {
+	$.ajax({
+	'url' : '../sns_process/me2dayjoin',
+	'data' : {'facebooktype':'mbconnect_direct'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			document.location.href='../mypage/myinfo';
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	}
+	});
+}
+
+//cyworld 쇼핑몰로그인
+function cyworldjoginlogin() {
+	$.ajax({
+	'url' : '../sns_process/cyworldjoin',
+	'data' : {'facebooktype':'mbconnect_direct'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			document.location.href='../mypage/myinfo';
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	}
+	});
+}
+
+//네이버 쇼핑몰로그인
+function naverjoinlogin() {
+	$.ajax({
+	'url' : '../sns_process/naverjoin',
+	'data' : {'facebooktype':'mbconnect_direct'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			loadingStop("body",true);
+			if	(res.mgs)
+				openDialogAlert(res.msg,'400','140',function(){document.location.href='../mypage/myinfo'});
+			else
+				document.location.href='../mypage/myinfo';
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	}
+	});
+}
+
+//daum login
+function daumaccess(str){
+
+	loadingStart("body",{segments: 12, width: 15.5, space: 6, length: 13, color: '#000000', speed: 1.5});
+
+	str = encodeURIComponent(str);
+
+	$.ajax({
+	'url' : '../sns_process/daumuserinfo',
+	'type' : 'post',
+	'data' : {'str':str},
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			daumjoinlogin();
+		}else{
+			loadingStop("body",true);
+			alert(res.message);
+		}
+	}});
+}
+
+function daumjoinlogin() {
+
+	$.ajax({
+	'url' : '../sns_process/daumjoin',
+	'data' : {'facebooktype':'mbconnect_direct'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			loadingStop("body",true);
+			if	(res.msg)
+				openDialogAlert(res.msg,'400','160',function(){document.location.href='../mypage/myinfo';});
+			else
+				document.location.href='../mypage/myinfo';
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	},'error': function(res){
+		loadingStop("body",true);
+		openDialogAlert("잘못된 접근입니다.",'400','140',function(){});
+	}
+	});
+}
+//daum end
+
+
+//kakao join start
+{? array_key_exists('kakao',joinform.use_sns) }
+	function loginWithKakao() {
+		
+		var IEIndex = navigator.appVersion.indexOf("MSIE");         // MSIE를 찾고 인덱스를 리턴
+		var IE8Over = navigator.userAgent.indexOf("Trident");		// MS IE 8이상 버전 체크
+
+		if( IEIndex > 0 && IE8Over < 0 )  {
+			alert("카카오 로그인을 지원하지 않는 브라우저 버전입니다.\nInternet Explorer 8 버전 이상 사용해 주세요.");
+		}else{
+
+			// 로그인 창을 띄웁니다.
+			Kakao.Auth.login({
+				success: function(authObj) {
+					var aaccess_token	= authObj.access_token;
+
+					if(authObj.access_token){
+						Kakao.API.request({
+							url: '/v1/user/me',
+							success: function(userObj) {
+								var pram = {'facebooktype':'mbconnect_direct'};
+								var kakaoObj = $.extend(authObj,userObj,pram);
+								kakaojoinlogin(kakaoObj);
+							}
+
+						});
+					}else{
+						alert("잘못된 접근입니다.");
+						return false;
+					}
+				},fail: function(res){
+					alert('잘못된 접근입니다.');
+					//JSON.stringify(res);
+				}
+			});
+		}
+	};
+
+	function kakaoAPI(kakaoKey){ Kakao.init(kakaoKey); }
+
+	$.ajax({
+		'url' : '../sns_process/kakaokeys',
+		'dataType': 'json',
+		'success': function(res) {
+			if(res.result == true){
+				kakaoAPI(res.keys);
+			}
+		}
+	});
+
+	function kakaojoinlogin(kakaoObj) {
+		$.ajax({
+		'url' : '../sns_process/kakaojoin',
+		'type' : 'post',
+		'dataType': 'json',
+		'data': kakaoObj,
+		'success': function(res) {
+			if(res.result == true){
+				loadingStop("body",true);
+				if	(res.msg)
+					openDialogAlert(res.msg,'400','160',function(){document.location.href='../mypage/myinfo'});
+				else
+					document.location.href='../mypage/myinfo'
+			}else{
+				loadingStop("body",true);
+				openDialogAlert(res.msg,'400','140',function(){});
+			}
+		}
+		});
+	}
+{ / }
+//kakao join end
+
+
+function view_address(str){
+
+	if(str == "street"){
+		$("#address_view").html("(도로명) "+$("input[name='address_street']").val());
+	}else{
+		$("#address_view").html("(지번) "+$("input[name='address']").val());
+	}
+	if($("#address_view").css("display") == "none"){
+		$("#address_view").show();
+	}else{
+		$("#address_view").hide();
+	}
+} 
+
+{? sns_change == '0' && rute != 'none' && rute }
+function sns_change_id(){
+	that = $('#sns_change_id');
+	$("input[name='userid']",that).val('');
+	$("input[name='password']",that).val('');
+	$("input[name='re_password']",that).val('');
+	$("#id_info",that).html('');
+	openDialog('아이디/비밀번호 등록', 'sns_change_id', {'width':580,'height':280});
+}
+
+function sns_change_id_func(){
+
+	that		= $('#sns_change_id');
+	userid		= $("input[name='userid']",that).val();
+	password	= $("input[name='password']",that).val();
+	re_password	= $("input[name='re_password']",that).val();
+
+	if	(userid == ''){
+		openDialogAlert("아이디 항목은 필수입니다.",'400','160',function(){});
+		return;
+	}
+
+	if	(password == ''){
+		openDialogAlert("비밀번호 항목은 필수입니다.",'400','160',function(){});
+		return;
+	}
+
+	if	(re_password == ''){
+		openDialogAlert("비밀번호확인 항목은 필수입니다.",'400','160',function(){});
+		return;
+	}
+
+	if	(password != re_password){
+		openDialogAlert("비밀번호 확인이 일치하지 않습니다.",'400','160',function(){});
+		return;
+	}
+
+	$.ajax({
+		url: "../member_process/sns_update_id",
+		type: "post",
+		data : $('#sns_change_id_form').serialize(),
+		success : function(e){
+			if	(e == 'succ'){
+				msg = '아이디 등록이 완료 되었습니다';
+				openDialogAlert(msg,'400','160',function(){location.reload();});
+			}else{
+				openDialogAlert(e,'400','160',function(){});
+			}
+		}
+	});
+}
+{/}
+
+// 휴대폰 인증 사용시 인증팝업 :: 2016-04-19 lwh
+function authphone_popup(phoneType){
+	$("#wrap").hide();
+	$("#phonetype").val(phoneType);
+	$.each($("input[name='"+phoneType+"[]']"),function(idx){
+		$("input[name='chg_phone[]']").eq(idx).val($(this).val());
+	});
+	openDialog('휴대폰 인증안내', "authphone", {"width":"380","height":"500","show" : "fade","hide" : "fade",'close':function(){$("#wrap").show();}});
+	$('html, body').animate({scrollTop: 0}, 200);  
+}
+
+// 인증번호 발신 :: 2016-04-19 lwh
+function authphone_send(){
+	loadingStart();
+	var new_phone = '';
+	var old_phone = '';
+	var ptype = $("#phonetype").val();
+	$.each($("input[name='chg_phone[]']"),function(){ new_phone += $(this).val(); });
+	$.each($("input[name='"+ptype+"[]']"),function(){ old_phone += $(this).val(); });
+	if(!new_phone){
+		openDialogAlert('변경할 휴대폰 번호를 입력해주세요.','300','150',function(){});
+		return false;
+	}
+	if(new_phone == old_phone){
+		openDialogAlert('기존 번호와 동일합니다.','300','150',function(){});
+		return false;
+	}
+
+	var min = 2;
+	var sec = 59;
+	$.ajax({
+		'url' : '../member_process/authphone',
+		'data' : {'phone':new_phone},
+		'dataType': 'json',
+		'success': function(res) {
+			loadingStop("body",true);
+			if(res.result){	
+				$(".chg_phone").attr('disabled',true); 
+				$(".authnum_send").hide();
+				$(".auth_timer").show();
+				var timer = setInterval(function(){
+					if(sec==0){
+						sec = 59;
+						if(min != 0) {
+							min = min - 1;
+						}
+					}else{
+						sec = sec - 1;
+					}
+					$('#timer_min').html(min);
+					$('#timer_sec').html(sec);
+					
+					if(min == 0 && sec == 0){ 
+						clearInterval(timer);
+						$(".authnum_send").show();
+						$(".auth_timer").hide();
+						$.ajax({
+							'url':'../member_process/authphone_del',
+							'dataType': 'text',
+							'success': function(res) {
+							}
+						});
+					}
+				}, 1000);
+
+			}
+			alert(res.msg);
+		}
+	});
+}
+
+// 인증번호 확인 :: 2016-04-19 lwh
+function authphone_confirm(){
+	var authnum = $("#authnum").val();
+	$("iframe[name='actionFrame']").attr('src','../member_process/authphone_confirm?authnum=' + authnum);
+}
+
+//인스타그램 login
+function instagramjoinlogin() {
+	$.ajax({
+	'url' : '../sns_process/instagramjoin',
+	'data' : {'facebooktype':'mbconnect_direct'},
+	'type' : 'post',
+	'dataType': 'json',
+	'success': function(res) {
+		if(res.result == true){
+			loadingStop("body",true);
+			if	(res.msg)
+				openDialogAlert(res.msg,'400','160',function(){document.location.href='../mypage/myinfo';});
+			else
+				document.location.href='../mypage/myinfo';
+		}else{
+			loadingStop("body",true);
+			openDialogAlert(res.msg,'400','140',function(){});
+		}
+	}
+	});
+}
+</script>
+
+
+{? joinform.user_icon=='Y' } 
+<script type="text/javascript">
+$(document).ready(function() { 
+		
+		$("button#membericonUpdate").live("click",function(){
+			$('#membericonRegist')[0].reset();
+			$("input[name=user_icon][value='99']").attr("checked",true);
+			openDialog("아이콘", "membericonUpdatePopup", {"width":"380","height":"150","show" : "fade","hide" : "fade"});
+		});
+});
+	function membericonFileUpload(str){
+		if(str > 0) {
+			alert('로고를 선택해 주세요.');
+			return false;
+		}
+		var frm = $('#membericonRegist');
+		frm.attr("action","../member_process/membericonsave");
+		frm.submit();
+	}
+
+	function membericonDisplay(filenm){ 
+		$("#membericon_img").attr("src",filenm);
+		$("#membericon_img").css("display","block"); 
+		$("#membericonDelete").css("display","block");
+		$('#membericonRegist')[0].reset();
+		$("#membericonUpdatePopup").dialog("close");
+	}
+</script>
+
+
+<div id="membericonUpdatePopup" class="hide">
+	<form name="membericonRegist" id="membericonRegist" method="post" action="" enctype="multipart/form-data"  target="actionFrame">
+	<div style="height:20px;padding-left:30px;"><span class='desc'>사이즈는 30 × 30 으로 등록해 주세요.</span></div>
+	<div style="height:30px;padding-left:30px;"><input type="file" name="membericonFile" class="line"  style="height:25px;"  id="membericonFile" onChange="membericonFileUpload();" /></div>
+	</form>
+</div>
+{/}
+
+<!--{ ? confirmPhone == 'Y' }-->
+<div id="authphone" class="hide">
+	<input type="hidden" name="phonetype" id="phonetype" value="" />
+	<table class="info_table_style" width="100%">
+	<tr>
+		<th class="its_th">변경할 휴대폰 번호</th>
+		<td class="its_td">
+			<input type="text" name="chg_phone[]" class="chg_phone" value="" size="6"  maxlength="4"/> -
+			<input type="text" name="chg_phone[]" class="chg_phone" value="" size="6"  maxlength="4"/> -
+			<input type="text" name="chg_phone[]" class="chg_phone" value="" size="6"  maxlength="4"/>
+			<span class="btn small cyanblue authnum_send"><button type="button" onclick="authphone_send();">인증번호발송</button></span>
+		</td>
+	</tr>
+	<tr>
+		<th class="its_th">인증번호 입력</th>
+		<td class="its_td">
+			<input type="text" name="authnum" id="authnum" value="" />
+			<span class="hide auth_timer">(<span id="timer_min">3</span>분 <span id="timer_sec">00</span>초)</span>
+		</td>
+	</tr>
+	</table>
+	<span class="desc" style="line-height:25px;">※ 휴대폰번호 인증은 1일 3회로 제한됩니다.</span>
+	<div class="pdt10 center">
+		<span class="btn large cyanblue"><button type="button" onclick="authphone_confirm();">확인</button></span>
+		&nbsp;
+		<span class="btn large white"><button type="button" onclick="closeDialog('authphone');$('.chg_phone').attr('disabled',false);">취소</button></span>
+	</div>
+</div>
+<!--{ / }-->
+
+{? sns_change == '0' && rute != 'none' && rute }
+<div id="sns_change_id" class="hide" style="padding-top:20px;border:1px solid #000000">
+	<form id="sns_change_id_form">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<colgroup>
+		<col width="60" />
+		<col width="10" />
+		<col />
+	</colgroup>
+	<tr>
+		<td align="right" class="small">아이디</td>
+		<td></td>
+		<td>
+		<input type="text" name="userid" id="userid" value="" size="15" onkeypress="filterKey(event);" style="ime-mode:disabled" onpaste="javascript:return false;" /><span class="desc">공백 없는 영문, 숫자 포함 6-20자</span> <span id="id_info" class="small" style="padding-top:5px;color:#d13b00;"></span>
+		</td>
+	</tr>
+	<tr><td height="14"></td></tr>
+	<tr>
+		<td align="right" class="small">비밀번호</td>
+		<td></td>
+		<td><input type="password" name="password" value="" size="15" style="ime-mode:disabled;"/> <span class="desc">공백 없는 영문, 숫자 포함 6-20자</span></td>
+	</tr>
+	<tr><td height="14"></td></tr>
+	<tr>
+		<td align="right" class="small">비밀번호확인</td>
+		<td></td>
+		<td><input type="password" name="re_password" value="" size="15" style="ime-mode:disabled;"/> <span class="desc">비밀번호 확인을 위해 한번 더 입력하세요</span></td>
+	</tr>
+	</table>
+	<div class="center mt20">
+		<span class="btn large cyanblue"><input type="button" onclick="sns_change_id_func();" value="확인"></span>
+		<span class="btn large gray"><input type="button" onclick="$('#sns_change_id').dialog('close')" value="취소"></span>
+	</div>
+	</form>
+</div>
+{/}

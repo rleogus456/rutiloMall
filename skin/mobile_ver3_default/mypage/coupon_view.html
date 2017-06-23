@@ -1,0 +1,64 @@
+<style type="text/css">
+/* 티켓 레이아웃 */
+div.coupon-layout { background-color:#fff; border:1px solid #d9d9d9; padding:15px; }
+/* 사용정보 */
+div.coupon-use-title table td{ background-color:#99a2b8; height:30px; text-align:center; font-size:16px; color:#fff; }
+.coupon-use-list { margin-top:5px; height:133px; border:1px solid #d9d9d9; background-color:#fff; }
+.coupon-use-list td { line-height:25px; text-align:center; }
+/* 버튼 레이아웃 */
+.coupon-table { margin-top: 10px; }
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".btn-coupon-use").bind('click', function(){
+		document.location.href = './coupon_use?code={coupon.export_code}';
+	});
+});
+
+</script>
+<!-- Title :: START -->
+<div class="sub_title_bar">
+	<h2>티켓사용내역</a></h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" /></a>
+</div>
+
+<!-- 티켓사용내역 :: START -->
+<div class="bg_gray" style="padding:5px;">
+	<div class="coupon-layout">
+		<div class="coupon_info">
+			<div class="coupon_name">{item.goods_name}</div>
+			<div class="coupon_option">{coupon.coupon_start_date} ~ {coupon.coupon_end_date}</div>
+			<div class="coupon_serial">{coupon.coupon_serial}</div>
+		</div>
+		<div class="coupon_detail">
+			{coupon.coupon_start_date} ~ {coupon.coupon_end_date}<br/>
+			총 {=number_format(coupon.coupon_value)}{coupon.coupon_unit} 중 {=number_format(coupon.coupon_remain_value)}{coupon.coupon_unit} 사용가능
+		</div>
+	</div>
+	<div style="height:10px;"></div>
+	<div class="coupon-use-title">
+		<table cellpadding="1" cellspacing="1" border="0" width="100%">
+			<td width="60%">장소</td>
+			<td width="40%">사용</td>
+		</table>
+	</div>
+	<table class="coupon-use-list" cellpadding="0" cellspacing="0" border="0" width="100%">
+	<!--{ @ use_history }-->
+	<tr>
+		<td width="60%">{.coupon_use_area}</td>
+		<td width="40%">{=number_format(.coupon_use_value)}{coupon.coupon_unit} 사용</td>
+	</tr>
+	<!--{ : }-->
+	<tr>
+		<td>사용 내역이 없습니다.</td>
+	</tr>
+	<!--{ / }-->
+	</table>
+	<div class="coupon-table">
+	<!--{ ? chk.result == 'success' }-->
+		<button type="button" class="btn-coupon-use">티켓사용</button>
+	<!--{ : }-->
+		<button type="button" class="btn-coupon-use-disable">티켓사용</button>
+	<!--{ / }-->
+	</div>
+</div>

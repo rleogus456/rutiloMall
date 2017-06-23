@@ -1,0 +1,22 @@
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.mobile.css" type="text/css" rel="stylesheet" />
+<div>
+	<!--{? goods.multi_discount_use && goods.multi_discount_ea && goods.multi_discount && goods.multi_discount_unit }-->
+	<div>
+		<table  width="100%" cellpadding="0" cellspacing="5" border="0">
+		<tr>
+			<th>복수구매할인</th>
+			<td>
+				{goods.multi_discount_ea}개 이상 구매시 개당 {=number_format(goods.multi_discount)}{? goods.multi_discount_unit == 'percent'}%{ : }원{ / } 할인
+			</td>
+		</tr>
+		</table>
+	</div>
+	<!--{ / }-->
+
+	<form name="goodsForm" id="optional_changes_form_{goods.goods_seq}" method="post" enctype="multipart/form-data" action="../order/add" target="actionFrame">
+	<input type="hidden" name="goodsSeq" value="{goods.goods_seq}" />
+
+	{ # OPTION_SELECT }
+
+	</form>
+</div>

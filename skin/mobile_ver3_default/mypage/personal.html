@@ -1,0 +1,42 @@
+<!-- 타이틀 -->
+<div class="sub_title_bar">
+	<h2>개인결제</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+</div>
+
+<div class="bg_gray pd10">
+
+	<!--{ ? page.totalcount==0 }-->
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table_style2">
+		<tr>
+			<td align="center" class="cell" style="padding:42px 30px; color:#5c5c5c;">
+				<img src="../images/common/nodata.png" width="70" height="71" /><br /><br />
+				<span class="bold">개인결제 내역이 없습니다.</span>
+			</td>
+		</tr>
+	</table>
+	<!--{ : }-->
+	{goodsDisplayHTML}
+
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center">
+			<div class="paging_navigation">
+				<!--{ ? page.first }--><a href="?page={page.first}&amp;{page.querystring}" class="first">◀ 처음</a><!--{ / }-->
+				<!--{ ? page.prev }--><a href="?page={page.prev}&amp;{page.querystring}" class="prev">◀ 이전</a><!--{ / }-->
+				<!--{ @ page.page }-->
+					<!--{ ? page.nowpage ==  .value_ }-->
+						<a href="?page={.value_}&amp;{page.querystring}" class="on">{.value_ }</a>
+					<!--{ : }-->
+						<a href="?page={.value_}&amp;{page.querystring}">{.value_ }</a>
+					<!--{ / }-->
+				<!--{ / }-->
+				<!--{ ? page.next }--><a href="?page={page.next}&amp;{page.querystring}" class="next">다음 ▶</a><!--{ / }-->
+				<!--{ ? page.last }--><a href="?page={page.last}&amp;{page.querystring}" class="last">마지막 ▶</a><!--{ / }-->
+			</div>
+		</td>
+	</tr>
+	</table>
+	<!--{ / }-->
+
+</div>

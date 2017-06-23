@@ -1,0 +1,622 @@
+<style>
+.text_1 {width:100%; padding:0px !important; margin:0px !important;}
+
+table.join_information {box-sizing:border-box; width:100%; border:1px solid #ddd; background-color:#fff; border-collapse:collapse;}
+table.join_information th {text-align:left; padding-left:10px; color:#000;}
+table.join_information td {padding:8px 10px 8px 0;min-height:30px;}
+table.join_information th,
+table.join_information td {border-top:1px solid #ddd; }
+table.join_information input[type='text'],
+table.join_information input[type='tel'],
+table.join_information input[type='password'] {margin:0px; padding:0px; text-indent:5px; border:1px solid #ddd; background-color:#fff; height:30px; line-height:30px;}
+table.join_information tr:first-child td {border-top:none}
+</style>
+
+{? mtype=='member' }
+
+	<table class="join_information" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<colgroup>
+		<col width="95" />
+		<col width="0" />
+		<col />
+	</colgroup>
+
+	{? rute && rute != 'none'  //SNS전용이 아닌경우에만 출력}
+		{? joinform.user_name_use=='Y' }
+		<tr>
+			<th>
+				이름 {? joinform.user_name_required=='Y' }<span class="join_required">*</span>{ / }
+			</th>
+			<td width="5"></td>
+			<td><span><input type="text" name="user_name" value="{user_name}" size="15" style="width:100%"  {? user_name}readOnly{/} /></span></td>
+		</tr>
+		{ / }
+		{? sns_change == 0}
+		<tr>
+			<th>아이디 /<br />비밀번호</th>
+			<td width="5"></td>
+			<td>아직 등록하지 않았습니다. <span class="btn small"><button type="button" onclick="sns_change_id();">등록</button></span></td>
+		</tr>
+		{ : }
+		<tr>
+			<th>아이디 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td>
+				{userid}
+			</td>
+		</tr>
+		<tr>
+			<th>비밀번호 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td><span><input type="password" name="password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		<tr>
+			<th>비밀번호확인 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td><span><input type="password" name="re_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		{ / }
+	{:}
+		{? joinform.user_name_use=='Y'}
+		<tr>
+			<th>
+				이름 {? joinform.user_name_required=='Y' }<span class="join_required">*</span>{ / }
+			</th>
+			<td width="5"></td>
+			<td><span><input type="text" name="user_name" value="{user_name}" size="15" style="width:100%"  {? user_name}readOnly{/} /></span></td>
+		</tr>
+		{ / }
+
+		<tr>
+			<th>아이디 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td>
+			{? member_seq }
+				{userid}
+			{ : }
+				<span><input type="text" name="userid" id="userid" autocapitalize="off"  value="" size="15" onkeypress="filterKey(event);" style="width:100%; ime-mode:disabled" onpaste="javascript:return false;" /></span>
+				<span id="id_info" class="small" style="padding-top:5px;color:#d13b00;"></span>
+			{ / }
+			</td>
+		</tr>
+		{? member_seq }
+		<tr>
+			<th>기존 비밀번호 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td><span><input type="password" name="old_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		<tr>
+			<th>신규 비밀번호</th>
+			<td width="5"></td>
+			<td><span><input type="password" name="new_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		{ : }
+		<tr>
+			<th>비밀번호 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td><span><input type="password" name="password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		<tr>
+			<th>비밀번호확인 <span class="join_required">*</span></th>
+			<td width="5"></td>
+			<td><span><input type="password" name="re_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+		</tr>
+		{ / }
+
+		{? joinform.nickname_use=='Y' }
+		<tr>
+			<th>닉네임 {? joinform.nickname_required=='Y' }<span class="join_required">*</span>{ / }</th>
+			<td width="5"></td>
+			<td><input type="text" name="nickname" value="{nickname}" maxlength="10" size="20" style="width:100%" /></td>
+		</tr>
+		{ / }
+	{ / }
+
+	{? joinform.birthday_use=='Y' }
+	<tr>
+		<th>생년월일 {? joinform.birthday_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><span><input type="date" name="birthday" value="{birthday}"  maxlength="10" size="15" style="width:100%;" /></span></td>
+	</tr>
+	{ / }
+
+	{? joinform.anniversary_use=='Y' }
+	<tr>
+		<th>기념일 {? joinform.anniversary_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td></td>
+		<td>
+			<select name="anniversary[]">
+				<option value=""></option>
+			<!--{ @ m_arr }-->
+				<option value="{.value_}" {?substr(anniversary,0,2)==.value_ }selected{/}>{.value_}</option>
+			<!--{ / }-->
+			</select>월
+			<select name="anniversary[]">
+				<option value=""></option>
+			<!--{ @ d_arr }-->
+				<option value="{.value_}" {?substr(anniversary,3,2)==.value_ }selected{/}>{.value_}</option>
+			<!--{ / }-->
+			</select>일
+		</td>
+	</tr>
+	{ / }
+
+
+	{? joinform.sex_use=='Y' }
+	<tr>
+		<th>성별 {? joinform.sex_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>
+			<label><input type="radio" name="sex" value="male" {?sex=='male'}checked{/} /> 남자</label>&nbsp; 
+			<label class="ml10"><input type="radio" name="sex" value="female" {?sex=='female'}checked{/} /> 여자</label>
+		</td>
+	</tr>
+	{ / }
+
+	{? joinform.email_use=='Y' }
+	<tr>
+		<th>이메일 {? joinform.email_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>
+			<div class="pdb5">
+				<input type="text" name="email[0]" value="{=str_split_arr(email,'@',0)}" style="width:30%" /> @ <input type="text" name="email[1]" value="{=str_split_arr(email,'@',1)}" style="width:50%" />
+			</div>
+			<div class="pdb5">
+				<select name="find_email" id="find_email">
+					<option value="">직접선택</option>
+					{@ email_arr }
+					<option value="{.codecd}">{.codecd}</option>
+					{ / }
+				</select>
+			</div>
+			<div>
+				<label class="small"><input type="checkbox" name="mailing" value="Y" /> &nbsp; 정보메일을 수신하겠습니다.</label>
+			</div>
+		</td>
+	</tr>
+	{ / }
+
+	{? joinform.phone_use=='Y' }
+	<tr>
+		<th>전화번호 {? joinform.phone_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><span><input type="tel" name="phone[]" value="{=str_split_arr(phone,'-',0)}" size="4" maxlength="4"/></span> - <span><input type="tel" name="phone[]" value="{=str_split_arr(phone,'-',1)}" size="4"  maxlength="4"/></span> - <span><input type="tel" name="phone[]" value="{=str_split_arr(phone,'-',2)}" size="4"  maxlength="4"/></span></td>
+	</tr>
+	{ / }
+
+	{? joinform.cellphone_use=='Y' }
+	<tr>
+		<th>휴대폰번호 {? joinform.cellphone_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>
+			<div class="pdb5">
+			<span><input type="tel" name="cellphone[]" value="{=str_split_arr(cellphone,'-',0)}" size="4"  maxlength="3"/></span> - <span><input type="tel" name="cellphone[]" value="{=str_split_arr(cellphone,'-',1)}" size="4"  maxlength="4"/></span> - <span><input type="tel" name="cellphone[]" value="{=str_split_arr(cellphone,'-',2)}" size="4"  maxlength="4"/></span>
+			<!--{ ? confirmPhone == 'Y' }-->
+			<script>$("input[name='cellphone[]']").attr("disabled",true);</script>
+			&nbsp;<span class="btn small cyanblue"><button type="button" onclick="authphone_popup('cellphone');">휴대폰인증</button></span>
+			<!--{ / }-->
+			</div>
+			<label class="small"><input type="checkbox" name="sms" value="Y" /> &nbsp; SMS를 수신하겠습니다.</label>
+		</td>
+	</tr>
+	{ / }
+
+	{? joinform.address_use=='Y' }
+	<tr>
+		<th>주소 {? joinform.address_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>		
+			<span><input type="tel" name="new_zipcode" value="{new_zipcode}" size="7" readonly/></span> <a href="javascript:openDialogZipcode('member');"><span class="btn_style">주소찾기</span></a><br />
+			<div style="margin-top:3px;"><input type="hidden" name="address_type" value="{address_type}"/><input type="text" name="address" value="{address}" class="address {? address_type == 'street'}hide{/}" style="width:100%;" readonly/> <input type="text" class="address_street {? address_type != 'street'}hide{/}" name="address_street" value="{address_street}" style="width:100%;" readonly/>
+			</div>
+			<span id="address_view" style="display:none; padding-top:5px;"></span>
+			<div style="margin-top:3px;"><input type="text" name="address_detail" value="{address_detail}" size="40" style="width:100%;" /></div>
+			{? member_seq}
+			{? address_type == "street"}
+				<span class="btn small"><button type="button" onclick="view_address('zibun');">지번 주소보기</button></span>
+			{:}
+				{? address_street}
+				<span class="btn small"><button type="button" onclick="view_address('street');">도로명 주소보기</button></span>
+				{/}
+			{/}
+			{/}
+			
+		</td>
+	</tr>
+	{ / }
+
+
+	{? joinform.recommend_use=='Y' }
+		{? member_seq && recommend }
+		<tr>
+			<th>추천인ID {? joinform.recommend_required=='Y' }<span class="join_required">*</span>{ / }</th>
+			<td width="5"></td>
+			<td> {recommend}
+			</td>
+		</tr>
+			{: !member_seq }
+		<tr>
+			<th>추천인ID {? joinform.recommend_required=='Y' }<span class="join_required">*</span>{ / }</th>
+			<td width="5"></td>
+			<td>
+					<span><input type="text" name="recommend" value="{recommend}" /></span>
+					{? emoneyapp.emoneyJoin > 0 || emoneyapp.emoneyJoiner }
+						<br />
+						[회원가입혜택]<br />
+						{? emoneyapp.emoneyJoin > 0 }· 신규회원 -  적립금<font style="color:#c40000">{=number_format(emoneyapp.emoneyJoin)}</font>원 추가지급<br />{/}
+						{? emoneyapp.emoneyJoiner > 0 }· 추천인ID 입력 시 - 적립금<font style="color:#c40000">{=number_format(emoneyapp.emoneyJoiner)}</font>원 추가지급 {/}
+					{/}
+			</td>
+		</tr>
+			{ / }
+	{ / }
+
+
+	{? fb_invite }
+	<tr>
+		<th>초대한ID</th>
+		<td width="5"></td>
+		<td>
+			<span><input type="text" name="fb_invite" value="{fb_invite}" /></span>
+		</td>
+	</tr>
+	{ / }
+
+		
+	{? joinform.user_icon=='Y' }
+	<tr>
+		<th>아이콘</th>
+		<td width="5"></td>
+		<td>
+		<ul >
+			{@ memberIcondata } 
+			<li style="float:left; padding:5px 0 5px 20px;width:40px;" >
+				<div style="margin-top:5px;" ><input type="radio" name="user_icon" value="{=(.index_+1)}" {? user_icon == (.index_+1) } checked="checked" {/} /></div>
+				<br/>
+				<label><img src="/data/icon/member/{.value_}" class="icon_membericon" align="absmiddle" style="vertical-align:middle;" />
+				</label>
+			</li>
+			{/} 
+			{? member_seq}
+			<li style="float:left; padding:5px 0 5px 20px;width:80px;">
+				<div  style="margin-top:5px;margin-bottom:15px;">
+					<input type="radio" name="user_icon" value="99" {? user_icon==99 &&  user_icon_file } checked="checked" {/} style="margin-left:15px;" />
+					<button type="button" class="black_btn" id="membericonUpdate">직접등록</button>
+				</div>
+				<label> 
+					<img src="/data/icon/member/{user_icon_file}" id="membericon_img" align="absmiddle" style="vertical-align:middle;" {? !user_icon_file } class="hide" {/} />
+				</label>
+			</li>
+			{/}
+		</ul>
+		</td>
+	</tr> 
+	{ / }
+
+	{? form_sub}
+		{@ form_sub}
+		{? .used == 'Y' && .join_type=='user' }
+			<tr>
+				<th>{.label_title} {? .required=='Y' }<span class="join_required">*</span><input type="hidden" name="required[]" value="{.joinform_seq}"> { / }</th>
+				<td width="5"></td>
+				<td>
+					{.label_view}
+					{?.label_desc}
+						<div class="pdt10 desc">
+						{.label_desc}
+						</div>
+					{/}
+				</td>
+			</tr>
+		{/}
+		{/}
+	{/}
+	</table>
+{/}
+
+{? mtype=='business' }
+	<table class="join_information" width="100%" border="0" cellpadding="0" cellspacing="0">
+	<colgroup>
+		<col width="80" />
+		<col width="0" />
+		<col />
+	</colgroup>
+	{? rute && rute != 'none'  //SNS전용이 아닌경우에만 출력}
+			{? joinform.user_name_use=='Y' }
+			<!-- <tr>
+				<td class="small">
+					이름 {? joinform.user_name_required=='Y' }<span class="join_required">*</span>{ / }
+				</td>
+				<td width="5"></td>
+				<td><span><input type="text" name="user_name" value="{user_name}" size="15" style="width:100%"  {? user_name}readOnly{/} /></span></td>
+			</tr> -->
+			{ / }
+			{? sns_change == 0 }
+			<tr>
+				<th>아이디 /<br />비밀번호</th>
+				<td width="5"></td>
+				<td>아직 등록하지 않았습니다. <span class="btn small"><button type="button" onclick="sns_change_id();">등록</button></span></td>
+			</tr>
+			{ : }
+			<tr>
+				<th>아이디 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td>
+					{userid}
+				</td>
+			</tr>
+			<tr>
+				<th>비밀번호 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td><span><input type="password" name="password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			<tr>
+				<th>비밀번호확인 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td><span><input type="password" name="re_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			{ / }
+		{:}
+			{? joinform.user_name_use=='Y' }
+			<!-- <tr>
+				<td class="small">
+					이름 {? joinform.user_name_required=='Y' }<span class="join_required">*</span>{ / }
+				</td>
+				<td width="5"></td>
+				<td><span><input type="text" name="user_name" value="{user_name}" size="15" style="width:100%"  {? user_name}readOnly{/} /></span></td>
+			</tr> -->
+			{ / }
+
+			<tr>
+				<th>아이디 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td>
+				{? member_seq }
+					{userid}
+				{ : }
+					<span><input type="text" name="userid" id="userid" value="" size="15" onkeypress="filterKey(event);" style="width:100%; ime-mode:disabled" onpaste="javascript:return false;" /></span>
+					<span id="id_info" class="small" style="padding-top:5px;color:#d13b00;"></span>
+				{ / }
+				</td>
+			</tr>
+			{? member_seq }
+			<tr>
+				<th>기존 비밀번호 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td><span><input type="password" name="old_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			<tr>
+				<th>신규 비밀번호</th>
+				<td width="5"></td>
+				<td><span><input type="password" name="new_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			{ : }
+			<tr>
+				<th>비밀번호 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td><span><input type="password" name="password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			<tr>
+				<th>비밀번호확인 <span class="join_required">*</span></th>
+				<td width="5"></td>
+				<td><span><input type="password" name="re_password" value="" size="15" style="width:100%;ime-mode:disabled;"/></span></td>
+			</tr>
+			{ / }
+	{ / }
+	{? joinform.nickname_use=='Y' }
+	<tr>
+		<th>닉네임 {? joinform.nickname_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="nickname" value="{nickname}" maxlength="10" size="20" style="width:100%" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.bname_use=='Y' }
+	<tr>
+		<th>업체명 {? joinform.bname_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bname" value="{bname}" size="20" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.bceo_use=='Y' }
+	<tr>
+		<th>대표자명 {? joinform.bceo_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bceo" value="{bceo}" size="15" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.bno_use=='Y' }
+	<tr>
+		<th>사업자 등록번호 {? joinform.bno_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="number" name="bno" value="{bno}" size="15" /> ex)123-12-12345</td>
+	</tr>
+	{ / }
+
+	{? joinform.bitem_use=='Y' }
+	<tr>
+		<th>업태 {? joinform.bitem_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bitem" value="{bitem}" size="20" /></td>
+	</tr>
+	<tr>
+		<th>종목 {? joinform.bstatus_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bstatus" value="{bstatus}" size="20" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.badress_use=='Y' }
+	<tr>
+		<th>주소 {? joinform.badress_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="new_bzipcode" value="{bzipcode}" size="7" readonly/>
+		<a href="javascript:openDialogZipcode('business');"><span class="btn_style">주소찾기</span></a>
+		<div style="padding-top:3px">
+			<input type="hidden" name="baddress_type" value="{baddress_type}"/>
+			<input type="text" name="baddress" value="{baddress}" style="width:100%; {? address_type == 'street'}display:none;{/}" readonly/>
+			<input type="text" name="baddress_street" value="{baddress_street}" style="width:100%; {? address_type != 'street'}display:none;{/}" readonly/>
+		</div>
+		<div style="padding-top:3px"><input type="text" name="baddress_detail" value="{baddress_detail}" style="width:100%" /></div>
+	</td>
+	</tr>
+	{ / }
+
+	{? joinform.bperson_use=='Y' }
+	<tr>
+		<th>담당자 명 {? joinform.bperson_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bperson" value="{bperson}" size="15" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.bpart_use=='Y' }
+	<tr>
+		<th>담당자 부서명 {? joinform.bpart_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="text" name="bpart" value="{bpart}" size="20" /></td>
+	</tr>
+	{ / }
+
+	{? joinform.email_use=='Y' }
+	<tr>
+		<th>이메일 {? joinform.email_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>
+			<div class="pdb5">
+				<input type="text" name="email[0]" value="{=str_split_arr(email,'@',0)}" style="width:30%" /> @ <input type="text" name="email[1]" value="{=str_split_arr(email,'@',1)}" style="width:50%" />
+			</div>
+			<div class="pdb5">
+				<select name="find_email" id="find_email">
+					<option value="">직접선택</option>
+					{@ email_arr }
+					<option value="{.codecd}">{.codecd}</option>
+					{ / }
+				</select>
+			</div>
+			<div>
+				<label class="small"><input type="checkbox" name="mailing" value="Y" /> &nbsp; 정보메일을 수신하겠습니다.</label>
+			</div>
+		</td>
+	</tr>
+	{ / }
+
+	{? joinform.bphone_use=='Y' }
+	<tr>
+		<th>전화번호 {? joinform.bphone_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td><input type="tel" name="bphone[]" value="{=str_split_arr(bphone,'-',0)}" size="4" maxlength="4"/> - <input type="tel" name="bphone[]" value="{=str_split_arr(bphone,'-',1)}" size="4" maxlength="4"/> - <input type="tel" name="bphone[]" value="{=str_split_arr(bphone,'-',2)}" size="4" maxlength="4"/></td>
+	</tr>
+	{ / }
+
+	{? joinform.bcellphone_use=='Y' }
+	<tr>
+		<th>휴대폰번호 {? joinform.bcellphone_required=='Y' }<span class="join_required">*</span>{ / }</th>
+		<td width="5"></td>
+		<td>
+			<div class="pdb5">
+			<span><input type="tel" name="bcellphone[]" value="{=str_split_arr(bcellphone,'-',0)}" size="4"  maxlength="3"/></span> - <span><input type="tel" name="bcellphone[]" value="{=str_split_arr(bcellphone,'-',1)}" size="4"  maxlength="4"/></span> - <span><input type="tel" name="bcellphone[]" value="{=str_split_arr(bcellphone,'-',2)}" size="4"  maxlength="4"/></span>
+			<!--{ ? confirmPhone == 'Y' }-->
+			<script>$("input[name='bcellphone[]']").attr("disabled",true);</script>
+			&nbsp;<span class="btn small cyanblue"><button type="button" onclick="authphone_popup('bcellphone');">휴대폰인증</button></span>
+			<!--{ / }-->
+			</div>
+			<label class="small"><input type="checkbox" name="sms" value="Y" /> &nbsp; SMS를 수신하겠습니다.</label>
+		</td>
+	</tr>
+
+	{ / }
+
+	{? joinform.recommend_use=='Y' }
+		{? member_seq && recommend }
+		<tr>
+			<th>추천인ID {? joinform.recommend_required=='Y' }<span class="join_required">*</span>{ / }</th>
+			<td width="5"></td>
+			<td> {recommend}
+			</td>
+		</tr>
+			{: !member_seq }
+		<tr>
+			<th>추천인ID {? joinform.recommend_required=='Y' }<span class="join_required">*</span>{ / }</th>
+			<td width="5"></td>
+			<td>
+					<span><input type="text" name="recommend" value="{recommend}" /></span>
+					{? emoneyapp.emoneyJoin > 0 || emoneyapp.emoneyJoiner }
+						<br />
+						[회원가입혜택]<br />
+						{? emoneyapp.emoneyJoin > 0 }· 신규회원 -  적립금<font style="color:#c40000">{=number_format(emoneyapp.emoneyJoin)}</font>원 추가지급<br />{/}
+						{? emoneyapp.emoneyJoiner > 0 }· 추천인ID 입력 시 - 적립금<font style="color:#c40000">{=number_format(emoneyapp.emoneyJoiner)}</font>원 추가지급 {/}
+					{/}
+			</td>
+		</tr>
+			{ / }
+	{ / }
+
+
+	{? fb_invite }
+	<tr>
+		<th>초대한ID</th>
+		<td width="5"></td>
+		<td>
+			<span><input type="text" name="fb_invite" value="{fb_invite}" /></span>
+		</td>
+	</tr>
+	{ / }
+	
+
+		
+	{? joinform.user_icon=='Y' }
+	<tr>
+		<th>아이콘</th>
+		<td width="5"></td>
+		<td>
+		<ul >
+			{@ memberIcondata } 
+			<li style="float:left; padding:5px 0 5px 20px;width:40px;" >
+				<div style="margin-top:5px;" ><input type="radio" name="user_icon" value="{=(.index_+1)}" {? user_icon == (.index_+1) } checked="checked" {/} /></div>
+				<br/>
+				<label><img src="/data/icon/member/{.value_}" class="icon_membericon" align="absmiddle" style="vertical-align:middle;" />
+				</label>
+			</li>
+			{/} 
+			{? member_seq}
+			<li style="float:left; padding:5px 0 5px 20px;width:80px;">
+				<div  style="margin-top:5px;margin-bottom:15px;">
+					<input type="radio" name="user_icon" value="99" {? user_icon==99 &&  user_icon_file } checked="checked" {/} style="margin-left:15px;" />
+					<button type="button" class="black_btn" id="membericonUpdate">직접등록</button>
+				</div>
+				<label> 
+					<img src="/data/icon/member/{user_icon_file}" id="membericon_img" align="absmiddle" style="vertical-align:middle;" {? !user_icon_file } class="hide" {/} />
+				</label>
+			</li>
+			{/}
+		</ul>
+		</td>
+	</tr> 
+	{ / }
+
+{? form_sub}
+	{@ form_sub}
+	{? .used == 'Y' && .join_type=='order'}
+	<tr>
+	<th>{.label_title} {? .required=='Y' }<span class="join_required">*</span><input type="hidden" name="required[]" value="{.joinform_seq}"><input type="hidden" name="required_title[]" value="{.label_title}"> { / }</th>
+	<td width="5"></td>
+	<td>
+		{.label_view}
+		{?.label_desc}
+			<div class="pdt10 desc">
+			{.label_desc}
+			</div>
+		{/}
+	</td>
+	</tr>
+	{/}
+	{/}
+{/}
+
+</table>
+
+
+{ / }

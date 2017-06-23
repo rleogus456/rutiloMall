@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>거래명세서</title>
+</head>
+<body scroll="auto" style="overflow-x:hidden">
+<div class="ly-estimate">
+	<h2>거래 명세서</h2>
+	<div class="info">
+		<div class="cell">
+			<h3>결제정보</h3>
+			<table>
+				<tr><th>상품 금액</th>			<td><!--{=number_format(items_tot.price)}-->원</td></tr>
+				<tr><th>배송비</th>				<td><!--{=number_format(items_tot.goods_shipping_cost + orders.shipping_cost)}-->원</td></tr>
+				<tr><th>할인</th>				<td><!--{=number_format(items_tot.member_sale+items_tot.mobile_sale+items_tot.fblike_sale+items_tot.coupon_sale+items_tot.promotion_code_sale+items_tot.referer_sale+orders.coupon_sale+orders.shipping_promotion_code_sale+orders.enuri)}-->원</td></tr>
+				<tr><th>사용적립금/이머니</th>	<td><!--{=number_format(orders.cash + orders.emoney)}-->원</td></tr>
+				<tr><th>결제금액</th>			<td><!--{=number_format(orders.settleprice)}-->원</td></tr>
+				<tr><th>결제수단</th>			<td><!--{=orders.mpayment}--></td></tr>
+				<tr><th>결제일</th>				<td><!--{? orders.deposit_date}--><!--{=orders.deposit_date}--><!--{:}-->미결제<!--{/}--></td></tr>
+			</table>
+		</div>
+		<div class="cell">
+			<h3>공급하는 자</h3>
+			<table>
+				<tr><th>사업자 번호</th><td><!--{=businessLicense}--></td></tr>
+				<tr><th>상호</th><td><!--{=companyName}--></td></tr>
+				<tr><th>대표자명</th><td><!--{=ceo}--></td></tr>
+				<tr><th>주소</th><td><!--{=companyAddress}--></td></tr>
+				<tr><th>전화번호</th><td><!--{=companyPhone}--></td></tr>
+				<tr><th>홈페이지주소</th><td><!--{? domain}-->{=domain}{:}-{/}</td></tr>
+			</table>
+		</div>
+		<div class="sign-area">
+			<!--{?signatureicon}-->
+				<img class="sign" src="<!--{=signatureicon}-->" />
+			<!--{/}-->
+		</div>
+	</div>
+	<div class="clear">
+		<!--{? user_name}-->
+			<!--{=user_name}-->님, 아래와 같이 계산합니다.<br/>
+		<!--{/}-->
+		주문번호 : <!--{=orders.order_seq}-->
+	</div>
+	<div class="goods-info">
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<thead>
+				<colgroup>
+					<col width="52%"/>
+					<col width="12%"/>
+					<col width="12%"/>
+					<col width="12%"/>
+					<col width="12%"/>
+				</colgroup>
+				<tr>
+					<th>품명</th>
+					<th>수량</th>
+					<th>상품금액합계</th>
+					<th>배송비</th>
+					<th>할인</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!--{ @ Ritems }-->
+				<!--{ @ .value_ }-->
+				<!--{ @ ..options }-->
+					<!--{?..goods_type == 'gift'}-->
+				<tr class="order-item-row" bgcolor="#f6f6f6">
+					<!--{:}-->
+				<tr class="order-item-row">
+					<!--{/}-->
+					<td class="info">
+						{..goods_name}
+						<!--{?...option1!=null}-->
+						<div class="goods_option">
+							<!--{?...title1}-->{...title1}:<!--{ / }-->{...option1}
+							<!--{?...option2!=null }{?...title2}-->{...title2}:<!--{ / }-->{...option2}<!--{ / }-->
+							<!--{?...option3!=null }{?...title3}-->{...title3}:<!--{ / }-->{...option3}<!--{ / }-->
+							<!--{?...option4!=null }{?...title4}-->{...title4}:<!--{ / }-->{...option4}<!--{ / }-->
+							<!--{?...option5!=null }{?...title5}-->{...title5}:<!--{ / }-->{...option5}<!--{ / }-->
+						</div>
+						<!--{ / }-->
+						<!--{ ? ...inputs }-->
+							<!--{ @ ...inputs }-->
+								<!--{ ? ....value }-->
+								<div class="goods_input">
+									<!--{?....title}--><!--{....title}-->:<!--{ / }-->
+									<!--{....value}-->
+								</div>
+								<!--{ / }-->
+							<!--{ / }-->
+						<!--{ / }-->
+					</td>
+					<td class="price info">{=number_format(...ea)}</td>
+					<td class="price info">{=number_format(...price)}원</td>
+					<!--{ ? ..index_ == 0 && ...index_ == 0 }-->
+					<td class="price info" rowspan="{..shipping_row_cnt}">
+						<!--{ ? .key_ == 'coupon' }-->
+							-
+						<!--{ : .key_ == 'gift' }-->
+							-
+						<!--{ : }-->
+							<!--{ ? .key_ == 'shop' && ..shippings['basic_cost'] > 0 }-->
+								<!--{=number_format(..shippings['basic_cost'])}-->원
+							<!--{ : preg_match('/^goods/', .key_) && ..shippings['goods_cost'] > 0 }-->
+								<!--{=number_format(..shippings['goods_cost'])}-->원 
+							<!--{ : orders.shipping_method == 'delivery' }-->0원<!--{ / }-->
+
+							<!--{ ? .key_ == 'shop' && ..shippings['basic_add_cost'] > 0 }-->
+								<!--{=number_format(..shippings['basic_add_cost'])}-->원
+							<!--{ : preg_match('/^goods/', .key_) && ..shippings['goods_add_cost'] > 0 }-->
+								<!--{=number_format(..shippings['goods_add_cost'])}-->원
+							<!--{ / }-->
+						<!--{ / }-->
+					</td>
+					<!--{ / }-->
+					<td class="price info">{=number_format(...out_coupon_sale + ...out_member_sale + ...out_fblike_sale + ...out_mobile_sale + ...out_promotion_code_sale + ...out_referer_sale )}원</td>
+				</tr>
+
+				<!--{ @ ...suboptions }-->
+				<tr class="order-item-row">
+					<td class="info suboption" align="left">
+					<!--{ ? ....suboption }-->
+						{?....title}{....title}:{/}{....suboption}
+					<!--{ / }-->
+					</td>
+					<td class="price info suboption">{....ea}</td>
+					<td class="price info suboption">{=number_format(....out_price)}원</td>
+					<td class="price info suboption">{=number_format(....out_coupon_sale + ....out_member_sale + ....out_fblike_sale + ....out_mobile_sale + ....out_promotion_code_sale + ....out_referer_sale )}원</td>
+				</tr>
+				<!--{ / }-->
+				<!--{ / }-->
+				<!--{ / }-->
+				<!--{ / }-->
+				<tr style="background-color:#eee;">
+					<td>합계</td>
+					<td><!--{=number_format(orders.total_ea)}--></td>
+					<td><!--{=number_format(items_tot.price)}-->원</td>
+					<td><!--{=number_format(items_tot.goods_shipping_cost + orders.shipping_cost)}-->원</td>
+					<td><!--{=number_format(items_tot.member_sale+items_tot.coupon_sale+items_tot.fblike_sale+items_tot.mobile_sale+items_tot.promotion_code_sale+items_tot.referer_sale)}-->원</td>
+				</tr>		
+				<tr style="background-color:#eee;">
+					<td colspan="2">결제금액</td>
+					<td colspan="3"><!--{=number_format(orders.settleprice)}-->원</td>
+				</tr>
+				<!--{? code != 'cart' && (orders.cash + orders.emoney) > 0}-->
+				<tr style="background-color:#eee;">
+					<td colspan="4">사용 적립금/이머니</td>
+					<td><!--{=number_format(orders.cash + orders.emoney)}-->원</td>
+				</tr>
+				<!--{/}-->
+			</tbody>
+		</table>
+
+		<div class="tot_cont">
+			<div>
+				<strong>공급가액</strong> : <!--{=number_format(provider_price)}-->원 &nbsp;&nbsp;&nbsp;
+				<strong>부가세액</strong> : <!--{=number_format(tax_price)}-->원 &nbsp;&nbsp;&nbsp;
+				<span class="tot_price"><strong>합계</strong>: <!--{=number_format(orders.settleprice)}-->원</span>&nbsp;&nbsp;
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	html, body { margin: 0px; padding: 0px; font-family:'나눔고딕','나눔바른고딕','돋움',Dotum,tahoma,AppleGothic,sans-serif; }
+	.ly-estimate { position: relative; font-size: 9pt; page-break-after: always; font-weight: normal; }
+	.ly-estimate h2 { margin: 0px; text-align: center; font-size: 28px; }
+	
+	.ly-estimate .info .cell { padding: 1%; width: 48%; float: left; }
+	.ly-estimate .info .cell h3 { font-size: 11pt; font-weight: normal; }
+	.ly-estimate .info .cell table { width: 100%; border-collapse: collapse; }
+	.ly-estimate .info .cell tr { line-height: 20px; }
+	.ly-estimate .info .cell th { text-align: left; width: 30%; border: 1px solid gray; font-weight: normal; height:25px;padding-left:15px;background-color:#eee;}
+	.ly-estimate .info .cell td { text-align: right; border: 1px solid gray;padding-right:15px; height:25px;  }
+	.ly-estimate .info .sign-area { position: absolute; top: 61px; right: 5px; float: left; padding-top: 75px}
+
+	.ly-estimate .goods-info { margin: 0px; padding: 0px; width:100%; }
+	.ly-estimate .goods-info table { width:98%; border-collapse: collapse; margin:auto;padding: 0px;  } 
+	.ly-estimate .goods-info table tr > * { line-height: 30px; }
+	.ly-estimate .goods-info table th {border: 1px solid gray; background-color:#eee;}
+	.ly-estimate .goods-info table td { padding: 5px; text-align: right; border: 1px solid gray;}
+	.ly-estimate .goods-info table td:first-child { text-align: left;}
+	.ly-estimate .goods-info table td p { padding-left: 10px; font-size: 8pt; color: gray;}
+	.ly-estimate .goods-info table td .addopt { display: inline-block; background: #000; color: #dadada; font-size: 8pt; padding: 0px 4px; line-height: 16px; border-radius: 7px; }
+	
+	.tot_cont { border:3px solid #000; text-align:right;width:98%;margin:10px auto; }
+	.tot_cont div {padding:20px; }
+	.tot_price { font-size:20px; }
+	.sign  { width: 50px; }
+	.clear { clear: both; margin: 15px; }	
+</style>
+<script type="text/javascript">
+	window.print();
+</script>
+</body>
+</html>

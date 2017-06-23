@@ -1,0 +1,46 @@
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/swfobject.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/jquery.uploadify.v2.1.4.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('button#addCart').bind('click', function(){
+		$("form[name='goodsForm']").submit();
+	});
+});
+</script>
+
+<form name="goodsForm" method="post" action="/order/add" enctype="multipart/form-data" target="actionFrame">
+<input type="hidden" name="goodsSeq" value="{goods.goods_seq}" />
+
+<div style="padding:15px; height:450px; overflow:auto;">
+	<div>
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td width="60"><a href="/goods/view?no={goods.goods_seq}" target="_blank"><img src="{goods.image}" width="60" onerror="this.src='../images/common/noimage.gif'" /></a></td>
+			<td valign="top" style="padding:10px 0 0 10px;">{goods.goods_name}</td>
+		</tr>
+		</table>
+	</div>
+
+	{ # OPTION_SELECT }
+
+</div>
+
+<div style="position:absolute;left:0px;bottom:0px;width:100%">
+	<table width="100%" style="background-color:#ececec" cellpadding="0" cellspacing="12" border="0">
+	<tr>
+		<td style="padding-left:10px;" class="fx12">
+			<strong>총 상품금액 : </strong>
+		<!--{ ? (goods.price > goods.sale_price) || (goods.consumer_price > goods.sale_price && goods.event.target_sale == 1 ) }-->
+			<span id="total_goods_price">{? goods.sale_price > 0 }{=number_format(goods.sale_price)}{:}0{/}</span>
+		<!--{ : }-->
+			<span id="total_goods_price">{=number_format(goods.price)}</span>
+		<!--{ / }-->
+			<strong class="fx13" style="color:#ff0000">원</strong>
+		</td>
+		<td align='right'><button class="black_btn large" id="addCart" type="button">장바구니담기</button></td>
+	</tr>
+	</table>
+</div>
+</form>

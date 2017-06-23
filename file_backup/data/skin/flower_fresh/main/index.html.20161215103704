@@ -1,0 +1,102 @@
+<!-- contents-->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+ <tr>
+ <td>
+   
+   <!--비쥬얼 및 배너-->
+   <table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" >
+     <tr>	
+         <td>{=showDesignBanner(1)}</td>    
+         <td style="padding-left:10px">
+       <table cellpadding="0" cellspacing="0" border="0" height="361" style="margin-top:12px">
+     <tr>
+       <td>{=showDesignBanner(3)}</td> 
+     </tr>
+     <tr>        
+        <td valign="top">
+                    
+        <!-- 공지사항-->
+          <table cellpadding="0" cellspacing="0" border="0" width="258px" height="164px" bgcolor="#ffffff">
+            <tr>
+        	  <td height="20px"></td>
+            </tr>
+            <tr>
+        	  <td style="padding-left:5px; padding-right:5px"  valign="top">{=showDesignLastest('notice','공지사항','3','20','showTitle')}</td>
+            </tr>
+           </table>
+        <!-- //공지사항-->
+            
+           </td>
+           </tr>
+           </table>
+       </td>
+      </tr>
+    </table>
+     
+        <!-- tab-->
+     
+          <div style="margin-top:10px"><img src="../images/design/tab1.gif" title="" alt="" /><img src="../images/design/tab2.gif" title="" alt="" /><img src="../images/design/tab3.gif" title="" alt="" /><img src="../images/design/tab4.gif" title="" alt="" /><img src="../images/design/tab5.gif" title="" alt="" /></div>
+
+     <!-- tab--> 
+     
+     
+        <!-- 비쥬얼-->
+     
+        <table width="{layout_config.width}" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top:20px">
+         <tr>
+            <td><img src="../images/design/cs_banner.gif" title="" alt="" /></td>
+            <td style="padding-left:8px">{=showDesignBanner(2)}</td>
+         </tr>
+        </table>
+     
+        <!-- 비쥬얼-->
+     
+     
+   <!--비쥬얼 및 배너-->
+     
+     
+     
+     
+     
+     
+   <!-- 리스트-->
+   <table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" style="margin-top:30px">
+
+    <tr>
+     <td><img src="../images/design/tit_main_bestitem.gif" title="" alt="" /></td>
+    </tr>
+    
+    <tr>
+     <td height="10px"></td>
+    </tr>
+    
+    <tr>
+     <td>{=showDesignDisplay(1)}</td>
+    </tr>
+       
+    </table>
+     
+   <!-- //리스트-->  
+   
+   <!-- 리스트-->
+   <table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center" style="margin-top:20px">
+
+    <tr>
+     <td><img src="../images/design/tit_main_newarrival.gif" title="" alt="" /></td>
+    </tr>
+    
+    <tr>
+     <td height="10px"></td>
+    </tr>
+    <!--
+    <tr>
+     <td>{=showDesignDisplay(2)}</td>
+    </tr>
+-->       
+   </table>
+     
+   <!-- //리스트--> 
+     
+     </td>    
+    </tr>
+</table>

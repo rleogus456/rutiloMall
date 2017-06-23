@@ -1,0 +1,51 @@
+<!-- footer-->
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:20px">
+<tr>
+	<td height="34px" bgcolor="#393939">
+    <table width="320px" cellpadding="0" cellspacing="0" border="0" align="center" >
+    <tr>
+    	
+        <td><a href="/service/company" target='_self'><img src="../images/design/footer_company.gif" title="" alt="" /></a></td>
+        <td ><img src="../images/design/footer_bar.gif" title="" alt=""></td>
+        <td><a href="/service/guide" target='_self'><img src="../images/design/footer_guide.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/footer_bar.gif" title="" alt=""></td>
+        <td><a href="/service/agreement" target='_self'><img src="../images/design/footer_clause.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/footer_bar.gif" title="" alt=""></td>
+        <td><a href="/service/privacy" target='_self'><img src="../images/design/footer_policy.gif" title="" alt="" /></a></td>
+    </tr>
+    </table>
+    </td>
+</tr>
+
+<tr>
+    <td>
+    <table width="930px" cellpadding="0" cellspacing="0" border="0" align="center" style="margin-top:10px;" >
+    <tr>
+    	<td align="center"  style="line-height:1.5em;">
+        <!-- 이미지로 카피라이트를 이용하실 분들은 주석을 해제하여 사용하여 주십시요  -->
+		<!-- <img src="../images/design/footer_txt.gif" /><br />-->		
+		회사명 : {config_basic.companyName}
+		<font color="cccccc"><b> | </b></font>사업자등록번호 : {config_basic.businessLicense} {=confirmLicenseLink("[사업자정보확인]")}
+		<font color="cccccc"><b> | </b></font>주소 : {config_basic.companyAddress} {config_basic.companyAddressDetail}<br />
+		통신판매업 신고 : {config_basic.mailsellingLicense}
+		<font color="cccccc"><b> | </b></font>연락처 : {config_basic.companyPhone}
+		<!--{ ? config_basic.companyFax }-->
+		<font color="cccccc"><b> | </b></font>FAX : {config_basic.companyFax}
+		<!--{ / }-->
+		<font color="cccccc"><b> | </b></font>개인정보보호 책임자 : {config_basic.member_info_manager}
+		<font color="cccccc"><b> | </b></font>대표자 : {config_basic.ceo}<br />
+		contact : <font color="990000"><b>{config_basic.companyEmail}</b></font> for more information
+		
+		<!--구매안전표기 -->	
+		<div style="position:relative"><div style="position:absolute;top:-55px;left:79%;">{=escrow_mark(100)}</div></div>	
+        </td>
+    </tr>
+    <tr>
+    	<td height="50px"></td>
+    </tr>
+    </table>
+    </td>
+</tr>
+
+</table>
+<!-- /footer-->

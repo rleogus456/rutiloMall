@@ -1,0 +1,152 @@
+<style type="text/css">
+.s1-bd	{ border:1px solid #e5e7e6; }
+.s1-bdt	{ border-top:1px solid #e5e7e6; }
+.s1-bdb	{ border-bottom:1px solid #e5e7e6; }
+.s1-bdr	{ border-right:1px solid #e5e7e6; }
+.s1-bdl	{ border-left:1px solid #e5e7e6; }
+.s2-bd	{ border:1px solid #aaaaaa; }
+.s2-bdt	{ border-top:1px solid #aaaaaa; }
+.s2-bdb	{ border-bottom:1px solid #aaaaaa; }
+.s2-bdr	{ border-right:1px solid #aaaaaa; }
+.s2-bdl	{ border-left:1px solid #aaaaaa; }
+
+.s3-bdt	{ border-top:1px dashed #aaaaaa; }
+.s3-bdb	{ border-bottom:1px dashed #aaaaaa; }
+.s3-bdr	{ border-right:1px dashed #aaaaaa; }
+.s3-bdl	{ border-left:1px dashed #aaaaaa; }
+
+.nbdt	{ border-top:none; }
+.nbdb	{ border-bottom:none; }
+.nbdr	{ border-right:none; }
+.nbdl	{ border-left:none; }
+
+/* 리스트 테이블 */
+.order_list_table .exp-title {background-color:#EFEFEF;padding:5px 0;font-size:13px;color:#515151;text-align:center;border-top:1px solid #E1E1E1; border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1; font-weight:none; height:25px;}
+.order_list_table .lpd { border-left: 1px solid #E1E1E1; }
+.order_list_table .exp-content {background-color:#fff;padding:10px 0; border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1; }
+.order_list_table .exp-content div {margin:5px 0;}
+.order_list_table .exp-desc	{color:#777777;}
+.order_list_table .coupon-step-msg { font-size:14px;color:#0050d2;}
+
+/* 상품 이미지 */
+span.order-item-image img {border:1px solid #ccc; width:30px; height:30px; vertical-align:middle;}
+
+.btn-coupon-history {width:100%;height:32px;border-radius:3px;border:1px solid #c0c0c0;background: linear-gradient(180deg, #f9f9f9 50%, #eaeaea 100%);font-size:16px;color:#3f63bf;font-weight:bold;padding-bottom:4px;cursor:pointer;}
+
+/* 쿠폰사용 버튼 */
+.btn-coupon-use {width:100%;height:32px;border-radius:3px;border:1px solid #2346a1;background: linear-gradient(180deg, #5f7cc9 50%, #4063bf 100%);font-size:16px;color:#f9f9f9;font-weight:bold;padding-bottom:4px;cursor:pointer;}
+.btn-coupon-use-disable {width:100%;height:32px;border-radius:3px;border:1px solid #c0c0c0;background: linear-gradient(180deg, #f9f9f9 50%, #eaeaea 100%);font-size:16px;color:#aaaaaa;font-weight:bold;padding-bottom:4px;cursor:pointer;}
+.btn-blue-use {width:100%;height:32px;border-radius:3px;border:1px solid #2346a1;background: linear-gradient(180deg, #5f7cc9 50%, #4063bf 100%);font-size:16px;color:#f9f9f9;font-weight:bold;padding-bottom:4px;cursor:pointer;}
+
+</style>
+<script type="text/javascript">
+// 쿠폰 사용내역 조회
+function coupon_history(exportCode,serial){
+	$("#coupon_use_lay").html('');
+	$.ajax({
+		type: "get",
+		url: "./coupon_view?code="+exportCode+"&scode="+serial+"&popup=1",
+		data: "code="+exportCode,
+		success: function(result){
+			if	(result.search(/error\:/) != -1){
+				openDialogAlert(result.replace('error:', ''), 400, 150);
+			}else{
+				$("#coupon_use_lay").html(result);
+				openDialog('티켓 사용내역 - <span class="desc" style="color:#0083a9" >'+serial+'</span>', "#coupon_use_lay", {"width":"500","height":"550"});
+			}
+		}
+	});
+}
+// 쿠폰 사용하기
+function coupon_use(exportCode,serial){
+	window.open("./coupon_use?code="+exportCode+"&scode="+serial+"&popup=1",'coupon_use', 'width=500, height=600, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=yes, scrollbar=yes');
+}
+
+function goods_review_write(goodsseq,order_seq){
+	if(goodsseq){
+		{ ? defined('__ISUSER__') }
+			window.open( '/mypage/mygdreview_write?goods_seq='+goodsseq+'&order_seq='+order_seq);
+		{:}
+			window.open('/board/write?id=goods_review&goods_seq='+goodsseq+'&order_seq='+order_seq);
+		{/} 
+	}
+}
+</script>
+
+<div class="bg_gray" style="padding:5px 10px; margin-bottom:15px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+	<colgroup>
+		<col />
+		<col />
+	</colgroup>
+	<thead>
+	<tr>
+		<th style="35%" class="exp-title lpd">상품</th>
+		<th style="15%" class="exp-title">발송수량</th>
+		<th style="10%" class="exp-title">주문수량</th>
+		<th style="10%" class="exp-title">상품후기</th>
+		<th style="30%" class="exp-title">발송정보</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{ @ export }-->
+	<tr>
+		<td class="exp-content lpd pdl10">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%" class="goods_info" >
+			<tr>
+				<td width="40px">
+					<span class="order-item-image"><img class="small_goods_image" src="{.items[0].image}" /></span>
+				</td>
+				<td>
+					<span>{ .items[0].goods_name }</span>
+					<div>{ .items[0].social_start_date } ~ { .items[0].social_end_date }</div>
+					<div>
+					<!--{?.items[0].title1}-->
+					<img src="../images/common/icon_option.gif" />
+					{.items[0].title1}:{.items[0].option1}
+					<!--{ / }-->
+					<!--{?.items[0].option2 }{?.items[0].title2}--> / {.items[0].title2}:<!--{ / }-->{.items[0].option2}<!--{ / }-->
+					<!--{?.items[0].option3 }{?.items[0].title3}--> / {.items[0].title3}:<!--{ / }-->{.items[0].option3}<!--{ / }-->
+					<!--{?.items[0].option4 }{?.items[0].title4}--> / {.items[0].title4}:<!--{ / }-->{.items[0].option4}<!--{ / }-->
+					<!--{?.items[0].option5 }{?.items[0].title5}--> / {.items[0].title5}:<!--{ / }-->{.items[0].option5}<!--{ / }-->
+					</div>
+				</td>
+			</tr>
+			</table>
+		</td>
+		<td class="exp-content" style="text-align:center;">
+			{.ea}
+			<div>({=number_format(.coupon_use_value)}{?.items[0].coupon_value_type=='pass'}회{:}원{/}/{=number_format(.coupon_input)}{?.items[0].coupon_value_type=='pass'}회{:}원{/})</div>
+		</td>
+		<td class="exp-content" style="text-align:center;">
+			{.items[0].opt_ea}
+		</td>
+		<td class="exp-content" style="text-align:center;">
+			<button class="black_btn" onclick="goods_review_write('{.items[0].goods_seq}','{.order_seq}');">상품후기</button>
+		</td>
+		<td class="exp-content pdl10">
+			<div>
+				<!--{ ? .provider_name }-->
+				<span class="exp-desc">[{ .provider_name }]</span>
+				<!--{ / }-->
+				{ .export_date } 발송
+			</div>
+			<div>
+				{ .mstatus_arr[0] } (<span class="coupon-step-msg">{ .mstatus_arr[1] }</span>)
+			</div>
+			<div>{ .items[0].recipient_cellphone } / { .items[0].recipient_email }</div>
+			<div>
+				<button class="black_btn" onclick="coupon_history('{.export_code}','{.items[0].coupon_serial}');">사용내역</button>
+				<!--{ ? .coupon_check_use['result'] == 'success' }-->
+				<button class="black_btn" onclick="coupon_use('{.export_code}','{.items[0].coupon_serial}');">티켓사용</button>
+				<!--{ : }-->
+				<button class="gray_btn" >티켓사용</button>
+				<!--{ / }-->
+			</div>
+		</td>
+	</tr>
+	<!--{ / }-->
+	</tbody>
+	</table>
+</div>
+<div id="coupon_use_lay"></div>

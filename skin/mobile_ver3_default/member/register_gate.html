@@ -1,0 +1,39 @@
+<style>
+.tdh { border-top:2px solid #D2D2D2; border-bottom:2px solid #D2D2D2; line-height:50px; }
+#layout_body {background-color:#f5f7f6;}
+.myinfo_table {border-collapse:collapse; border-bottom:1px solid #d7d7d7}
+.myinfo_table>tbody>tr>th {min-height:20px; padding:8px 10px; text-align:left;}
+.myinfo_table>tbody>tr>th {border-top:2px solid #d7d7d7; background-color:#f5f7f6; font-weight:normal;}
+.myinfo_table>tbody>tr:first-child>th {border-top:none;}
+</style>
+
+{?!mobileAjaxCall}
+	{#common_mypage_myinfo_top}
+{/}
+
+<form name="registFrm" id="registFrm" target="actionFrame" method="post" action="{=sslAction('../member_process/myinfo_pwchk')}">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td height="50" colspan="2"></td></tr>
+<tr>
+	<td class="desc">회원님의 정보 보호를 위해 비밀번호 재확인 후 회원정보를 수정할 수 있습니다.</td>
+</tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" width="100%">
+<tr>
+	<td class="tdh">비밀번호 확인</td>
+	<td class="tdh"><input type="password" name="pwchk" value="" style="width:80%;" /></td>
+</tr>
+<tr>
+	<td colspan="2" style="height:100px; text-align:center;">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><button type="button" class="btn_cancel_large" style="width:100%" onclick="javascript:history.back(-1);">취소</button></td>
+			<td width="4"></td>
+			<td width="50%"><input type="submit" value="확인" class="btn_important_large" style="width:100%" /></td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</form>

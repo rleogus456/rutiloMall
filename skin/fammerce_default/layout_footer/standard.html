@@ -1,0 +1,100 @@
+<!-- 하단영역 : 시작 -->
+<div id="layout_footer" {?preg_match('/goods\/view/',_SERVER.REQUEST_URI)}style="border-bottom:1px solid #cccccc;"{/}>
+	<h2 class="hide">하단 메뉴</h2>
+	<ul class="fnav fcp">
+		<li><a href="/service/company">회사소개</a></li>
+		<li><span>|</span><a href="/service/agreement">이용약관</a></li>
+		<li><span>|</span><a href="/service/privacy">개인정보처리방침</a></li>
+		<li><span>|</span><a href="/service/guide">이용안내</a></li>
+		<li><span>|</span><a href="/service/partnership">제휴안내</a></li>
+	</ul>
+	<h2 class="hide">하단 간략 메뉴</h2>
+	<ul class="fnb">
+		<!--{? userInfo.member_seq }-->
+		<li>{? userInfo.snsfacebookcon && fbuser }<a href="javascript:void(0);" onclick="FB.logout(function(response) {logout();});return false; "><span class="btn_style">로그아웃</span></a>{:}<a href="../login_process/logout" target= "actionFrame"><span class="btn_style">로그아웃</span></a>{/}</li>
+		<!--{:}-->
+		<li><a href="../member/login"><span class="btn_style">로그인</span></a></li>
+		<!--{/}-->
+		<li><a href="../service/cs"><span class="btn_style">고객센터</span></a></li>
+		<li><a href="../common/mobile_mode_off"><span class="btn_style">PC버전</span></a></li>
+	</ul>
+	<h2 class="hide">쇼핑몰 정보</h2>
+	<ul class="fcp">
+		<li><!--span class="hide"-->회사명 : <!--/span--><b>{config_basic.companyName}</b></li>
+		<li>대표 : {config_basic.ceo}</li>
+		<li>고객센터 : <a href="tel:{config_basic.companyPhone}">{config_basic.companyPhone}</a></li>
+		<li>사업자등록번호 : {config_basic.businessLicense}{=confirmLicenseLink("[사업자정보확인]")}</li>
+		<li>주소 : {? config_basic.companyAddress_type == "street"}{config_basic.companyAddress_street}{:}{config_basic.companyAddress}{/} {config_basic.companyAddressDetail}</li>
+		<li>통신판매업 신고 : {config_basic.mailsellingLicense}</li>
+		<li>contact : <b>{config_basic.companyEmail}</b> for more information</li>
+	</ul>
+</div>
+<!--{?preg_match('/goods\/view/',_SERVER.REQUEST_URI)}-->
+	<!--{? navercheckout_tpl }-->
+<div style="height:117px;">&nbsp;</div>
+	<!--{ / }-->
+<div style="height:80px;">&nbsp;</div>
+<!--{ / }-->
+<!-- 하단영역 : 끝 -->
+
+<!-- 플로팅 - BACK/TOP(대쉬보드) -->
+<div id="floating_over" style="display:none;">
+	<!--{? preg_match('/goods\/catalog/',_SERVER.REQUEST_URI) || preg_match('/goods\/view/',_SERVER.REQUEST_URI) || preg_match('/goods\/brand/',_SERVER.REQUEST_URI) || preg_match('/goods\/location/',_SERVER.REQUEST_URI) || preg_match('/goods\/search/',_SERVER.REQUEST_URI) || preg_match('/bigdata\/catalog/',_SERVER.REQUEST_URI) }--><a href="javascript:history.back();" class="ico_floating_back cover">뒤로 가기</a><!--{ / }-->
+	<!--{? preg_match('/main\/index/',_SERVER.REQUEST_URI) || preg_match('/goods\/view/',_SERVER.REQUEST_URI) || preg_match('/goods\/catalog/',_SERVER.REQUEST_URI) || preg_match('/goods\/brand/',_SERVER.REQUEST_URI) || preg_match('/goods\/location/',_SERVER.REQUEST_URI) || preg_match('/goods\/search/',_SERVER.REQUEST_URI) || preg_match('/bigdata\/catalog/',_SERVER.REQUEST_URI) }--><a href="#layout_header" class="ico_floating_top cover">위로 가기</a><!--{ / }-->
+
+	<!--{? (preg_match('/main\/index/',_SERVER.REQUEST_URI) || preg_match('/goods\/catalog/',_SERVER.REQUEST_URI) || preg_match('/goods\/brand/',_SERVER.REQUEST_URI) || preg_match('/goods\/location/',_SERVER.REQUEST_URI) || preg_match('/goods\/search/',_SERVER.REQUEST_URI) || preg_match('/bigdata\/catalog/',_SERVER.REQUEST_URI)) && dataRightQuicklist && !preg_match('/goods\/view/',_SERVER.REQUEST_URI) }-->
+	{? push_count_today_images}<a href="javascript:;" class="ico_floating_recently"><img src="{push_count_today_images}" onerror="this.src='../images/common/noimage.gif'"></a>{/}
+	<!--{ / }-->
+
+	<!--{? preg_match('/goods\/view/',_SERVER.REQUEST_URI) }-->
+	<a href="/goods/view_contents?no={goods.goods_seq}&zoom=1" class="ico_floating_zoom cover">원본보기</a>
+	<!--{ / }-->
+
+	<!-- 최근 본 상품(LAYER) -->
+	<!--{ ? (preg_match('/main\/index/',_SERVER.REQUEST_URI) || preg_match('/goods\/catalog/',_SERVER.REQUEST_URI) || preg_match('/goods\/brand/',_SERVER.REQUEST_URI) || preg_match('/goods\/location/',_SERVER.REQUEST_URI) || preg_match('/goods\/search/',_SERVER.REQUEST_URI) || preg_match('/bigdata\/catalog/',_SERVER.REQUEST_URI)) && dataRightQuicklist }-->
+	<div id="recently_popup">
+		<div class="recently_popup">
+			<h1>최근 본 상품</h1>
+			<div class="recently_thumb">
+				<div id="recently_slide_bottom" style="width:285px;">
+					<div class="thumb">
+					<!--{ ? dataRightQuicklist }-->
+						<ul>
+							<!--{ @ dataRightQuicklist }-->
+							{? ( .index_ < 40 ) //10page까지 노출}
+								{? (.index_ && (.index_%4) == 0 )}</ul><ul>{/}
+								<li><a href="../goods/view?no={.goods_seq}" class="right_quick_goods"><img src="{.image}" onerror="this.src='../images/common/noimage_list.gif'" alt="{.goods_name}"></a><a href="javascript:rightDeleteItem('mobile_bottom_item_recent', '{.goods_seq}',$(this))" class="btn_delete cover">삭제</a></li>
+							{/}
+							<!--{ / }-->
+						</ul>
+					<!--{ : }-->
+						<h2> 최근 본 상품이 없습니다.</h2>
+					<!--{ / }-->
+					</div>
+				</div>
+				<div class="recently_page"> 
+					<a href="javascript:;" class="btn_page cover">선택</a> 
+				</div>
+			</div>
+			<a href="javascript:;" class="btn_close">모두보기</a>
+		</div>
+		<div class="recently_bg"></div>
+	</div>
+
+	<!--{ ? dataRightQuicklist.size_ > 3 }-->
+	<script type="text/javascript">
+	<!--
+		$(function(){
+			/* 최근 본 상품 - LAYER(슬라이드) */
+			$("#recently_slide_bottom").touchSlider({
+				flexible:true, roll:true, paging:$("#recently_slide_bottom").next().find(".btn_page"),
+				initComplete:function(e){$("#recently_slide_bottom").next().find(".btn_page").each(function(i, el){$(this).text("page " + (i+1));});},
+				counter:function(e){$("#recently_slide_bottom").next().find(".btn_page").removeClass("on").eq(e.current-1).addClass("on");}
+			});
+		});
+	//-->
+	</script>
+	<!--{ / }-->
+	<!--{ / }-->
+</div>
+<!-- //플로팅 - BACK/TOP(대쉬보드) -->

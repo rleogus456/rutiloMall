@@ -1,0 +1,163 @@
+<form name="goodsTopSearchForm" id="goodsTopSearchForm">
+{?_GET.code}<input type="hidden" name="code" value="{=htmlspecialchars(_GET.code)}" />{/}
+{?_GET.category_code}<input type="hidden" name="category_code" value="{=htmlspecialchars(_GET.category_code)}" />{/}
+{?_GET.brand_code}<input type="hidden" name="brand_code" value="{=htmlspecialchars(_GET.brand_code)}" />{/}	
+<textarea name="old_search_text" class="hide" >{=htmlspecialchars(old_search_top_text)}</textarea>
+<input type="hidden" name="keyword_log_flag" value="Y" />
+{?_GET.infirstsearch}<input type="hidden" name="infirstsearch" value="{=(_GET.infirstsearch)}" />{/}	
+<!-- 하단 카테고리(슬라이딩 메뉴) -->
+<div class="ctg_top">
+	<ul class="clearfix">
+		<li><a href="javascript:;" class="ctg_category {? _GET.infirstsearch && (_GET.code || _GET.category_code) }on{/}">{=(kindtitle)}<span class="icon {?  _GET.infirstsearch && (_GET.code || _GET.category_code) }on{/}">펼침</span></a></li>
+		<li><a href="javascript:;" class="ctg_brand  {? (sc.brands || sc.categoryar) }on{/}">
+			<!--{?kind=='brand'}-->카테고리 
+			<!--{:}-->브랜드
+			<!--{/}-->
+			<span class="icon {?  (sc.brands || sc.categoryar) }on{/}">펼침</span></a>
+		</li>
+		<li><a href="javascript:;" class="ctg_search {? (htmlspecialchars(old_search_top_text) != htmlspecialchars(_GET.search_text) ) && ( (_GET.insearch  && sc.search_text) || (old_search_top_text && sc.search_text) ) }on{/}">상세검색<span class="icon {? (htmlspecialchars(old_search_top_text) != htmlspecialchars(_GET.search_text) ) && ( (_GET.insearch  && sc.search_text) || (old_search_top_text && sc.search_text) ) }on{/}">펼침</span></a></li>
+		<li><a href="javascript:;" class="ctg_sort {? _GET.sort_title && sort }on{/}">{? sort && in_array(sort,array_keys(orders)) }{@ orders }{? .key_ == sort }{.value_}{/}{/}{ : } 정렬순{/}<span class="icon {? _GET.sort_title && sort }on{/}">펼침</span></a></li>
+		<li>
+			<ul class="list_style">
+				<li class="{?display_style=='mobile_lattice_a'}current{/}"><a href="?display_style=mobile_list&{=get_args_list(array('display_style','page'))}" class="style_list">리스트형</a></li>
+				<li class="{?display_style=='mobile_list'}current{/}"><a href="?display_style=mobile_center&{=get_args_list(array('display_style','page'))}" class="style_center">격자B형</a></li>
+				<li class="{?display_style=='mobile_center'}current{/}"><a href="?display_style=mobile_zoom&{=get_args_list(array('display_style','page'))}" class="style_full">슬라이드형</a></li>
+				<li class="{?display_style=='mobile_zoom'}current{/}"><a href="?display_style=mobile_lattice_a&{=get_args_list(array('display_style','page'))}" class="style_grid">격자A형</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+<div class="ctg_wrap" id="ctg_category">
+	<div class="ctg_sub">
+		<h1>{=(kindtitle)}</h1>
+		<!--{ ? showAllMobileVer3Depth(kind,true) }-->
+		<div class="ctg_depth">
+			<ul class="clearbox">
+				{? kind == 'search'}
+				<li><a href="?{=get_args_list(array('display_style','page','code','category_code','infirstsearch'))}">{?_GET.search_text}{=htmlspecialchars(_GET.search_text)} 검색결과{:}상품검색{/}</a></li>{/}
+			<!--{ @ showAllMobileVer3Depth(kind) }--> 
+				<li><a href="{.link}&infirstsearch=1">{? (.showall_count) && .index_ == (.size_-1) } {.showall} <span class="decont">({=number_format((.showall_count))}개 하위{=(kindtitle)})</span>{:}{.showall} {? .index_ == (.size_-1) }<span class="decont">({? kind=='brand'}{=number_format(count(childBrandList))}{:}{=number_format(count(childCategoryList))}{/}개 동일{=(kindtitle)})</span>{/}{/}</a></li>  
+			<!--{ / }-->
+			</ul>
+		</div>
+		<!--{ : }-->
+			<div class="ctg_depth">
+				<ul class="clearbox">
+					<li>
+					{? kind == 'search'} <a href="?{=get_args_list(array('display_style','page','code','category_code','infirstsearch'))}">{?_GET.search_text}{=htmlspecialchars(_GET.search_text)} 검색결과{:}상품검색{/}</a>{/}</li>
+					<li><span class="decont">{=number_format(count(childCategoryList))}개 {=(kindtitle)}가 있습니다.</span></li>
+				</ul>
+			</div>
+		<!--{ / }-->
+
+		<!--{? kind=='brand'}-->
+			<!--{? childBrandList }-->
+			<div class="ctg_list">
+				<div class="ctg_list_sub">
+					<ul>
+					<!--{@childBrandList}-->
+						<li><a href="{.link}&infirstsearch=1">{? .ori_title }{.ori_title}{:}{.title}{/}</a></li>
+					<!--{ / }-->
+					</ul>
+				</div>
+			</div>
+			<!--{/}-->
+
+		<!--{:}-->
+			<!--{? childCategoryList }-->
+			<div class="ctg_list">
+				<div class="ctg_list_sub">
+					<ul>
+					<!--{@childCategoryList}-->
+						<li><a href="{.link}&infirstsearch=1">{? .ori_title }{.ori_title}{:}{.title}{/}</a></li>
+					<!--{ / }-->
+					</ul>
+				</div>
+			</div>
+			<!--{/}-->
+		<!--{ / }-->
+	<a href="javascript:;" class="ctg_close">닫기</a>
+	</div>
+</div>
+<div class="ctg_wrap" id="ctg_brand">
+	<div class="ctg_sub">
+		<!--{? kind=='brand'}-->
+		<h1>카테고리</h1>
+		<div class="ctg_depth">{? count(childCategoryList)>0 }{=number_format(count(childCategoryList))}개 카테고리가 있습니다.{:}카테고리가 없습니다.{/}</div>
+		<div class="ctg_list">
+			<!--{?childCategoryList}-->
+			<div class="ctg_list_sub">
+				<ul>
+					<!--{@childCategoryList}-->
+					<li><label><input type="checkbox" name="categoryar[]" value="{.category_code}" {?in_array(.category_code,sc.categoryar)}checked="checked" {/} /> <span {?in_array(.category_code,sc.categoryar)}class="bold"{/}>{? .ori_title }{.ori_title}{:}{.title}{/}</span></label></li>
+					<!--{ / }-->
+				</ul>
+			</div>
+			<!--{ / }-->
+		</div>
+		<!--{:}-->
+		<h1>브랜드</h1>
+		<div class="ctg_depth">{? count(childBrandList)>0 }{=number_format(count(childBrandList))}개 브랜드가 있습니다.{:}브랜드가 없습니다.{/}</div>
+		<div class="ctg_list">
+			<!--{?childBrandList}-->
+			<div class="ctg_list_sub">
+				<ul>
+				<!--{@childBrandList}-->
+					<li><label><input type="checkbox" name="brands[]" value="{.category_code}" {?in_array(.category_code,sc.brands)}checked="checked" {/} /> <span {?in_array(.category_code,sc.brands)}class="bold"{/}>{? .ori_title }{.ori_title}{:}{.title}{/}</span></label></li>
+				<!--{/}-->
+				</ul>
+			</div>
+			<!--{/}-->
+		</div>
+		<!--{/}-->
+
+		<div class="ctg_btn">
+			<ul class="clearbox">
+				<li><button type="button" class="btn_cancel_large btn_cancel_tab1 mr5" >초기화</button></li>
+				<li><input type="submit" class="btn_important_large goodsSearchbtn ml5" value="검색" /></li>
+			</ul>
+		</div>
+		<a href="javascript:;" class="ctg_close">닫기</a>
+	</div>
+</div>
+<div class="ctg_wrap" id="ctg_search">
+	<div class="ctg_sub">
+		<h1>상세검색</h1>
+		<div class="ctg_result">
+			<div class="ctg_result_sub">
+				<ul>
+					<li><input type="hidden" name="insearch" {?_GET.insearch}value="1"{/} />결과 내 검색</li>
+					<li><input type="text" id="search_text"  name="search_text" value="{? htmlspecialchars(old_search_top_text) != htmlspecialchars(_GET.search_text) }{=htmlspecialchars(_GET.search_text)}{/}" placeholder="{? htmlspecialchars(old_search_top_text) != htmlspecialchars(_GET.search_text) }{=htmlspecialchars(_GET.search_text)}{/}" /></li>
+					<li class="{? !(sc.search_text && page.totalcount>1)}pdt15{/}">가격대</li>
+					<li class="clearbox center"><span class="ctg_price"><input type="text" id="start_price" name="start_price" value="{=htmlspecialchars(sc.start_price)}" class="onlynumber"  placeholder="{=htmlspecialchars(sc.start_price)}" /></span> ~ <span class="ctg_price2"><input type="text" id="end_price" name="end_price" value="{=htmlspecialchars(sc.end_price)}" class="onlynumber" placeholder="{=htmlspecialchars(sc.end_price)}" /></span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="ctg_btn">
+			<ul class="clearbox">
+				<li><button type="button" class="btn_cancel_large btn_cancel_tab2 mr5">초기화</button></li>
+				<li><input type="submit" class="btn_important_large goodsSearchbtn goodsSearchKeybtn ml5" value="검색" /></li>
+			</ul>
+		</div>
+		<a href="javascript:;" class="ctg_close">닫기</a>
+	</div>
+</div>
+<div class="ctg_wrap" id="ctg_sort">
+	<div class="ctg_sub">
+		<h1>정렬순</h1>
+		<div class="ctg_list">
+			{?sort}
+			<div class="ctg_list_sub"> 
+				<ul>
+					<!--{ @ orders }-->
+						<li><label><input type="radio" name="sort" onclick="javascript:document.location.href='?sort={.key_}&sort_title=1&{=get_args_list(array('page','sort','sort_title'))}';"  value="{.key_}"  <!--{ ? .key_ == sort }-->checked="checked"<!--{ / }--> /> {.value_}</label></li> 
+					<!--{ / }--> 
+				</ul>
+			</div>
+			{/} 
+		</div>
+		<a href="javascript:;" class="ctg_close">닫기</a>
+	</div>
+</div>
+<div class="ctg_bg"></div> 
+</form>

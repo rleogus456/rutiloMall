@@ -1,0 +1,87 @@
+<div class="bg_gray">
+	<!-- 타이틀 -->
+	<div class="sub_title_bar">
+		<h2>고객센터</h2>
+		<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+	</div>
+	<div class="pd10">
+		<table class="cs_list_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td onclick="document.location.href='../mypage/myqna_catalog'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_1to1.png" width="30" />
+					</span><br />
+					1:1문의
+				</td>
+				<td onclick="document.location.href='../board/?id=goods_qna'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_qna.png" width="30" />
+					</span><br />
+					상품문의
+				</td>
+				<td onclick="document.location.href='../board/?id=goods_review'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_review.png" width="30" />
+					</span><br />
+					상품후기
+				</td>
+			</tr>
+			<tr>
+				<td onclick="document.location.href='../board/?id=notice'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_notice.png" width="30"  />
+					</span><br />
+					공지사항
+				</td>
+				<td onclick="document.location.href='../board/?id=faq'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_faq.png" width="30"  />
+					</span><br />
+					자주묻는질문
+				</td>
+				<td onclick="document.location.href='../common/mobile_mode_off'">
+					<span class="icon_cs">
+						<img src="../images/design/icon_cs_pc.png" width="30"  />
+					</span><br />
+					PC버전
+				</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<table class="mypage_list_table3 mt10" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<colgroup><col width="25%"><col></colgroup>
+		<tbody>
+			<tr>
+				<th scope="row" rowspan="2">업무시간</th>
+				<td>월 ~ 금 (09시 ~ 18시)</td>
+			</tr>
+			<tr>
+				<td>주말 및 공휴일 휴무</td>
+			</tr>
+			<tr>
+				<th scope="row">전화문의</th>
+				<td><a href="tel:{config_basic.companyPhone}">{config_basic.companyPhone}</a>&nbsp;
+					<button onclick="document.location.href='tel:{config_basic.companyPhone}'" class="btn_style" style="line-height:26px">전화걸기</button>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">메일문의</th>
+				<td><a href="mailto:{config_basic.companyEmail}">{config_basic.companyEmail}</a></td>
+			</tr>
+			<!--{? sns.ntalk_connect == 'Y' && sns.ntalk_use == 'Y' && sns.ntalk_use_mobile_customer == 'Y'}-->					
+			<tr>
+				<th scope="row">채팅문의</th>
+				<td>
+					<button type="button" class="btn_talk" onclick="location.href='https://talk.naver.com/{sns.ntalk_connect_id}#nafullscreen';"><img src="../images/icon/icon_talk.png" align="absmiddle" alt="네이버톡톡" /> 톡톡</button>
+				</td>
+			</tr>
+			<style type="text/css">
+				.btn_talk {display:inline-block; border:1px solid #01ba3a; background:#01c43d; height:30px; line-height:24px; font-size:11px; font-weight:600; color:#ffffff; letter-spacing:-1px; padding: 0px 10px 5px 10px;}
+			</style>
+			<!--{/}-->
+		</tbody>
+		</table>
+	</diV>
+</div>

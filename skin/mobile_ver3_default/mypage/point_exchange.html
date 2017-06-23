@@ -1,0 +1,171 @@
+<style>
+.goods_list li.gl_item {padding:10px 8px; border:2px solid #ccc; margin-bottom:5px; background-color:#fff;}
+.goods_list span.gli_image {float:left; width:35%;}
+.goods_list ol.gli_contents {float:left; width:60%; padding-left:10px; padding-top:10px;}
+.goods_list ol.gli_contents .goods_name {display:block; padding-bottom:5px; font-size:15px; font-weight:bold; letter-spacing:-1px;}
+
+.promocodeImage {position:relative; width:98px; height:95px; padding-bottom:10px; background:url('../images/common/img_promocode.gif') no-repeat;}
+.promocodeImage span {position:absolute; top:52px; left:0px; width:100%; color:#dc0000; font-size:16px; font-family:tahoma; font-weight:bold;}
+</style>
+
+<script type="text/javascript" src="/app/javascript/plugin/zeroclipboard/ZeroClipboard.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	//프로모션신청
+	$("span.promotiondownbtn img").live("click",function(){
+		var mypoint = {mypoint};
+		var promotion_type = $(this).attr('promotion_type');
+		var promotion_seq = $(this).attr('promotion_seq');
+		var promotion_name = $(this).attr('promotion_name');
+		var promotion_point = $(this).attr('promotion_point');
+		if( (promotion_type == 'point' || promotion_type == 'point_shipping' ) && (mypoint < promotion_point || mypoint < 1) ){//전환포인트인경우
+			if(mypoint < 1){
+				openDialogAlert('보유포인트가 없습니다.','400','140',function(){});
+			}else{
+				openDialogAlert('전환포인트 금액이 보유포인트보다 작습니다.','400','140',function(){});
+			}
+			return false;
+		}else{
+			if(confirm("["+promotion_name+"] 프로모션 코드를 신청하시겠습니까?")) {
+				$.ajax({
+					'url' : '../promotion/download_member',
+					'data' : {'promotion_seq':promotion_seq},
+					'type' : 'post',
+					'dataType': 'json',
+					'success': function(data) {
+						if(data.result){
+							openDialogAlert(data.msg,'400','150',function(){document.location.reload();});
+						}else{
+							openDialogAlert(data.msg,'400','150',function(){});
+						}
+					}
+				});
+			}
+		}
+	})
+
+	$(".req_gift").click(function(){
+		var my_point = $("input[name='point']").val();
+		//alert(my_point+" : "+$(this).attr("point"));
+		if(parseInt(my_point) < parseInt($(this).attr("point"))){
+			alert("해당 사은품은 증정 받기 위한 잔여 포인트가 부족합니다");
+			return;
+		}
+		//alert($(this).attr("point")+" : "+$(this).attr("seq"));
+		var seq		= $(this).attr("seq");
+		var point	= $(this).attr("point");
+		var goods_rule	= $(this).attr("goods_rule");
+		var goods_name	= $(this).attr("goods_name");
+
+		$.get('/mypage/buy_gift?seq='+seq+'&point='+point+'&goods_rule='+goods_rule+'&goods_name='+escape(goods_name), function(data) {
+		  	$('#giftPopup').html(data);
+		});
+		openDialog("사은품 신청", "giftPopup", {"width":"1000","height":700});
+	});
+
+	$(".promotioncodecopy").live("click", function(){
+			var promotion_input_serialnumber =  $(this).attr('promotion_input_serialnumber');
+			var clip = new ZeroClipboard.Client();
+			clip.setHandCursor( true );
+			clip.setCSSEffects( true );
+			clip.setText(promotion_input_serialnumber);
+			clip.addEventListener( 'complete', function(client, text) {
+				alert("클립보드에 복사되었습니다.");
+			});
+			clip.glue(promotion_input_serialnumber);
+	});
+
+});
+
+function clipBoard(name, id){
+	var clip = new ZeroClipboard.Client();
+	clip.setHandCursor( true );
+	clip.setCSSEffects( true );
+	clip.setText($("input[name='"+name+"']").val());
+	clip.addEventListener( 'complete', function(client, text) {
+		alert("클립보드에 복사되었습니다.");
+	});
+	clip.glue(id);
+}
+
+</script>
+
+<input type="hidden" name="point" value="{=get_member_money('point',userInfo.member_seq)}"/>
+
+<!-- 타이틀 -->
+{?!mobileAjaxCall}
+	{#common_mypage_emoney_exchange_top}
+{/}
+
+<div class="bg_gray pd10">
+
+	<!-- 타이틀 -->
+	<table width="100%" cellpadding="5" cellspacing="0" class="list_table_style2">
+	<tr>
+		<td class="left" height="35"><b>포인트</b></td>
+		<td class="right"><span style="font-size:20px;font-weight:bold;color:#f15f2e;font-family:tahoma;">{=number_format(mypoint)}<span style="font-size:12px">P</span></span></td>
+	</tr>
+	<tr>
+		<td class="center" colspan="2" height="35" style="font-size:13px; letter-spacing:-1px; border-top:1px dashed #ddd; background-color:#f7f7f7">
+			보유하신 포인트로 <br />상품구매시 사용하실 수 있는 <br />적립금으로 교환하실 수 있습니다.
+			<br />
+			<span style="color:#6A6C6D">포인트 {configReserve.emoney_point_rate}P가 적립금 1원으로 교환됩니다.<br />(최소 교환 포인트 {configReserve.emoney_minum_point}P)</span>
+		</td>
+	</tr>
+	</table>
+
+	<div style="height:5px"></div>
+
+
+	<form name="exchangefrm" method="post" action="../mypage_process/point_exchagne" target="actionFrame">
+	<input type="hidden" name="point" value="{=get_member_money('point',userInfo.member_seq)}"/>
+	<table width="100%" cellpadding="5" cellspacing="0" class="list_table_style2" style="background-color:#FCFCFC;">
+	<tr><td>
+	<div style="width:85%;margin:20px auto;text-align:center;">
+		<div>
+			<span style="font-weight:bold;">교환할 포인트를 입력해 주세요.</span>
+			<br />
+			<span>({configReserve.emoney_point_rate}P 미만은 반환됩니다.)</span>
+		</div>
+		<div style="margin-top:10px;">
+			<input type="text" name="exchange_point" value="" onkeyup="exchange_calculate(this.value);" style="width:178px; height:38px;  border:3px solid #b7b7b7; font-size:18px; font-family:Tahoma; font-weight:bold; color:#000; text-align:center;" class="onlynumber" >
+		</div>
+		<div style="margin-top:20px;"><img src="../images/common/img_chg_arrow.gif"></div>
+	
+		<div style="margin-top:15px;"><span style="font-size:16px;font-weight:bold;">전환 적립금</span></div>
+	
+		<div style="margin-top:10px;">
+			<input type="text" name="exchange_emoney" value="" readonly style="width:178px; height:38px;  border:3px solid #a3b5d7; font-size:18px; font-family:Tahoma; font-weight:bold; color:#000; text-align:center; background:#e0f3fd">
+		</div>
+	
+		<div style="margin-top:25px;">
+			<button type="button" class="btn_style" onclick="point_exchange()">교환신청</button>
+		</div></td>
+	</tr>
+	</table>
+	</form>
+</div>
+
+
+
+<script>
+
+	function point_exchange(){
+		var frm = document.exchangefrm;
+		frm.submit();
+	}
+
+	function exchange_calculate(point){
+		var exchange_rate = "{configReserve.emoney_point_rate}";
+
+		if(point == ""){
+			point = "0";
+		}
+		var exchage_emoney = parseInt(parseInt(point) / parseInt(exchange_rate));
+
+		$("input[name='exchange_emoney']").val(exchage_emoney);
+	}
+
+</script>
+<div id="giftPopup" style="display:none"></div>
+

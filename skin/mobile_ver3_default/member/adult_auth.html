@@ -1,0 +1,105 @@
+{#HTML_HEADER}
+<div class="sub_title_bar">
+	<h2>성인인증</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+</div>
+<!-- 본문내용 :: START -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td height="10"></td>
+</tr>
+<tr>
+	<td>
+		<!-- LOGO 이미지 -->
+		<div align="center" style="padding:15px 0 20px 0;">
+			<img src="../images/common/top_img_minor.gif" width="90px" height="90px" />
+			<p class="adult_title">
+			본 상품정보는 '청소년에게 유해한 정보'를<br/>
+			포함하고 있어서, 성인 여부 인증이 필요합니다.
+			</p>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td align="center">
+		아래의 본인인증 수단으로 인증을 진행해 주세요.
+	</td>
+</tr>
+<tr>
+	<td height="10px"></td>
+</tr>
+<tr>
+	<td align="center">
+		<!-- 인증수단 노출 :: START -->
+		<div style="width:310px;">
+			<!--{? realnameinfo.useRealnamephone_adult != 'Y' && realnameinfo.useIpin_adult != 'Y'}-->
+				<div style="padding-top:5px;font-weight:bold;">
+					성인인증 수단이 없습니다.<br/>
+					쇼핑몰 고객센터로 문의해 주십시오.
+				</div>
+				<div style="padding-top:35px;">
+					<a href="/main">메인페이지 ></a>
+				</div>
+			<!--{ : }-->
+				<!--{? realnameinfo.useRealnamephone_adult == 'Y'}-->
+			<input type="button" value="휴대폰 인증" class="btn_normal_large hand" style="margin-top:10px;width:100%;" tabindex="4" onclick="phonePopup();" />
+			<div class="desc" style="padding-top:5px;text-align:left;">본인명의의 휴대폰 정보를 입력하여 본인 인증</div>
+				<!--{ / }-->
+
+				<!--{? realnameinfo.useIpin_adult == 'Y'}-->
+			<input type="button" value="아이핀 인증" class="btn_normal_large hand" style="margin-top:20px;width:100%;" tabindex="5" onclick="ipinPopup();" />
+			<div class="desc" style="padding-top:5px;text-align:left;">아이핀으로 본인 인증</div>
+				<!--{ / }-->
+			<!--{ / }-->
+		</div>
+		<!-- 인증수단 노출 :: END -->
+	</td>
+</tr>
+<tr>
+	<td height="30px"></td>
+</tr>
+<tr>
+	<td align="center">
+		<div style="width:280px;text-align:left;">
+		<ul class="desc" style="list-style:initial !important;line-height:18px;">
+			<li>본인확인이 되지 않는 경우 아래의 본인확인기관에<br/>본인인증 등록을 요청할 수 있습니다.</li>
+			<li>한국신용정보(http://www.idcheck.co.kr) 1588-2486</li>
+			<li>타인의 개인정보를 부정하게 사용하는 경우 3년 이하의 징역 또는 1천 만원 이하의 벌금에 처해질 수 있습니다.</li>
+		</ul>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td height="10px"></td>
+</tr>
+</table>
+<!-- 본문내용 :: END -->
+
+<script type="text/javascript">
+var return_url = "";
+<!--{? return_url }-->
+	return_url = "&return_url={return_url}";
+<!--{ / }-->
+{? _SERVER.HTTPS == 'on'}
+	var url = 'https://{_SERVER.HTTP_HOST}'
+{:}
+	var url = 'http://{_SERVER.HTTP_HOST}'
+{/}
+//본인인증:휴대폰
+function phonePopup(){
+	url += "/member_process/realnamecheck?intro=1&realnametype=phone&adult=1"+return_url;
+	window.open(url, 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+}
+
+//아이핀 실명인증
+function ipinPopup(){
+	url += "/member_process/realnamecheck?intro=1&realnametype=ipin&adult=1"+return_url;
+	window.open(url, 'popupIPIN2', 'width=450, height=550, top=100, left=100,fullscreen=no, menubar=no status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+}
+
+//안심체크 실명인증
+function checkPopup(){
+	url += "/member_process/realnamecheck?intro=1&realnametype=check&adult=1"+return_url;
+	window.open(url, 'niceID_popup', 'width=500, height=550, toolbar=no,directories=no,scrollbars=no,resizable=no,status=no,menubar=no,top=0,left=0,location=no');
+}
+</script>

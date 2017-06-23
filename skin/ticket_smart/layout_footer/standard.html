@@ -1,0 +1,103 @@
+<div style="height:50px"></div>
+
+<!-- 하단영역 : 시작 -->
+<table width="100%" align="{layout_config.align}" cellpadding="0" cellspacing="0" border="0" >
+
+    <tr>
+    <td height="220" align="left" bgcolor="#e2e2e2">
+       <table width="1000" align="center" cellpadding="0" cellspacing="0" border="0">
+       <tr>
+       <td><img src="../images/design/img_customer.gif" /></td>
+       <td width="240">{=showDesignLastest('notice','공지사항','3','20','showTitle')}</td>
+       <td width="100"></td>
+       <td>
+           <table align="left" cellpadding="0" cellspacing="0" border="0">
+             <tr>
+             <td><img src="../images/design/tit_cscenter.gif" /></td>
+             </tr>
+             <tr>
+             <td height="10px"></td>
+             </tr>
+             <tr>
+             <td><a href='/board/?id=faq' target='_self'><img src="../images/design/img_cscenter2.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/board/?id=goods_review' target='_self'><img src="../images/design/img_cscenter3.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='../order/cart' target='_self'><img src="../images/design/img_cscenter4.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/board/?id=goods_qna' target='_self'><img src="../images/design/img_cscenter5.gif" title="" alt="" /></a></td>
+             </tr>
+           </table>
+        </td>
+            
+        <td style="padding-left:30px">
+           <table align="left" cellpadding="0" cellspacing="0" border="0">
+             <tr>
+             <td><a href='/main/index' target='_self'><img src="../images/design/footer_home.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/service/company' target='_self'><img src="../images/design/footer_company.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/service/guide' target='_self'><img src="../images/design/footer_guide.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/service/privacy' target='_self'><img src="../images/design/footer_policy.gif" title="" alt="" /></a></td>
+             </tr>
+             <tr>
+             <td><a href='/service/agreement' target='_self'><img src="../images/design/footer_clause.gif" title="" alt="" /></a></td>
+             </tr>           
+             <tr>
+             <td><a href='/service/partnership' target='_self'><img src="../images/design/footer_alliance.gif" title="" alt="" /></a></td>
+             </tr>
+           </table>
+       </td>
+       </tr>
+       </table>  
+ 
+    </td>
+    </tr>
+        
+    <tr>
+    <td align="left" style="line-height:1.5em;" height="140" bgcolor="#3a3a3a" >
+        <table width="1000" align="center" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+        <td>
+        <!-- 이미지로 카피라이트를 이용하실 분들은 주석을 해제하여 사용하여 주십시요  -->
+        <!-- <img src="../images/design/footer_txt.gif" /><br />-->        
+        <font color="a4a4a4">회사명 : {config_basic.companyName}</font>
+        <font color="a4a4a4"><b> | </b>사업자등록번호 : {config_basic.businessLicense} <font color="d1d1d1">{=confirmLicenseLink("[사업자정보확인]")}</font>
+        <font color="a4a4a4"><b> | </b>주소 : {? config_basic.companyAddress_type == "street"}{config_basic.companyAddress_street}{:}{config_basic.companyAddress}{/} {config_basic.companyAddressDetail}<br /></font>
+        통신판매업 신고 : {config_basic.mailsellingLicense}
+        <font color="a4a4a4"><b> | </b></font>연락처 : {config_basic.companyPhone}
+        <!--{ ? config_basic.companyFax }-->
+        <font color="a4a4a4"><b> | </b></font>FAX : {config_basic.companyFax}
+        <!--{ / }-->
+        <font color="a4a4a4"><b> | </b></font>개인정보보호 책임자 : {config_basic.member_info_manager}
+        <font color="a4a4a4"><b> | </b></font>대표자 : {config_basic.ceo}<br />
+        contact : <font color="ffffff"><b>{config_basic.companyEmail}</b></font> for more information
+        
+        <!--구매안전표기 -->    
+        <div style="position:relative"><div style="position:absolute;top:-75px;left:79%;">{=escrow_mark(80)}</div></div>    
+            
+        </td>
+        </tr>
+        </table>
+            
+    </td>   
+    </tr>
+    
+  
+    
+</table>
+<!-- 하단영역 : 끝 -->
+
+
+
+
+
+ 
+

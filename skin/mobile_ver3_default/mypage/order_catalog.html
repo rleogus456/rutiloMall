@@ -1,0 +1,325 @@
+<style type="text/css">
+table.myorder-top-bar { width:100%; }
+table.myorder-top-bar th {width:20%; height:40px; line-height:40px; font-size:12px; text-align:left; padding-left:5px; }
+table.myorder-top-bar td { position:relative;height:40px;line-height:40px;text-align:right;padding-right:5px; }
+table.myorder-top-bar td div {position:absolute;top:0;right:0;}
+select[name='sc_date'] { height:25px; padding:3px; background-color:#ffffff; }
+.order-mstep {font-size:16px;font-weight:bold;color:#ffffff;}
+</style>
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.mobile.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	// 주문상세로 이동 이벤트
+	$('.order_title').bind('click', function(){
+		location.href	= 'order_view?no='+$(this).attr('seq');
+	});
+
+	// 기간 검색 selectbox plugin 적용 및 직접검색 처리
+	//$("select[name='sc_date']").selectbox();
+	$("select[name='sc_date']").bind('change', function(){
+		if	($(this).val() == 'direct'){
+			$(this).closest('div').hide();
+			$(this).closest('td').find('span').show();
+		}else{
+			$(this).closest('div').show();
+			$(this).closest('td').find('span').hide();
+			$('form#orderSearchForm').submit();
+		}
+	});
+
+	// 기간 검색 시작일 datepicker 적용 ( 시작일 선택 시 종료일 제한을 추가한다. )
+	$("input[name='sc_sdate']").datepicker({
+		showAnim:'slideDown',
+		dateFormat : 'yy-mm-dd',
+		timeFormat: 'hh:mm:ss',
+		dayNamesMin : ['일', '월', '화', '수', '목', '금', '토'],
+		monthNamesShort : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+		showMonthAfterYear : true,
+		changeYear : true,
+		changeMonth : true,
+		closeText : '닫기',
+		currentText : '오늘',
+		yearRange : '1900:c+10',
+		onSelect:function(selectedDate){
+			// 종료일 제한
+			var maxMonth	= 6;
+			var tmpDt		= new Date(selectedDate);
+			tmpDt.setMonth(tmpDt.getMonth() + 1);
+			var maxY		= tmpDt.getFullYear();
+			var maxM		= ((tmpDt.getMonth() + maxMonth) > 8) ? (tmpDt.getMonth() + maxMonth) : '0' + (tmpDt.getMonth() + maxMonth);
+			var maxD		= (tmpDt.getDate() > 9) ? tmpDt.getDate() : '0' + tmpDt.getDate();
+			var maxDt		= maxY + '-' + maxM + '-' + maxD;
+			$("input[name='sc_edate']").datepicker('option',{'minDate':selectedDate,'maxDate':maxDt});
+		}
+	});
+	// 기간 검색 종료일 datepicker 적용 ( 종료일 선택 시 시작일 제한을 추가하고 submit )
+	$("input[name='sc_edate']").datepicker({
+		showAnim:'slideDown',
+		dateFormat : 'yy-mm-dd',
+		timeFormat: 'hh:mm:ss',
+		dayNamesMin : ['일', '월', '화', '수', '목', '금', '토'],
+		monthNamesShort : ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+		showMonthAfterYear : true,
+		changeYear : true,
+		changeMonth : true,
+		closeText : '닫기',
+		currentText : '오늘',
+		yearRange : '1900:c+10',
+		onClose:function(selectedDate){
+			$("input[name='sc_sdate']").datepicker('option',{'maxDate':selectedDate});
+			$('form#orderSearchForm').submit();
+		}
+	});
+
+	$('.new-datepicker').click(function(){
+		$("input[name='sc_sdate']").datepicker();
+	});
+
+});
+
+// 상품평
+function goods_review_write(goodsseq, order_seq){
+	if(goodsseq){
+		document.location.href	= 'mygdreview_write?goods_seq=' + goodsseq + '&order_seq=' + order_seq;
+	}
+}
+// 주문 무효처리
+function order_cancel(order_seq){
+	if(confirm('주문을 무효처리 합니다.')){
+		actionFrame.location.href	= '../mypage_process/cancel?order_seq=' + order_seq;
+	}
+}
+
+// 결제취소 신청
+function order_refund(order_seq){
+	document.location.href	= 'order_refund?order_seq=' + order_seq + '&use_layout=1';
+}
+
+// 배송조회 및 쿠폰사용
+function export_list(order_seq, type){
+	document.location.href	= 'export_list?seq=' + order_seq + '&type=' + type;
+}
+</script>
+
+<div class="sub_title_bar">
+	<h2>주문/배송</h2>
+	<a class="stb_back_btn" href="javascript:history.back();"><img width="22" height="22" src="../../images/design/btn_back.png"></a>
+</div>
+
+<div class="bg_gray pdr10 pdb10 pdl10">
+	<table class="myorder-top-bar" cellpadding="0" cellspacing="0" border="0">
+	<form name="orderSearchForm" id="orderSearchForm" method="get" action="order_catalog">
+	<input type="hidden" name="step_type" value="{_GET.step_type}" />
+	<tr>
+		<th><span class="fx14">총 {page.totalcount}건</span></th>
+		<td>
+			<div {?_GET.sc_date=='direct'}class="hide"{/}>
+				<select name="sc_date">
+					<option value="1" {?_GET.sc_date==1}selected{/} >1주</option>
+					<option value="2" {?_GET.sc_date==2}selected{/} >2주</option>
+					<option value="3" {?_GET.sc_date==3}selected{/} >3주</option>
+					<option value="4" {?_GET.sc_date==4}selected{/} >1개월</option>
+					<option value="8" {?_GET.sc_date==8}selected{/} >2개월</option>
+					<option value="12" {?_GET.sc_date==12}selected{/} >3개월</option>
+					<option value="direct" {?_GET.sc_date=='direct'}selected{/} >직접검색</option>
+				</select>
+			</div>
+			<span {?_GET.sc_date!='direct'}class="hide"{/}>
+				<input type="text" name="sc_sdate" size="10" value="{?_GET.sc_sdate}{_GET.sc_sdate}{:}{=date('Y-m-d')}{/}" style="text-align:center;" class="sc-datepicker" readonly /> -
+				<input type="text" name="sc_edate" size="10" value="{?_GET.sc_edate}{_GET.sc_edate}{:}{=date('Y-m-d')}{/}" style="text-align:center;" class="sc-datepicker" readonly />
+			</span>
+		</td>
+	</tr>
+	</form>
+	</table>
+
+	<!-- List -->
+	<!--{ ? page.totalcount==0 }-->
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list_table_style2">
+			<tr>
+				<td align="center" class="cell" style="padding:42px 30px; color:#5c5c5c;">
+					<img src="../images/common/nodata.png" width="70" height="71" /><br /><br />
+					<span class="bold">주문내역이 없습니다.</span>
+				</td>
+			</tr>
+		</table>
+	<!--{ : }-->
+		<!--{ @ record }-->
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+		<col /><col width="80" />
+		<tr>
+			<th class="cell hand order_title" style="height:40px;" seq="{.order_seq}">
+				<div class="clearbox">
+					<div class="fleft"><b>{=date('Y.m.d',strtotime(.regist_date))}</b> ({.order_seq})</div>
+					<div class="fright bold">상세<img src="../images/common/mypage_arrow.png" width="10" hspace="4" /></div>
+				</div>
+			</th>
+		</tr>
+		<tr>
+			<th class="cell" style="padding: 0px;">
+				<div class="bg_darkgray clearbox" style="padding: 0px 12px; height: 40px; line-height: 40px;">
+					<div class="fleft order-mstep">{.mstep}</div>
+					<div class="fright" style="margin-top:-2px;">
+					<!--주문상태에 따른 처리 버튼-->
+					<!--{ ? .step == 15 }-->
+						<span class="btn large"><button type="button" onclick="order_cancel('{.order_seq}');">주문무효</button></span>
+					<!--{ : .step == 25 || .step == 35 }-->
+						<span class="btn large"><button type="button" onclick="order_refund('{.order_seq}');">결제취소</button></span>
+					<!--{ / }-->
+					<!--//주문상태에 따른 처리 버튼-->
+					</div>
+				</div>
+			</th>
+		</tr>
+		<!--{@.items}-->
+			<!--{@..options}-->
+			<tr>
+				<td class="item_cell left hand" {? ..key_ == 0}style="border-top:0px;"{/} onclick="location.href='../goods/view?no={..goods_seq}';">
+					{? ..goods_type == 'gift'}<img src="../images/common/icon_gift.gif" vspace=3 />{/}
+					{? ...cancel_type == '1' }<span class="order-item-cancel-type " >[청약철회불가]</span><br/>{/}
+					<div class="fx14 bold " style="margin-bottom:5px;">{..goods_name}</div>
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td width="90">
+							<img src="{=viewImg(..goods_seq, 'thumbCart')}" align="absmiddle" width="80" height="80" onerror="this.src='../images/common/noimage_list.gif'"/>
+						</td>
+						<td valign="top">
+							<!--{? ..eventEnd }-->
+							<div style="padding-bottom:7px;">
+								<span class="soloEventTd{...item_option_seq}" style="font-face:Dotum; font-size:11px;">
+									<img src="../images/common/icon_clock.gif" style="padding-bottom:2px;">남은시간
+									<span style="background-color:#c61515; color:#ffffff; padding:2px; font-weight:bold;">
+									<span id="soloday{...item_option_seq}" style="color:#ffffff; font-weight:bold;">0</span>일
+									<span id="solohour{...item_option_seq}" style="color:#ffffff; font-weight:bold;">00</span>:
+									<span id="solomin{...item_option_seq}" style="color:#ffffff; font-weight:bold;">00</span>:
+									<span id="solosecond{...item_option_seq}" style="color:#ffffff; font-weight:bold;">00</span>
+									</span>
+								</span>
+								<script>
+								$(function() {
+									timeInterval{...item_option_seq} = setInterval(function(){
+										var time{...item_option_seq} = showClockTime('text', '{..eventEnd.year}', '{..eventEnd.month}', '{..eventEnd.day}', '{..eventEnd.hour}', '{..eventEnd.min}', '{..eventEnd.second}', 'soloday{...item_option_seq}', 'solohour{...item_option_seq}', 'solomin{...item_option_seq}', 'solosecond{...item_option_seq}', '{...item_option_seq}');
+										if(time{...item_option_seq} == 0){
+											clearInterval(timeInterval{...item_option_seq});
+											$("..soloEventTd{...item_option_seq}").html("단독 이벤트 종료");
+										}
+									},1000);
+								});
+								</script>
+							</div>
+							<!--{/}-->
+							<!--{ ? ..adult_goods == 'Y' || ..option_international_shipping_status == 'y' || ..cancel_type == '1' || ..tax == 'exempt' }-->
+							<div style="padding-bottom:7px;">
+								<!--{ ? ..adult_goods == 'Y' }-->
+								<img src="../images/common/auth_img.png" alt="성인" style="vertical-align: middle;" height="17" />
+								<!--{ / }-->
+								<!--{ ? ..option_international_shipping_status == 'y' }-->
+								<img src="../images/common/plane.png" alt="해외배송상품" style="vertical-align: middle;" height="14" />
+								<!--{ / }-->
+								<!--{ ? ..cancel_type == '1' }-->
+								<img src="../images/common/nocancellation.gif" alt="청약철회" style="vertical-align: middle;" />
+								<!--{ / }-->
+								<!--{ ? ..tax == 'exempt' }-->
+								<img src="../images/common/taxfree.gif" alt="비과세" style="vertical-align: middle;" />
+								<!--{ / }-->
+							</div>
+							<!--{ / }-->
+							<!--{ ? ...option1 != '' }-->
+							<div class="pdt5">
+								<!--{ ? ...option1 }-->
+									{ ? ...title1 }{ ...title1 } : { / }{ ...option1 }
+								<!--{ / }-->
+								<!--{ ? ...option2 }-->
+									{ ? ...title2 } &nbsp;<span class='gray'>|</span>&nbsp; { ...title2 } : { / }{ ...option2 }
+								<!--{ / }-->
+								<!--{ ? ...option3 }-->
+									{ ? ...title3 } &nbsp;<span class='gray'>|</span>&nbsp; { ...title3 } : { / }{ ...option3 }
+								<!--{ / }-->
+								<!--{ ? ...option4 }-->
+									{ ? ...title4 } &nbsp;<span class='gray'>|</span>&nbsp; { ...title4 } : { / }{ ...option4 }
+								<!--{ / }-->
+								<!--{ ? ...option5 }-->
+									{ ? ...title5 } &nbsp;<span class='gray'>|</span>&nbsp; { ...title5 } : { / }{ ...option5 }
+								<!--{ / }-->
+							<div>
+							<!--{ / }-->
+							<!--{ ? ...inputs }-->
+							<div class="pdt5">
+								<!--{ @ ...inputs }-->
+									<!--{ ? ....value }-->
+										<!--{?....key_}--> &nbsp;<span class='gray'>|</span>&nbsp; <!--{ / }-->
+										<!--{?....title}-->{....title} : <!--{ / }-->
+										<!--{?....type=='file'}-->
+										<a href="/mypage_process/filedown?file={....value}" target="actionFrame" style="color:#848484;"><img src="/mypage_process/filedown?file={....value}" width="13" height="13" title="크게 보기" align="absmiddle" /></a>
+										<!--{:}-->{....value}<!--{ / }-->
+									<!--{ / }-->
+								<!--{ / }-->
+							</div>
+							<!--{ / }-->
+							{? ..goods_type != 'gift'}
+							<div class="pdt5">수량 : {=number_format(...ea)}개</div>
+							{ / }
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+						<!--{ ? ...step > 45 }-->
+			<tr>
+				<td class="item_cell step_cell left">
+					<div class="clearbox">
+						<div class="fleft">
+							{order_step_arr[...step]}
+							( {=number_format( ...step55 + ...step65 + ...step75 )} / {=number_format( ...ea - ...step85 )} )
+						</div>
+						<div class="fright" style="margin-top:-1px;">
+							<!--{ ? (...step55 + ...step65 + ...step75) > 0 }-->
+							<span class="btn small"><button type="button" onclick="goods_review_write('{..goods_seq}', '{.order_seq}');">상품후기</button></span>
+								<!--{ ? ..goods_kind == 'coupon' }-->
+							<span class="btn small"><button onclick="export_list('{.order_seq}', 'coupon');">티켓사용</button></span>
+								<!--{ : }-->
+							<span class="btn small"><button onclick="export_list('{.order_seq}', 'goods');">배송조회{?cfg_order.buy_confirm_use} / 구매확정{/}</button></span>
+								<!--{ / }-->
+							<!--{ / }-->
+						</div>
+					</div>
+				</td>
+			</tr>
+						<!--{ / }-->
+
+				<!--{? ...suboptions}-->
+					<!--{@(...suboptions)}-->
+			<tr>
+				<td class="item_cell suboption_wrap left hand" onclick="location.href='../goods/view?no={..goods_seq}';">
+					 <span class="btn_small_normal">추가</span> { ? ....title }{ ....title }:{ / }{ ....suboption } - {=number_format(....ea)}개
+				</td>
+			</tr>
+						<!--{ ? _GET.step_type == 'delivery_ing' || _GET.step_type == 'delivery_complete' }-->
+			<tr>
+				<td class="item_cell step_cell left">
+					<div class="clearbox">
+						<div class="fleft">
+							{order_step_arr[....step]}
+							( {=number_format( ....step55 + ....step65 + ....step75 )} / {=number_format( ....ea - (....step85 - ....refund_ea) )} )
+						</div>
+					</div>
+				</td>
+			</tr>
+						<!--{ / }-->
+					<!--{ / }-->
+				<!--{ / }-->
+			<!--{ / }-->
+		<!--{ / }-->
+		</table>
+		<!--{ / }-->
+
+		<div style="height:20px"></div>
+
+		{#paging}
+
+		<div style="height:30px"></div>
+
+	<!--{ / }-->
+</div>

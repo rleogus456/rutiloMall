@@ -1,0 +1,105 @@
+<script>
+$(function(){
+	$(".sub_page_tab td").each(function(i){
+		$(this).click(function(){
+			$(".sub_page_tab td").removeClass("current");
+			$(this).addClass("current");
+			$(".sub_page_tab_contents").hide().eq(i).show();
+		});
+	}).eq(0).click();
+});
+</script>
+
+<style>
+.btn_sns {width:100%; height:60px; text-align:left; font-size:16px; color:#000; margin:5px 0; background:url('../images/design/btn_arw_r.png') no-repeat; background-position:98% center; background-size:15px 15px;}
+.sub_page_tab_contents li {clear:both;margin:5px auto;text-align:center;}
+.sub_page_tab_contents li img{width:202px;}
+</style>
+
+<div class="sub_title_bar">
+	<h2>회원가입</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+</div>
+
+
+<table width="100%" class="sub_page_tab" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<!--{? joinform.join_type!='business_only'}-->
+		<td class="current">개인회원</td>
+		<!--{/}-->
+		<!--{? joinform.join_type!='member_only'}-->
+		<td>사업자회원</td>
+		<!--{/}-->
+	</tr>
+</table>
+
+<!--{? emoneyapp.emoneyJoin > 0 || emoneyapp.emoneyInvitees > 0 || couponmember.coupon_seq}-->
+<div style="border-top:2px solid #e8e8e8; background:#f7f7f7; border-bottom:2px solid #e8e8e8; padding-bottom:20px;">
+	<div style="padding:5px 0px;text-align:center;font-color:#5e5e5e;line-height:12px;">
+		<!--{? fb_invite }-->
+			<font style="letter-spacing:-1px;"><!--{fb_invite.user_name}--></font><font style="color:#5e5e5e">님으로부터 초대받으셨습니다.</font><br>
+		<!--{/}-->
+		<!--{? emoneyapp.emoneyJoin > 0 || emoneyapp.emoneyInvitees > 0 || couponmember.coupon_seq }-->
+		<div style="margin-top:12px; font:1.6em Dotum; color:#494949; letter-spacing:-1px; font-weight:bold">신규회원을 위한 혜택을 놓치지 마세요!</div>
+		<!--{/}-->
+	</div>
+	<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin:auto">
+		<!--{? emoneyapp.emoneyJoin > 0 }-->
+		<tr>
+			<td>
+			- <b>적립금</b> : <span style="font:1.2em Verdana; color:#c40000; font-weight:bold; letter-spacing:-1px"><!--{=number_format(emoneyapp.emoneyJoin)}--></span>원
+			</td>
+		</tr>
+		<!--{/}-->
+		<!--{? emoneyapp.emoneyInvitees > 0 && fb_invite}-->
+		<tr>
+			<td>
+			- <b>추가 적립금</b> <span style="font:1.2em Verdana; color:#c40000; font-weight:bold; letter-spacing:-1px"><!--{=number_format(emoneyapp.emoneyInvitees)}--></span>원
+			</td>
+		</tr>
+		<!--{/}-->
+		<!--{? couponmemberarray }-->
+		<tr>
+			<td>
+			- <b>가입쿠폰</b> : 
+			{@ couponmemberarray }
+				<span style="font:1.2em Verdana; color:#c40000; font-weight:bold; letter-spacing:-1px">
+				{? .type == 'member_shipping' }
+					{? .shipping_type == 'free'}{? .limit_goods_price_title}{.limit_goods_price_title}{/} 배송비 무료</span>(최대{.max_percent_shipping_sale}원)
+					{:}배송비 {=number_format(.won_shipping_sale)}</span>원
+					{/}
+				{:}
+					{? .sale_type == 'percent' }{.percent_goods_sale}</span>%
+					{:}{=number_format(.won_goods_sale)}</span>원
+					{/}
+				{/}	{? count(couponmemberarray)-1 > .index_ },&nbsp;&nbsp;{/}
+			{/}
+			할인 쿠폰
+			</td>
+		</tr>
+		<!--{/}-->
+	</table>
+</div>
+<!--{/}-->
+
+<!--{? joinform.join_type!='business_only'}-->
+<div class="sub_page_tab_contents">
+	<ul>
+		<li><img src="../images/design/sns_bt_idpw_join.gif" onclick="document.location.href='agreement?join_type=member'"></li>
+	<!--{@ joinform.use_sns }-->
+	{? .key_ }<li><img src="../images/design/sns_bt_{=.key_}_join.gif" onclick="document.location.href='agreement?join_type={=.value_['cd']}member'"></li>{/}
+	<!--{ / }-->
+	</ul>
+</div>
+<!--{/}-->
+
+<!--{? joinform.join_type!='member_only'}-->
+<div class="sub_page_tab_contents">
+	<ul>
+		<li><img src="../images/design/sns_bt_idpw_join.gif" onclick="document.location.href='agreement?join_type=business'"></li>
+
+	<!--{@ joinform.use_sns }-->
+	{? .key_ }<li><img src="../images/design/sns_bt_{=.key_}_join.gif" onclick="document.location.href='agreement?join_type={=.value_['cd']}business'"></li>{/}
+	<!--{ / }-->
+</div>
+<!--{/}-->

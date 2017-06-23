@@ -1,0 +1,336 @@
+<script type="text/javascript">
+$(function(){
+	// 사은품 지급 조건 상세
+	$(".gift_log").bind('click', function(){
+		$.ajax({
+			type: "post",
+			url: "./gift_use_log",
+			data: "order_seq="+$(this).attr('order_seq')+"&item_seq="+$(this).attr('item_seq'),
+			success: function(result){
+				if	(result){
+					$("#gift_use_lay").html(result);
+					openDialog("사은품 이벤트 정보", "gift_use_lay", {"width":"450","height":"220"});
+				}
+			}
+		});
+	});
+
+});
+</script>
+
+<style>
+/* 주문 내역 테이블 */
+table.order-view-table {width:100%; border-collapse:collapse; border-top:2px solid #666; border-bottom:1px solid #ddd;}
+table.order-view-table.summary-mode {border-top:0px;}
+table.order-view-table th {padding:0px; height:30px; font-weight:normal; background-color:#dfdfdf !important; border:1px solid #aeaeae;}
+table.order-view-table th.dark {background-color:#efefef !important; border:1px solid #ddd}
+table.order-view-table tbody.otb tr.order-item-row td {padding:3px 3px; letter-spacing:0px;height:50px;border:1px solid #ddd;}
+table.order-view-table tbody.otb tr.order-item-row div.order-item-name-wrap {position:relative; height:32px; overflow:hidden;}
+table.order-view-table tbody.otb tr.order-item-row div.order-item-name-place {position:absolute;}
+table.order-view-table tbody.otb tr.order-item-option-row div.order-item-name-wrap {position:relative; height:15px; overflow:hidden;}
+table.order-view-table tbody.otb tr.order-item-option-row div.order-item-name-place {position:absolute;}
+table.order-view-table tbody.otb span.order-item-image {display:inline-block;}
+table.order-view-table tbody.otb span.order-item-image img {border:1px solid #ccc; width:30px; height:30px; vertical-align:middle;}
+table.order-price-information-table {margin:auto; text-align:center;}
+table.order-price-information-table td {vertical-align:top;}
+table.order-price-information-table td dl dt {height:20px; color:#7a7a7a;}
+table.order-price-information-table td dl dd {height:25px; font-size:12px; font-family:tahoma; font-weight:bold;}
+table.order-price-information-table td dl dd .price-text {font-size:14px;}
+table.order-price-information-table td dl.order-price-plus-item {padding-left:40px; background:url('../images/common/icon_plus.gif') no-repeat 19px 23px;}
+table.order-price-information-table td dl.order-price-minus-item {padding-left:40px; background:url('../images/common/icon_minus.gif') no-repeat 19px 23px;}
+table.order-price-information-table td dl.order-price-total-item1 {padding-left:40px; background:url('../images/common/icon_equal.gif') no-repeat 19px 23px;}
+table.order-price-information-table td dl.order-price-total-item1 dt{color:#c24400; font-weight:bold;}
+table.order-price-information-table td dl.order-price-total-item1 dd{color:#b00000; font-weight:bold;}
+.price {text-align:right}
+span.export_title { display:inline-block;width:50px;padding-left:5px; }
+
+spa.refundtitle { padding:8px; background-color:#}
+</style>
+
+<!-- 타이틀 -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr><td><img src="../images/design/tit_refundlist.gif" /></td></tr>
+</table>
+
+<div style="height:30px;"></div>
+
+<!-- 주문정보/배송지정보 -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<col width="49%" />
+<col width="2%" />
+<col width="49%" />
+<tr>
+	<td valign="top">
+
+		<!-- 주문정보 -->
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td valign="bottom" align="left" height="25"><img src="../images/design/refund_stit_disposal.gif" /></td>
+			</tr>
+			<tr><td height="8"></td></tr>
+			<tr><td height="2" bgcolor="545454"></td></tr>
+			<tr><td height="23"></td></tr>
+		</table>
+		<div style="position:relative">
+		<div style="position:absolute;right:0px;top:-47px;">
+		<button class="black_btn" type="submit" onclick="document.location.href='/mypage/myqna_write?category={=urlencode('반품문의')}'">문의</button>
+		</div>
+		</div>
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<col width="90" />
+			<tr>
+				<td>환불상태</td>
+				<td class="fx12">{data_refund.mstatus}</td>
+			</tr>
+			<tr><td height="15"></td></tr>
+			<tr>
+				<td>환불번호</td>
+				<td class="fx12">{data_refund.refund_code}</td>
+			</tr>
+			<tr><td height="15"></td></tr>
+			<tr>
+				<td>환불종류</td>
+				<td class="fx12">{data_refund.mrefund_type} 환불</td>
+			</tr>
+			<tr><td height="15"></td></tr>
+			<tr>
+				<td>환불접수일</td>
+				<td class="fx12">{=date('Y년 m월 d일',strtotime(data_refund.regist_date))}</td>
+			</tr>
+			{?data_refund.status=='complete'}
+			<tr><td height="15"></td></tr>
+			<tr>
+				<td>환불완료일</td>
+				<td class="fx12">{?data_refund.refund_date!='0000-00-00'}{=date('Y년 m월 d일',strtotime(data_refund.refund_date))}{/}</td>
+			</tr>
+			{ / }
+		</table>
+
+	</td>
+	<td></td>
+	<td valign="top">
+
+
+		<!-- 주문자정보 -->
+		<form action="../mypage_process/refund_modify" target="actionFrame" method="post">
+		<input type="hidden" name="refund_code" value="{data_refund.refund_code}" />
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td valign="bottom" align="left" height="25"><img src="../images/design/refund_stit_info.gif" /></td>
+			</tr>
+			<tr><td height="8"></td></tr>
+			<tr><td height="2" bgcolor="545454"></td></tr>
+			<tr><td height="23"></td></tr>
+		</table>
+		<div style="position:relative">
+		<div style="position:absolute;right:0px;top:-47px;">
+		<button class="black_btn" type="submit">변경</button>
+		</div>
+		</div>
+
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<col width="90" />
+			<tr>
+				<td>환불은행</td>
+				<td class="fx12"><input type="text" name="bank_name" value="{data_refund.bank_name}" maxlength="20" /></td>
+			</tr>
+			<tr><td height="8"></td></tr>
+			<tr>
+				<td>예금주</td>
+				<td class="fx12"><input type="text" name="bank_depositor" value="{data_refund.bank_depositor}" maxlength="20" /></td>
+			</tr>
+			<tr><td height="8"></td></tr>
+			<tr>
+				<td>계좌번호</td>
+				<td class="fx12"><input type="text" name="bank_account" value="{data_refund.bank_account}" style="width:70%;" maxlength="30"/></td>
+			</tr>
+			<tr><td height="8"></td></tr>
+			<tr>
+				<td>상세사유</td>
+				<td class="fx12"><input type="text" name="refund_reason" value="{data_refund.refund_reason}" style="width:90%;" maxlength="255" /></td>
+			</tr>
+		</table>
+		</form>
+	</td>
+</tr>
+</table>
+
+<br class="table-gap" />
+
+<br class="table-gap" />
+
+<div class="pdb5"><img src="../images/design/refund_stit_detail.gif" /></div>
+
+<table class="order-view-table" width="100%" border=0>
+<colgroup>
+	<col />
+	<col width="90" />
+	<col width="140" />
+	<col width="120" />
+	<col width="100" />
+</colgroup>
+<thead class="oth">
+	<tr>
+		<th class="dark">상품</th>
+		<th class="dark">주문수량</th>
+		<th class="dark">결제금액</th>
+		<th class="dark">배송비</th>
+		<th class="dark">환불신청수량</th>
+	</tr>
+</thead>
+<tbody class="otb">
+<!--{ @ refund_shipping_items }-->
+	<!--{ @ .value_ }-->
+<tr class="order-item-row">
+	<td class="info">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td class="left" valign="top" style="border:none;" width="40"><a href='/goods/view?no={..goods_seq}' target='_blank'><span class="order-item-image"><img class="small_goods_image" src="{..image}" /></span></a></td>
+			<td class="left" valign="top" style="border:none;">
+				<div class="goods_name">
+					<!--{ ? ..goods_type == 'gift'}-->
+					<img src="../images/common/icon_gift.gif" />
+					<!--{ / }-->
+					<!--{ ?  ..cancel_type == '1' }-->
+					<span class="canceltypetitle"><font color="red">[청약철회불가]</font></span>
+					<!--{ / }-->
+					<a href='/goods/view?no={..goods_seq}' target='_blank'>{..goods_name}</a>
+				</div>
+				<!--{?..option1}-->
+				<div class="goods_option">
+					<img src="../images/common/icon_option.gif" />
+					<!--{?..title1}-->{..title1}:<!--{ / }-->{..option1}
+					<!--{?..title2}-->{..title2}:<!--{ / }-->{..option2}
+					<!--{?..title3}-->{..title3}:<!--{ / }-->{..option3}
+					<!--{?..title4}-->{..title4}:<!--{ / }-->{..option4}
+					<!--{?..title5}-->{..title5}:<!--{ / }-->{..option5}
+				</div>
+				<!--{ / }-->
+				{? ..goods_type == "gift" }
+					{? ..gift_title }<div><span class="fx11">{..gift_title}</span> <span class="btn small gray"><button type="button" class="gift_log" order_seq="{=data_refund.order_seq}" item_seq="{..item_seq}">자세히</button></span></div>{/}
+				{ / }
+			</td>
+		</tr>
+		</table>
+	</td>
+	<td class="info right">{=number_format(..option_ea)}</td>
+	<td class="info right">
+		{=number_format(..order_price)}<Br />
+		<!--{ ? ..total_sale > 0 }-->
+		<span class="sale">
+			할인 (-){=number_format(..total_sale)}
+		</span><Br />
+		<!--{ : }-->할인 0<br /><!--{ / }-->
+
+		<span class="blue bold">{=number_format(..order_price - ..total_sale)}</span></td>
+
+		<!--{ ? ..index_ == 0}-->
+	<td class="info right" style="padding-right:5px;{ ? preg_match('/^goods/', .key_) }color:#4298d3;{ / }" rowspan="{..shipping_row_cnt}">
+
+			{ ? .key_ == 'shop'}
+			<div>기본배송</div>
+			{ : preg_match('/^goods/', .key_) }
+			<div>개별배송</div>
+			{/}
+			<div>
+			{ ? orders.shipping_method == 'quick' }퀵서비스
+			{ : orders.shipping_method == 'direct' }직접수령
+			{ : orders.shipping_method == 'postpaid' }택배(착불)
+			{ : }택배(선불){ / }
+			</div>
+			
+			{ ? .key_ == 'shop' && ..shippings['basic_cost'] > 0 }
+				<div>{=number_format(..shippings['basic_cost'])}</div>
+			{ : preg_match('/^goods/', .key_) && ..shippings['goods_cost'] > 0 }
+				<div>{=number_format(..shippings['goods_cost'])}</div>
+			{ : data_order.shipping_method == 'delivery' }<div>무료배송</div>{ / }
+
+			{ ? .key_ == 'shop' && ..shippings['basic_add_cost'] > 0 }
+				<div>+{=number_format(..shippings['basic_add_cost'])}</div>
+			{ : preg_match('/^goods/', .key_) && ..shippings['goods_add_cost'] > 0 }
+				<div>+{=number_format(..shippings['goods_add_cost'])}</div>
+			{ / }
+
+	</td>
+		<!--{ / }-->
+
+	<td class="info right">
+		{=number_format(..ea)}
+			<!--{? data_order.download_seq }-->
+				<!--{? data_order.restore_used_coupon_refund }-->
+		<span class="btn small red"><input type="button" value="복원완료"  /></span>
+				<!--{ / }-->
+			<!--{ / }-->
+			<!--{ ? data_order.shipping_promotion_code_seq}-->
+				<!--{? data_order.restore_used_promotioncode_refund }-->
+		<span class="btn small red"><input type="button" value="복원완료"  /></span>
+				<!--{ / }-->
+			<!--{ / }-->
+	</td>
+</tr>
+	<!--{ / }-->
+<!--{ / }-->
+</tbody>
+
+</table>
+
+
+
+<br class="table-gap" />
+
+<table align="center" style="margin:auto;">
+<tr>
+	<td>
+		<strong class="fx15">{data_refund.mstatus}</strong>
+	</td>
+	{?data_refund.status=='complete'}
+	<td width="5"></td>
+	<td>
+		<span class="desc">해당 환불건의 처리가 완료된 상태입니다.</span>
+	</td>
+	{/}
+</tr>
+</table>
+
+{?data_refund.status=='complete'}
+	<br class="table-gap" />
+
+	<div class="pd15 center fx13" style="border:1px solid #ddd;">
+
+		<span class="btn medium black"><a style="cursor:none;">환불금액</a></span>
+
+		[{data_order.mpayment}] {=number_format(data_refund.refund_price)} 
+		+ [적립금] {=number_format(data_refund.refund_emoney)} 
+		+ [이머니] {=number_format(data_refund.refund_cash)} 
+		= <strong>{=number_format(tot.refund_total_price)}</strong>
+		(상품금액 : {=number_format(tot.refund_total_price - data_refund.refund_delivery)} 
+		+ 배송비 {=number_format(data_refund.refund_delivery)} )
+	</div>
+{/}
+
+<div style="height:50px"></div>
+
+<div align="center">
+<img src="../images/design/img_refund_step.gif" />
+</div>
+
+<div style="height:50px"></div>
+
+<!-- 주의 -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-top:1px solid #ddd">
+	<tr>
+		<td height="20"></td>
+	</tr>
+	<tr>
+		<td valign="top" align="right">
+			<a href="../mypage/refund_catalog"><img src="../images/buttons/btn_list_refund.gif" /></a>
+		</td>
+	</tr>
+
+</table>
+
+
+<div id="gift_use_lay"></div>

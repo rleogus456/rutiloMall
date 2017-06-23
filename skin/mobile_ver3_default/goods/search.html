@@ -1,0 +1,129 @@
+<script type="text/javascript">
+
+var perpage = parseInt('{sc.perpage}');
+
+$(function(){
+
+	/* 카테고리 불러오기 */
+	category_select_load('','category1','',function(){
+		<!--{?_GET.category1}-->
+		$("select[name='category1']").val('{_GET.category1}').change();
+		<!--{/}-->
+	});
+	$("select[name='category1']").bind("change",function(){
+		$("select[name='category2']").hide();
+		$("select[name='category3']").hide();
+		$("select[name='category4']").hide();
+		
+		category_select_load('category1','category2',$(this).val(),function(){
+			<!--{?_GET.category2}-->
+			$("select[name='category2']").val('{_GET.category2}').change();
+			<!--{/}-->
+		});
+		category_select_load('category2','category3',"");
+		category_select_load('category3','category4',"");
+	});
+	$("select[name='category2']").bind("change",function(){
+		$("select[name='category3']").hide();
+		$("select[name='category4']").hide();
+		
+		category_select_load('category2','category3',$(this).val(),function(){
+			<!--{?_GET.category3}-->
+			$("select[name='category3']").val('{_GET.category3}').change();
+			<!--{/}-->
+		});
+		category_select_load('category3','category4',"");
+	});			
+	$("select[name='category3']").bind("change",function(){
+		$("select[name='category4']").hide();
+
+		category_select_load('category3','category4',$(this).val(),function(){
+			<!--{?_GET.category4}-->
+			$("select[name='category4']").val('{_GET.category4}').change();
+			<!--{/}-->
+		});
+	});
+
+	
+	$(".goods_catalog_more_btn").click(function(){
+		var btn = this;
+		var nowpage = parseInt($(this).attr('nowpage'));
+		var totalcount = parseInt('{page.totalcount}');
+		var totalpage = parseInt('{page.totalpage}');
+		var nextpage = nowpage+1;
+
+		$.ajax({
+			'global' : false,
+			'url' : ' /goods/search?page='+nextpage+'&sort={sort}&ajax=1{=html_entity_decode(sortUrlQuerystring)}',
+			'type' : 'get',
+			'cache' : false,
+			'success' : function(res){
+				$("#itemstmplayer").html(res);
+				var items = $("ul.goods_list>li.gl_item",$("#itemstmplayer"));
+
+				$(".catalog_list_wrap .displayTabContentsContainer ul.goods_list").append(items);
+
+				resize_height_{display_key}();
+
+				/* 이미지꾸미기 이미지 설정 */
+				set_goods_display_decoration(".goodsDisplayImageWrap");
+
+				try{
+					FB.XFBML.parse($("#{display_key}").get(1));
+				}catch(ex){}
+				echo.init({
+					offset: 100,
+					throttle: 250,
+					unload: false
+				});
+			}
+		});
+
+		$(this).attr('nowpage',nextpage);
+
+		if(nextpage<totalpage){
+			var rest = nextpage<totalpage-1 || (totalcount % perpage == 0) ? perpage : totalcount % perpage;
+			$(".nextcnt",this).text(rest);
+			$(".pages",this).text("("+nextpage+"/"+totalpage+")");
+		}else{
+			$(this).hide();
+		}
+	});
+
+	
+});
+</script>
+<style>
+.sub_title_bar h2 {padding-left:25px;width:88%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; word-wrap:normal;} 
+</style> 
+<div id="itemstmplayer" class="hide"></div>
+<div class="sub_title_bar">
+	<h2>{? old_search_top_text}{=htmlspecialchars(implode(", ", explode("\n", old_search_top_text)))} 검색결과{:}상품검색{/}({=number_format(page.totalcount)})</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="25" height="25" /></a>
+</div>
+
+<!--[ 상단탭 ]-->
+<div class="goods_list_top">
+	{=showMobileTopForm(sc)} 
+</div>
+
+<!--{ ? page.totalcount==0 }-->
+<table align="center" cellpadding="0" cellspacing="0" border="0">
+<tr><td height="50"></td></tr>
+<tr>
+	<td>
+		<span class="small">죄송합니다. 검색내용이 없습니다.</span>
+	</td>
+</tr>
+<tr><td height="50"></td></tr>
+</table>
+<!--{ : }-->
+<div class="catalog_list_wrap">
+	{goodsDisplayHTML}
+</div>
+<!--{ / }-->
+
+
+<!--{ ? page.nowpage < page.totalpage }-->
+<button type="button" class="goods_catalog_more_btn" nowpage="{=page.nowpage}"><span class="nextcnt">{?(page.nowpage<page.totalpage-1) || (page.totalcount % sc.perpage == 0)}{sc.perpage}{:}{page.totalcount % sc.perpage}{/}</span>개 더보기<br /><span class="pages">({page.nowpage}/{page.totalpage})</span></button>
+<!--{ / }-->

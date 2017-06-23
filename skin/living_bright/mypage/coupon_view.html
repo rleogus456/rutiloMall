@@ -1,0 +1,48 @@
+<style type="text/css">
+div.coupon_info { border:2px solid #CBCBCB; padding-left:20px; padding-top:15px; height:105px; background-image:url('../images/common/coupon_rbg.jpg'); background-repeat:no-repeat; background-size:34px 120px; background-position: 100%; }
+div.coupon_info div.coupon_name { font-size:26px; font-weight:bold; word-break:break-all; }
+div.coupon_info div.coupon_option { font-size:13px; font-weight:bold; word-break:break-all; padding-top:15px; letter-spacing:1px; }
+div.coupon_info div.coupon_serial { font-size:13px; font-weight:bold; word-break:break-all; padding-top:5px; }
+div.coupon_detail { height:35px; padding-left:3px; padding-top:10px; color:#727982; font-size:13px; font-weight:bold; line-height:20px; letter-spacing:1px; }
+/* 티켓 레이아웃 */
+div.coupon-layout { background-color:#fff; border:1px solid #d9d9d9; padding:15px; }
+/* 사용정보 */
+div.coupon-use-title table td{ background-color:#99a2b8; height:30px; text-align:center; font-size:13px; color:#fff; }
+.coupon-use-list { margin-top:5px; border:1px solid #d9d9d9; background-color:#fff; }
+.coupon-use-list td { line-height:35px; text-align:center; }
+</style>
+
+<!-- 티켓 정보 :: START -->
+<div class="coupon_info">
+	<div class="coupon_name">{item.goods_name}</div>
+	<div class="coupon_option">{coupon.coupon_start_date} ~ {coupon.coupon_end_date}</div>
+	<div class="coupon_serial">{coupon.coupon_serial}</div>
+</div>
+<div class="coupon_detail">
+	{coupon.coupon_start_date} ~ {coupon.coupon_end_date}<br/>
+	총 {=number_format(coupon.coupon_value)}{coupon.coupon_unit} 중 {=number_format(coupon.coupon_remain_value)}{coupon.coupon_unit} 사용가능
+</div>
+<div style="height:10px;"></div>
+<!-- 티켓사용내역 :: START -->
+<div class="coupon-use-title">
+	<table cellpadding="1" cellspacing="1" border="0" width="100%">
+		<td width="35%">티켓 사용 일시</td>
+		<td width="15%">티켓 사용</td>
+		<td width="20%">사용 매장</td>
+		<td width="30%">매장 정보</td>
+	</table>
+</div>
+<table class="coupon-use-list" cellpadding="0" cellspacing="0" border="0" width="100%">
+<!--{ @ use_history }-->
+<tr>
+	<td width="35%">{.regist_date}</td>
+	<td width="15%">{=number_format(.coupon_use_value)}{coupon.coupon_unit}</td>
+	<td width="20%">{.coupon_use_area}</td>
+	<td width="30%">{.coupon_use_memo}</td>
+</tr>
+<!--{ : }-->
+<tr>
+	<td>사용 내역이 없습니다.</td>
+</tr>
+<!--{ / }-->
+</table>

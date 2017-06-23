@@ -1,0 +1,126 @@
+{#HTML_HEADER}
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td height="30"></td>
+</tr>
+<tr>
+	<td width="40"></td>
+	<td>
+		<!-- 본문내용 시작 -->
+		<!-- 타이틀 -->
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr><td><img src="../images/common/obtain_tit01.gif" /></td></tr>
+		<tr><td height="10"></td></tr>
+		<tr><td><span class="desc">본 상품정보는 ‘청소년에게 유해한 정보’를 포함하고 있어서, 성인여부 인증이 필요합니다.</span></td></tr>
+		</table>
+
+		<!-- 성인인증 이미지 -->
+		<div align="center" style="padding:74px 0 70px 0;"><img src="../images/common/adult_txt.gif" /></div>
+
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td align="center" valign="top">
+
+			<!-- Line -->
+			<div style="padding-top:29px;border-top:1px solid #d1d1d1;width:745px;"></div>
+
+			<form name="authForm" id="authForm" action="../member_process/auth_chk" target="actionFrame" method="post">
+			<input type="hidden" name="return_url" value="{return_url}"/>
+
+			<!-- 본인인증 테이블 :: START -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr><td height="18"></td></tr>
+			<tr>
+				<td align="center">
+					<img src="../images/common/obtain_txt01.gif" />
+				</td>
+
+			</tr>
+			<tr><td height="30">&nbsp;</td></tr>
+			<!-- 인증수단 노출 :: START -->
+			<tr>
+				<td align="center">
+					<table cellspacing="0" cellpadding="0" border="0">
+					<tr>
+					<!--{? realnameinfo.useRealnamephone_adult == 'Y'}-->
+						<td>
+							<img src="../images/common/phone_obtain01.gif" alt="휴대폰인증" usemap="#auth_phone" />
+						</td>
+					<!--{ / }-->
+					<!--{? realnameinfo.useRealnamephone_adult == 'Y' && realnameinfo.useIpin_adult == 'Y'}-->
+						<td width="40px"></td>
+					<!--{: realnameinfo.useRealnamephone_adult != 'Y' && realnameinfo.useIpin_adult != 'Y'}-->
+						<td align="center">
+							성인인증 수단이 없습니다.<br/>
+							쇼핑몰 고객센터로 문의해 주십시오.<br/><br/>
+							<a href="/main">메인페이지 ></a>
+						</td>
+					<!--{ / }-->
+					<!--{? realnameinfo.useIpin_adult == 'Y'}-->
+						<td>
+							<img src="../images/common/ipin_obtain02.gif"  alt="아이핀인증" usemap="#auth_ipin" />
+						</td>
+					<!--{ / }-->
+					</tr>
+					</table>
+				</td>
+			</tr>
+			</table>
+			<!-- 인증수단 노출 :: END -->
+			</form>
+
+			<!-- Line -->
+			<div style="margin-top:48px;border-top:1px solid #d1d1d1;width:745px;"></div>
+			</td>		
+		</tr>
+		<tr><td height="14"></td></tr>
+		<tr>
+			<td align="center">
+				<div style="padding-left:13%;text-align:left;font-size:11px;font-family:Dotum:color:#838383;line-height:15px;">
+				* 본인확인이 되지 않는 경우 아래의 본인확인기관에 본인인증 등록을 요청할 수 있습니다. 한국신용정보(<a href="http://www.idcheck.co.kr" target="_blank">http://www.idcheck.co.kr</a>) 1588-2486<br/>
+				* 타인의 개인정보를 부정하게 사용하는 경우 3년 이하의 징역 또는 1천만원 이하의 벌금에 처해질 수 있습니다
+				</div>
+			</td>
+		</tr>
+		<tr><td height="50"></td></tr>
+		<tr>
+			<td align="center">
+				<img src="../images/common/btn_auth_next.gif" class="hand" onclick="javascript:{?_GET.return_url=='/order/settle'}location.href='/order/cart';{:}history.back();{/}" />
+			</td>
+		</tr>
+		<tr><td height="100"></td></tr>
+		</table>
+	</td>
+</tr>
+</table>
+<map name="auth_phone">
+	<area shape="rect" coords="156,138,261,166" href="javascript:phonePopup();" alt="휴대폰인증" title="휴대폰 인증" />
+</map>
+<map name="auth_ipin">
+	<area shape="rect" coords="156,138,261,166" href="javascript:ipinPopup();" alt="아이핀인증" title="아이핀 인증" />
+</map>
+<!-- 본문내용 끝 -->
+
+<script type="text/javascript">
+var return_url = "";
+<!--{? return_url }-->
+	return_url = "&return_url={return_url}";
+<!--{ / }-->
+//본인인증:휴대폰
+function phonePopup(){
+	var url = "../member_process/realnamecheck?intro=1&realnametype=phone&adult=1"+return_url;
+	window.open(url, 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+}
+
+//아이핀 실명인증
+function ipinPopup(){
+	var url = "../member_process/realnamecheck?intro=1&realnametype=ipin&adult=1"+return_url;
+	window.open(url, 'popupIPIN2', 'width=450, height=550, top=100, left=100,fullscreen=no, menubar=no status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no');
+}
+
+//안심체크 실명인증
+function checkPopup(){
+	var url = "../member_process/realnamecheck?intro=1&realnametype=check&adult=1"+return_url;
+	window.open(url, 'niceID_popup', 'width=500, height=550, toolbar=no,directories=no,scrollbars=no,resizable=no,status=no,menubar=no,top=0,left=0,location=no');
+}
+</script>

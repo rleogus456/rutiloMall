@@ -1,0 +1,308 @@
+<script type="text/javascript" src="../../common/side.js"></script>
+
+<div class="top_userinformation">
+	<!--{? userInfo.member_seq }-->
+	<div class="welcome"><strong>{?userInfo.user_name}{userInfo.user_name}{:}{userInfo.userid}{/}</strong>님 반갑습니다.</div>
+	<div class="logoutbtn"><a href="../login_process/logout" target="actionFrame"><input type="button" value="로그아웃" /></a></div>
+	<div class="myinfobtn"><a href="../mypage/myinfo"><input type="button" value="내정보" /></a></div>
+	<!--{:}-->
+	<div class="welcome"><strong>고객님</strong> 반갑습니다.</div>
+	<div class="loginbtn"><a href="../member/login"><input type="button" value="로그인" /></a></div>
+	<div class="joinbtn"><a href="../member/agreement"><input type="button" value="회원가입" /></a></div>
+	<!--{/}-->
+</div>
+<ul class="top_navigation">
+	<!-- <li class="tn_recently"><a href="/goods/recently">최근 본 상품{?push_count_today}<span class="pushCount" style="position:absolute;top:0px;right:0px;">{push_count_today}</span>{/}</a></li> -->
+	<li class="tn_cart"><a href="/order/cart">장바구니{?push_count_cart}<span class="pushCount side">{push_count_cart}</span>{/}</a></li>
+	<li class="tn_wish"><!--{? userInfo.member_seq }--><a href="/mypage/wish"><!--{:}--><a href="/member/login?return_url=/mypage/wish"><!--{/}-->위시리스트</a></li>
+	<li class="tn_delivery"><a href="/mypage/order_catalog">주문/배송</a></li>
+	<li class="tn_mypage"><!--{? userInfo.member_seq }--><a href="/mypage/index"><!--{:}--><a href="/member/login?return_url=/mypage/index"><!--{/}-->마이페이지</a></li>
+</ul>
+
+<div class="menu_navigation_wrap">
+	<ul class="tab">
+		<li class="current">카테고리</li>
+		<li>브랜드</li>
+		<li>지역</li>
+	</ul>
+	<!-- 카테고리 -->
+	<ul class="menu">
+		<!--{?userInfo.member_seq}-->
+		<li class="mitem mitemicon1">
+			<a class="mitem_title">즐겨찾는 카테고리</a>
+		</li>
+		<li class="mitem_subcontents">
+			<ul class="submenu">
+				<!--{?favorite_category}-->
+					<!--{@favorite_category}-->
+					<li class="submitem">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+								<a href="/goods/catalog?code={.category_code}" class="submitem_title">{.title}</a>
+							</td>
+							<td width="90" align="right">
+								{?userInfo.member_seq}<a class="mitem_favorite {?.favorite}mitem_favorite_on{/}" ctype="category" ccode="{.category_code}"></a>{/}
+							</td>
+						</tr>
+						</table>
+					</li>
+					<!--{/}-->
+				<!--{:}-->
+					<li class="submitem"><span class="submitem_contents center">자주 쓰는 카테고리의 <img src="../../images/design/ico_fvr_off.png" width="20" />을 눌러주세요.</span></li>
+				<!--{/}-->				
+			</ul>
+		</li>
+		<!--{/}-->
+		<!--{@category}-->
+		<li class="mitem {?.childs}mitemicon1{:}mitemicon3{/}">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<a class="mitem_title" href="/goods/catalog?code={.category_code}">{.ori_title}</a>
+				</td>
+				<td width="90" align="right">
+					{?userInfo.member_seq}<a class="mitem_favorite {?.favorite}mitem_favorite_on{/}" ctype="category" ccode="{.category_code}"></a>{/}
+					<a class="mitem_goodsview" href="/goods/catalog?code={.category_code}">상품보기</a>
+				</td>
+			</tr>
+			</table>
+		</li>
+		<li class="mitem_subcontents">
+			<ul class="submenu">
+				<!--{@.childs}-->
+				<li class="submitem">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<a href="/goods/catalog?code={..category_code}" class="submitem_title">{..ori_title}</a>
+						</td>
+						<td width="90" align="right">
+							{?userInfo.member_seq}<a class="mitem_favorite {?..favorite}mitem_favorite_on{/}" ctype="category" ccode="{..category_code}"></a>{/}
+							<a class="mitem_goodsview" href="/goods/catalog?code={..category_code}">상품보기</a>
+						</td>
+					</tr>
+					</table>
+				</li>
+				<!--{/}-->
+			</ul>
+		</li>
+		<!--{/}-->
+	</ul>
+
+	<!-- 브랜드 -->
+	<ul class="menu hide">
+		<!--{?userInfo.member_seq}-->
+		<li class="mitem mitemicon1">
+			<a class="mitem_title">즐겨찾는 브랜드</a>
+		</li>
+		<li class="mitem_subcontents">
+			<ul class="submenu">
+				<!--{?favorite_brand}-->
+					<!--{@favorite_brand}-->
+					<li class="submitem">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+								<a href="/goods/brand?code={.category_code}" class="submitem_title">{.title}</a>
+							</td>
+							<td width="90" align="right">
+								{?userInfo.member_seq}<a class="mitem_favorite {?.favorite}mitem_favorite_on{/}" ctype="brand" ccode="{.category_code}"></a>{/}
+							</td>
+						</tr>
+						</table>
+					</li>
+					<!--{/}-->
+				<!--{:}-->
+					<li class="submitem"><span class="submitem_contents center">자주 쓰는 브랜드의 <img src="../../images/design/ico_fvr_off.png" width="20" />을 눌러주세요.</span></li>
+				<!--{/}-->
+			</ul>
+		</li>
+		<!--{/}-->
+		<!--{?best_brand}-->
+		<li class="mitem mitemicon1">
+			<a class="mitem_title">베스트 브랜드</a>
+		</li>
+		<li class="mitem_subcontents" style="background-color:#ececec;">
+			<ul class="bestbrands">
+				<!--{@best_brand}-->
+				<li><a href="/goods/brand?code={.category_code}">{?.node_catalog_image_normal}<img src="{.node_catalog_image_normal}" />{:}{.title}{/}</a></li>
+				<!--{/}-->
+			</ul>
+			<div class="bestbrands_paging"></div>
+		</li>
+		<!--{/}-->
+		<li class="mitem_contents">
+			<ul class="brandsort">
+				<li class="current">가나다</li>
+				<li>ABC</li>
+				<li>기타</li>
+			</ul>
+			<ul class="brandsort_words">
+				<li class="current">ㄱ</li>
+				<li>ㄴ</li>
+				<li>ㄷ</li>
+				<li>ㄹ</li>
+				<li>ㅁ</li>
+				<li>ㅂ</li>
+				<li>ㅅ</li>
+				<li>ㅇ</li>
+				<li>ㅈ</li>
+				<li>ㅊ</li>
+				<li>ㅋ</li>
+				<li>ㅌ</li>
+				<li>ㅍ</li>
+				<li>ㅎ</li>
+			</ul>
+			<ul class="brandsort_words hide">
+				<li>A</li>
+				<li>B</li>
+				<li>C</li>
+				<li>D</li>
+				<li>E</li>
+				<li>F</li>
+				<li>G</li>
+				<li>H</li>
+				<li>I</li>
+				<li>J</li>
+				<li>K</li>
+				<li>L</li>
+				<li>M</li>
+				<li>N</li>
+				<li>O</li>
+				<li>P</li>
+				<li>Q</li>
+				<li>R</li>
+				<li>S</li>
+				<li>T</li>
+				<li>U</li>
+				<li>V</li>
+				<li>W</li>
+				<li>X</li>
+				<li>Y</li>
+				<li>Z</li>
+			</ul>
+		</li>
+		<!--{@brand}-->
+		<li class="mitem mitem_brand {?.childs}mitemicon1{:}mitemicon3{/}" title_eng="{.title_eng}" title="{.ori_title}">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<a class="mitem_title" href="/goods/brand?code={.category_code}">{.ori_title}</a>
+				</td>
+				<td width="90" align="right">
+					{?userInfo.member_seq}<a class="mitem_favorite {?.favorite}mitem_favorite_on{/}" ctype="brand" ccode="{.category_code}"></a>{/}
+					<a class="mitem_goodsview" href="/goods/brand?code={.category_code}">상품보기</a>
+				</td>
+			</tr>
+			</table>
+		</li>
+		<li class="mitem_subcontents mitem_brand_sub">
+			<ul class="submenu">
+				<!--{@.childs}-->
+				<li class="submitem">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<a href="/goods/brand?code={..category_code}" class="submitem_title">{..ori_title}</a>
+						</td>
+						<td width="90" align="right">
+							{?userInfo.member_seq}<a class="mitem_favorite {?..favorite}mitem_favorite_on{/}" ctype="brand" ccode="{..category_code}"></a>{/}
+							<a class="mitem_goodsview" href="/goods/brand?code={..category_code}">상품보기</a>
+						</td>
+					</tr>
+					</table>
+				</li>
+				<!--{/}-->
+			</ul>
+		</li>
+		<!--{/}-->
+	</ul>
+
+	<!-- 지역 -->
+	<ul class="menu hide">
+		<!--{@location}-->
+		<li class="mitem {?.childs}mitemicon1{:}mitemicon3{/}">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					<a class="mitem_title" href="/goods/location?code={.location_code}">{.ori_title}</a>
+				</td>
+				<td width="90" align="right">
+					<a class="mitem_goodsview" href="/goods/location?code={.location_code}">상품보기</a>
+				</td>
+			</tr>
+			</table>
+		</li>
+		<li class="mitem_subcontents">
+			<ul class="submenu">
+				<!--{@.childs}-->
+				<li class="submitem">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							<a href="/goods/location?code={..location_code}" class="submitem_title">{..ori_title}</a>
+						</td>
+						<td width="90" align="right">
+							<a class="mitem_goodsview" href="/goods/location?code={..location_code}">상품보기</a>
+						</td>
+					</tr>
+					</table>
+				</li>
+				<!--{/}-->
+			</ul>
+		</li>
+		<!--{/}-->
+	</ul>
+
+	<!-- 최근 본 상품(SIDE) -->
+	<div class="recently_side">
+		<h1>최근 본 상품</h1>
+		<div class="recently_thumb">
+			<div id="recently_slide_left">
+				<div class="thumb"> 
+				<!--{ ? dataRightQuicklist }-->
+					<ul>
+						<!--{ @ dataRightQuicklist }-->
+						{? ( .index_ < 30 ) //10page까지 노출}
+							{? (.index_ && (.index_%3) == 0 )}</ul><ul>{/}
+							<li><a href="../goods/view?no={.goods_seq}" class="right_quick_goods"><img src="{.image}" onerror="this.src='../../images/common/noimage_list.gif'"></a><a href="javascript:rightDeleteItem('mobile_left_item_recent', '{.goods_seq}',$(this))" class="btn_delete cover">삭제</a></li>
+						{/}
+						<!--{ / }-->
+					</ul>
+				<!--{ : }-->
+					<h2> 최근 본 상품이 없습니다.</h2>
+				<!--{ / }-->
+				</div> 
+			</div>
+			<div class="recently_page"> 
+				<!--{ ? dataRightQuicklist }-->
+				<a href="javascript:;" class="btn_page cover">선택</a>  
+				<!--{ / }-->
+			</div>
+		</div>
+		<!--{ ? dataRightQuicklist }-->
+		<a href="/goods/recently" class="btn_more mitem_goodsview">모두보기</a>
+		<!--{ / }-->
+	</div>
+	<!--{ ? dataRightQuicklist && dataRightQuicklist.size_ > 3 }-->
+	<script type="text/javascript">
+	<!--
+		$(function(){
+			/* 최근 본 상품 - SIDE(슬라이드) */
+			$("#recently_slide_left").touchSlider({
+				flexible:true, roll:true, paging:$("#recently_slide_left").next().find(".btn_page"),
+				initComplete:function(e){$("#recently_slide_left").next().find(".btn_page").each(function(i, el){$(this).text("page " + (i+1));});},
+				counter:function(e){$("#recently_slide_left").next().find(".btn_page").removeClass("on").eq(e.current-1).addClass("on");}
+			});
+		});
+	//-->
+	</script>
+	<!--{ / }-->
+</div>
+
+<div id="category_favorite_alert">
+	<div class="cfa_on"></div>
+	<div class="cfa_off"></div>
+	<div class="cfa_msg"></div>
+</div>

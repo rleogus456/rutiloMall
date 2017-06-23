@@ -1,0 +1,17 @@
+{=showDesignBanner(1)}
+<div></div>
+
+<!-- 메인상품디스플레이 -->
+{=showDesignDisplay(1)}
+{=showDesignDisplay(16)}
+<!-- 네이버 톡톡 -->
+<!--{? sns.ntalk_connect == 'Y' && sns.ntalk_use == 'Y' && sns.ntalk_use_mobile_main == 'Y'}-->
+<div>
+	<button type="button" style="width:100%;" class="btn_talk" onclick="location.href='https://talk.naver.com/{sns.ntalk_connect_id}#nafullscreen';">쇼핑할땐 &nbsp;<img src="../images/icon/icon_talk.png" align="absmiddle" alt="네이버톡톡" /> 톡톡하세요</button>
+</div>
+<style type="text/css">
+	.btn_talk {display:inline-block; border:1px solid #01ba3a; background:#01c43d; height:42px; line-height:38px; font-size:16px; font-weight:600; color:#ffffff !important; letter-spacing:-1px;}
+</style>
+<!--{/}-->
+
+

@@ -1,0 +1,79 @@
+			<style>
+			.gilTable {border-collapse:collapse;}
+			.gilTable th {width:70px;background-color:#e8e8e8; text-align:left; padding-left:5px; font-size:11px; font-weight:normal; color:#535353; letter-spacing:-1px;  border-top:1px solid #fefefe; border-bottom:1px solid #Fefefe;}
+			.gilTable td {background-color:#fff; padding-left:5px; font-size:11px; color:#000; letter-spacing:-1px; border:1px solid #ddd; height:50px;}
+			.gilTable {border:collapse;}
+			.gilTable td { padding-left:5px; font-size:11px; color:#616161; letter-spacing:-1px; border-bottom:1px solid #ddd;}
+			table.international_table_style {border:1px solid #d0d0d0;}
+			table.international_table_style th,
+			table.international_table_style td {padding:7px 3px; font-weight:normal; text-align:left; border-top:1px solid #e0e0e0}
+			table.international_table_style tr:first-child th,
+			table.international_table_style tr:first-child td {border-top:0px;}
+			table.international_table_style th {background-color:#f5f5f5;}
+			table.international_table_style td {border-left:1px solid #e0e0e0}
+			</style>
+			<div class="sub_division_title">해외배송상품 개인통관 고유부호<div class="sub_division_arw"></div></div>
+
+			<div class="sub_division_contents">
+			<table class="international_table_style" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#fff">
+			<col width="70" /><col width="45%"/><col width="100" />
+			<tr>
+				<td>개인통관<br/>고유부호</td>
+				<td class="fx12">
+					<input type="text" name="clearance_unique_personal_code" value="" width="100%" maxlength="13" />
+				</td>
+				<td class="fx12" style="border-left:0px;padding-right:10px;text-align:right;">
+					<span class="hand" onclick="openDialog('개인통관 고유부호','personalCodeDialog',{'height':'270'});"><strong class="policy_show_btn">발급안내 &gt;</strong></span>
+				</td>
+			</tr>
+			</table>
+			<table  width="100%" border="0" cellpadding="0" cellspacing="10"  style="background-color:#fff">
+			<tr>
+				<td class="fx12">
+					<label><input type="checkbox" name="agree_international_shipping1" value="y"> 개인통관 고유부호 수집에 동의</label>
+				</td>
+				<td class="fx12"  align="right">
+				<span class="hand" onclick="openDialog('개인통관고유부호 수집','agree_international_shipping_dialog1',{'height':'100'});"><strong class="policy_show_btn">내용보기 &gt;</strong></span>
+				</td>
+			</tr>
+			<!--
+			<tr>
+				<td class="fx12">
+					<label><input type="checkbox" name="agree_international_shipping2" value="y"> 개인통관 고유부호 판매자 제공에 동의</label>
+				</td>
+				<td class="fx12"  align="right">
+				<span class="hand" onclick="openDialog('개인통관고유부호 제공','agree_international_shipping_dialog2',{'height':'100'});"><strong class="policy_show_btn">내용보기 &gt;</strong></span>
+				</td>
+			</tr>
+			-->
+			</table>
+
+			<div id="personalCodeDialog" style="display:none">
+				<div class="fx12 pd10">
+						개인통관 고유부호는 해외배송 상품 통관 시 주민등록번호 대신<br/>
+						사용 가능한 번호로, 관세청 사이트에서 발급 받으실 수 있습니다.<br/>
+						<br/>
+						<strong>개인통관고유부호 발급방법</strong><br/>
+						1. 관세청 전자통관 사이트(https://p.customs.go.kr) 방문<br/>
+						2. 사이트 상단에서 업무처리 메뉴 선택<br/>
+						3. 좌측 메뉴에서 수입통관 메뉴 선택<br/>
+						4. 좌측 메뉴에서 개인통관고유부호 항목 선택<br/>
+						5. 본인 이름과 주민등록번호 입력 후 ‘확인’ 클릭<br/>
+						6. 공인인증서 인증<br/>
+						7. 주소, 전화번호, 휴대폰번호, 이메일 입력 후 최종 ‘등록’<br/>
+						8. 개인통관고유부호 확인
+				</div>
+			</div>
+			<div id="agree_international_shipping_dialog1" style="display:none">
+				<div class="fx12 pd10">
+					개인통관고유번호는 수입통관 업무처리를 위해 수집하며,<br/>
+					서비스 이용기간 동안 보관합니다.
+				</div>
+			</div>
+			<div id="agree_international_shipping_dialog2" style="display:none">
+				<div class="fx12 pd10">
+					수입통관 업무처리를 위해 본 상품 판매자에게<br/>
+					개인통관고유번호를 제공합니다.
+				</div>
+			</div>
+			</div>

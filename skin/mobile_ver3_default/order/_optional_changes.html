@@ -1,0 +1,24 @@
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/swfobject.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquploadify/jquery.uploadify.v2.1.4.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+<link rel="stylesheet" type="text/css" href="/app/javascript/plugin/jquploadify/uploadify.css" />
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+$(document).ready(function(){
+	$('button#change_cart').bind('click', function(){
+		$('form#optional_changes_form').submit();
+	});
+});
+</script>
+<form name="optional_changes_form" id="optional_changes_form" method="post" enctype="multipart/form-data" action="optional_modify" target="actionFrame">
+<input type='hidden' name='cart_option_seq' value='{cart_options[0].cart_option_seq}'>
+
+<div style="padding:10px 0;background-color:#fbfbfb;">
+
+	{ # OPTION_SELECT }
+
+	<div style="margin-top:10px; margin-bottom:4px; margin-left:38%; ">
+		<input type="submit" id="change_cart" style="cursor:pointer; width:90px; height:36px;" class="btn_normal_small" value="변경" />
+	</div>
+</div>
+</form>

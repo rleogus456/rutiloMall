@@ -1,0 +1,1720 @@
+{is_file_facebook_tag}
+<style type="text/css">
+.gilTable {border-collapse:collapse;}
+.gilTable th {width:70px;background-color:#e8e8e8; text-align:left; padding-left:5px; font-size:11px; font-weight:normal; color:#535353; letter-spacing:-1px;  border-top:1px solid #fefefe; border-bottom:1px solid #Fefefe;}
+.gilTable td {background-color:#fff; padding-left:5px; font-size:11px; color:#000; letter-spacing:-1px; border:1px solid #ddd; height:50px;}
+.ddlTable tr th {padding:5px 10px 5px 0px; border-top:1px solid #ddd;}
+.ddlTable tr td {padding:5px 0; border-top:1px solid #ddd;}
+.ddlTable tr:first-child th,
+.ddlTable tr:first-child td {border-top:none;}
+.gilTable {border:collapse;}
+.gilTable td { padding-left:5px; font-size:11px; color:#616161; letter-spacing:-1px; border-bottom:1px solid #ddd;}
+#goods_view	{/*padding-bottom:54px;*/}
+#goods_thumbs {border-bottom:1px solid #999;}
+.goods_name			{padding:0 10px; color:#222222; font-size:16px; letter-spacing:-1px; font-weight:600;}
+.short_desc			{padding:0 10px; color:#555555; font-size:11px; letter-spacing:-1px;}
+.goods_description	{}
+.goods_description_images {/*text-align:center;*/ padding:10px;}
+.goods_description_images img {max-width:100%;}
+.exchange_guide		{padding:10px; letter-spacing:-1px;}
+.goods_spec_table, .info_goods_spec_table {border-top:1px solid #ccc; border-bottom:0px solid #ddd;}
+.goods_spec_table th.gst_th, .info_goods_spec_table th.gst_th {padding:3px 0 3px 10px; height:32px; text-align:left; font-weight:600; color:#515151; font-size:12px; border-bottom:1px solid #e0e0e0; letter-spacing:-1px}
+.goods_spec_table td.gst_td td, .info_goods_spec_table td.gst_td td {color:#515151; font-size:12px;}
+.goods_spec_table td.gst_td, .info_goods_spec_table td.gst_td {padding:6px 10px 6px 15px; text-align:left; color:#515151; font-size:12px; border-bottom:1px solid #e0e0e0; line-height:20px;}
+.goods_spec_table td.gst_sub {padding:10px; border-bottom:1px solid #e0e0e0;}
+.info_goods_spec_table td.gst_sub {/*padding:10px; border-bottom:1px solid #e0e0e0;*/}
+.goods_spec_table td.gst_sub .gst_sub_inner, .info_goods_spec_table td.gst_sub .gst_sub_inner {padding:5px 10px; border:1px solid #d2d5dd; background-color:#f1f2f5; }
+.goods_spec_table td.gst_sub .gst_sub_table td, .info_goods_spec_table td.gst_sub .gst_sub_table td {padding:7px 0; border-top:1px solid #d2d5dd}
+.goods_spec_table td.gst_sub .gst_sub_table tr:first-child td, .info_goods_spec_table td.gst_sub .gst_sub_table tr:first-child td {border-top:0px;}
+.goods_spec_table td.gst_sub .gst_sub_table2, .info_goods_spec_table td.gst_sub .gst_sub_table2 {border-collapse:collapse; border:1px solid #d2d5dd;}
+.goods_spec_table td.gst_sub .gst_sub_table2 th, .info_goods_spec_table td.gst_sub .gst_sub_table2 th {border-top:1px solid #d2d5dd; border-right:1px solid #d2d5dd; height:35px; background-color:#ffffff; text-align:center;}
+.goods_spec_table td.gst_sub .gst_sub_table2 td, .info_goods_spec_table td.gst_sub .gst_sub_table2 td {border-top:1px solid #d2d5dd; height:35px; background-color:#f1f2f5; text-align:center;}
+.goods_spec_table .consumer, .info_goods_spec_table .consumer {color:#616161; font-weight:600;}
+.goods_spec_table .price, .info_goods_spec_table .price {/*font-family:tahoma;*/ font-size:18px; color:#ff4a00; font-weight:bold; vertical-align:middle;}
+.goods_spec_table .price .price_won, .info_goods_spec_table .price .price_won {font-family:helvetica,sans-serif;font-size:15px;}
+.goods_spec_table select, .info_goods_spec_table select {min-width:120px;}
+.goods_spec_table .coupon_btn, .info_goods_spec_table .coupon_btn {position:relative; display:inline-block; width:71px; height:34px; background:url("../images/design/coupon_bg.gif"); vertical-align:middle;}
+.goods_spec_table .coupon_btn span.cb_percent, .info_goods_spec_table .coupon_btn span.cb_percent {position:absolute; left:4px; top:14px; font-size:14px; /*font-family:tahoma;*/ color:#c00c0b; font-weight:600;}
+.goods_spec_table .coupon_btn span.cb_text, .info_goods_spec_table .coupon_btn span.cb_text {position:absolute; left:100%; top:20px; margin-left:3px; width:65px; color:#c00c0b; font-size:11px; /*font-family:dotum;*/ font-weight:600; text-decoration:underline;}
+.list_table_style {}
+.list_table_style th {height:32px; font-size:11px; font-weight:normal; border-top:2px solid #e7e7e7; border-bottom:2px solid #e7e7e7;}
+.list_table_style td {height:18px; padding:3px 0; font-size:11px; border-bottom:1px solid #e9e9e9;}
+.shararea { background-color:#fff; padding:15px 5px 15px 5px; }
+.shararea img{ max-width:100% }
+.relation_area { background-color:#fff; padding:10px;}
+.coupon_area {/*padding:20px 0;*/}
+#goods_thumbs_paging {position:absolute; top:-45px; width:100%; text-align:center; z-index:10;}
+table.event_datetime {border-top:1px solid #d3d3d3; background-color:#fafafa; box-sizing:content-box; padding-right:10px;}
+table.event_datetime .event_datetime_box {background-color:#777; height:30px; line-height:30px; padding:0 8px; margin:5px 0 5px 5px; font-size:16px; color:#fff; font-weight:600; text-align:center; white-space:nowrap;}
+#floating_window {display:block; position:fixed; bottom:0px; left:0px; width:100%; background-color:#f4f4f4; z-index:1000;}
+#floating_window .fw_btn {position:absolute; top:100%; width:100%; height:51px;}
+#floating_window .fw_goods_option_area {overflow:hidden; overflow-y:auto;}
+#floating_window .fw_goods_option_area .goods_option_table {background-color:transparent; border:none !important;}
+#floating_window .fw_goods_option_area .goods_option_table th {background-color:transparent; border:none !important;}
+#floating_window .fw_goods_option_area .goods_quantity_table_container {background-color:#fff;}
+#floating_window .fw_goods_price_area {height:30px; padding-top:10px;}
+#floating_window .fw_goods_ea_area {height:30px; padding-top:10px;}
+#floating_window .fw_btn_open {background:url('../images/design/quickbar_btn_open.png') no-repeat center top; background-size:360px 25px;}
+#floating_window .fw_btn_close {background:url('../images/design/quickbar_btn_close.png') no-repeat center top; background-size:360px 25px;}
+.additions_table_style {border-top:1px solid #666}
+.additions_table_style th,
+.additions_table_style td {border-bottom:1px solid #d8d9dd}
+.additions_table_style th {padding:12px 0 12px 10px; text-align:left; width:65px;}
+.additions_table_style td {padding:12px 0 12px 10px;}
+.sub_info_table {background-color:#fff; margin-top:5px; border:1px solid #d2d5dd}
+.sub_info_table th,
+.sub_info_table td {border-top:1px solid #d2d5dd}
+.sub_info_table th {padding:12px 0 12px 10px; text-align:left; color:#000;}
+.sub_info_table td {padding:12px 0 12px 10px; color:#666;}
+.sub_info_table tr:first-child th,
+.sub_info_table tr:first-child td {border-top:0px;}
+.info_goods_spec_table {border-top:1px solid #ddd; border-bottom:0px solid #ddd;}
+.info_goods_spec_table th.gst_th {padding:3px 0 3px 10px; height:32px; text-align:left; font-weight:600; color:#515151; font-size:12px; border-bottom:1px solid #ccc; letter-spacing:-1px}
+.info_goods_spec_table td.gst_td td {color:#515151; font-size:12px;}
+.info_goods_spec_table td.gst_td {padding:6px 10px 6px 15px; text-align:left; color:#515151; font-size:12px; border-bottom:1px solid #ccc; line-height:20px;}
+.info_goods_spec_table td.gst_sub {padding:10px; /*border-bottom:1px solid #e0e0e0;*/}
+.info_goods_spec_table td.gst_sub .gst_sub_inner {padding:5px 10px; border:1px solid #d2d5dd; background-color:#f1f2f5; }
+.info_goods_spec_table td.gst_sub .gst_sub_table td {padding:7px 0; border-top:1px solid #d2d5dd}
+.info_goods_spec_table td.gst_sub .gst_sub_table tr:first-child td {border-top:0px;}
+
+/* 플로팅 - BACK/TOP(대쉬보드) */
+#floating_over .ico_floating_back {bottom:73px !important;}
+#floating_over .ico_floating_top {bottom:73px !important;}
+#floating_over .ico_floating_zoom {bottom:115px !important;}
+</style>
+<script type="text/javascript">
+var gl_goods_price = 0;
+var gl_event_sale_unit = 0;
+var gl_cutting_sale_price = 0;
+var gl_cutting_sale_action = "{config_system.cutting_sale_action}";
+var gl_multi_discount_use 	= "{goods.multi_discount_use}";
+var gl_multi_discount_unit = "{goods.multi_discount_unit}";
+var gl_multi_discount 		= 0;
+var gl_multi_discount_ea 	= 0;
+var gl_option_view_type = "{goods.option_view_type}";
+var gl_options_count = {=count(options)};
+var gl_opttag = '<tr class="quanity_row">';
+var gl_min_purchase_limit = '{goods.min_purchase_limit}';
+var gl_min_purchase_ea = 0;
+var gl_max_purchase_limit = '{goods.max_purchase_limit}';
+var gl_max_purchase_ea = 0;
+var gl_member_seq = "{sessionMember.member_seq}";
+var gl_request_uri = "{=urlencode(_SERVER.REQUEST_URI)}";
+var gl_goods_seq = 0;
+var gl_option_divide_title_count = {=count(goods.option_divide_title)};
+var gl_skin = "{skin}";
+var gl_string_price_use = "";
+
+{ ? is_array(options_n0) }
+var gl_option_n0 = {=json_encode(options_n0)};
+{ / }
+
+{ ? is_array(gl_options_join) }
+var gl_options_join = {=json_encode(options_join)};
+{ / }
+
+{ ? goods.price }
+gl_goods_price = {goods.sale_price};
+{ / }
+{ ? goods.event.event_sale_unit }
+gl_event_sale_unit = {goods.event.event_sale_unit};
+{ / }
+{? is_numeric(config_system.cutting_sale_price) && config_system.cutting_sale_use !='none'}
+gl_cutting_sale_price = {config_system.cutting_sale_price};
+{ / }
+{ ? goods.multi_discount }
+gl_multi_discount 		= {goods.multi_discount};
+{ / }
+{ ? goods.multi_discount_ea }
+gl_multi_discount_ea 	= {goods.multi_discount_ea};
+{ / }
+{ ? goods.min_purchase_ea }
+gl_min_purchase_ea = {goods.min_purchase_ea};
+{ / }
+{ ? goods.max_purchase_ea }
+gl_max_purchase_ea = {goods.max_purchase_ea};
+{ / }
+{ ? goods.goods_seq }
+gl_goods_seq = {goods.goods_seq};
+{ / }
+
+var PlusMobileTaps = {};
+PlusMobileTaps.hiddenTab = $('<div>').appendTo(document.body).css({position:'fixed',top:0,left:0,width:'100%',height:0,zIndex:999}); 
+
+PlusMobileTaps.tabFlyingmode = function(type) {
+	if( type && !$('#goods_contents_quick').hasClass('flyingMode') ){
+		$('#goods_contents_quick').css('padding-top',$('#goods_title_bar').height()).addClass('flyingMode');
+		$('#goods_tabs').css('top',$('#goods_title_bar').height()).appendTo(PlusMobileTaps.hiddenTab);
+	}else if( !type && $('#goods_contents_quick').hasClass('flyingMode') ){
+		$('#goods_contents_quick').removeClass('flyingMode').css('padding-top',0);
+		$('#goods_contents_quick').prepend( $('#goods_tabs').css('top',$('#goods_title_bar').height()) );
+	}
+}
+
+PlusMobileTaps.scrollTabsFunc = function() {
+	var sc = $(window).scrollTop(),
+		headerH = $('#goods_title_bar').height(),
+		detailtabH = $('#goods_tabs').height(),
+		contH = parseInt($('.event_datetime').height()+$('#goods_view_quick').height());
+	if(sc == 0 && contH == 0)	$('#goods_tabs').hide();
+	else						$('#goods_tabs').show();
+	if( sc > headerH ){
+		$('#goods_title_bar').addClass('flyingMode');
+	}else{
+		$('#goods_title_bar').removeClass('flyingMode');		
+	}
+
+	if( sc < contH ){
+		PlusMobileTaps.tabFlyingmode(false);//해더타이틀 숨김
+	}else{
+		PlusMobileTaps.tabFlyingmode(true);
+	}
+}
+
+$(document).ready(function(){
+	
+	setSlideSwipe('.slides_wrap', '.main_tabs_contents', 'resimg_num');
+
+	{? eventEnd}
+	timeInterval{goods.goods_seq} = setInterval(function(){
+		var time{goods.goods_seq} = showClockTime('text', '{eventEnd.year}', '{eventEnd.month}', '{eventEnd.day}', '{eventEnd.hour}', '{eventEnd.min}', '{eventEnd.second}', 'soloday', 'solohour', 'solomin', 'solosecond', '{goods.goods_seq}');
+		var time_tmp = showClockTime('text', '{eventEnd.year}', '{eventEnd.month}', '{eventEnd.day}', '{eventEnd.hour}', '{eventEnd.min}', '{eventEnd.second}', 'soloday{goods.goods_seq}', 'solohour{goods.goods_seq}', 'solomin{goods.goods_seq}', 'solosecond{goods.goods_seq}', '{goods.goods_seq}');
+		if(time{goods.goods_seq} == 0){
+			clearInterval(timeInterval{goods.goods_seq});
+			alert("단독이벤트가 종료되었습니다.");
+			document.location.reload();
+		}
+	},1000);
+	{/}
+
+	$("select[name='viewOptions[]']").last().bind("change",function(){
+		gl_opttag = '<td class="quantity_cell option_text">';
+		<!--{ @options[0].option_divide_title }-->
+		var opt = $(this).find('option:selected').attr('opt{.key_+1}');
+		if(!opt) return false;
+		gl_opttag += '	{.value_} : '+opt+'<input type="hidden" name="option[{.key_}][]" value="'+opt+'" />';
+		gl_opttag += '<input type="hidden" name="optionTitle[{.key_}][]" value="{.value_}" />';
+		<!--{ ? .size_ != .key_+1 }-->
+		gl_opttag += '<br />';
+		<!--{ / }-->
+		<!--{ / }-->
+	});
+
+	// 관련상품 옵션/수량변경 클릭시
+	$("button.btn_option_modify").bind("click",function() {
+		var id	= $(this).attr("id");
+		option_open(id);
+	});
+
+	// 관련상품 장바구니 클릭시
+	$("button.goodscart").bind("click",function() {
+		var id	= $(this).attr("id");
+		id = id.replace("goodscart_","");
+
+		if($("div#optional_changes_area_"+id).html() == ""){
+			option_open(id);
+		}else{
+			if(check_option(this)){
+				$("#optional_changes_form_"+id).submit();
+			}
+		}
+	});
+
+	{? wish_seq}
+		$('#wishimg').attr('src','../images/design/ico_wish_on.png');
+		$('#wishimg').attr('usewish','y');
+	{/}
+
+	// 상품이미지 페이징
+	if($("#goods_thumbs_paging").length){
+		var thumbs_max_page = parseInt('{=count(images)}');
+		$("#goods_thumbs_paging").customMobilePagination({
+			'style' : 'paging_style_5',
+			'now_page' : 1,
+			'max_page' : thumbs_max_page,
+			'btn_auto_hide' : false,
+			'on_prev' : function(){
+				var idx = parseInt($("#goods_thumbs_paging").attr('idx'));
+				var newidx = idx==0?thumbs_max_page-1:idx-1;
+				resimg_num(newidx);
+			},
+			'on_next' : function(){
+				var idx = parseInt($("#goods_thumbs_paging").attr('idx'));
+				var newidx = idx==thumbs_max_page-1?0:idx+1;
+				resimg_num(newidx);
+			},
+		});
+	}
+
+
+	$("img[data-original]").lazyload();
+
+	/* 상품상세 - 상품설명 탭(대쉬보드) */ 
+	  $(document).on('on',PlusMobileTaps.scrollTabsFunc);
+	  $(document).on('scroll',PlusMobileTaps.scrollTabsFunc);
+	  $(document).on('touchmove',PlusMobileTaps.scrollTabsFunc);
+
+	{?preload}
+	$(".set_preload").one('inview',get_preload_func);
+	{/}
+});
+
+function detail_contents_toggle(btn,contents){
+	if($("#"+contents).is(":hidden")){
+		$("#"+contents).show();
+		if($(btn).is('.btn_open_small')) $(btn).addClass('btn_close_small');
+	}else{
+		$("#"+contents).hide();
+		if($(btn).is('.btn_close_small')) $(btn).removeClass('btn_close_small');
+	}
+}
+
+function view_delviery_cost(){
+	var shipping_method = $("select[name='shipping_method'] option:selected").val();
+	$("select[name='shipping_method'] option").each(function(){
+		if( $(this).attr('selected') ){
+			$("div#"+$(this).val()).removeClass("hide");
+		}else{
+			$("div#"+$(this).val()).addClass("hide");
+		}
+	});
+}
+
+// 컬러 옵션 클릭시 상품상세컷 연결 leewh
+function clickSelectColor(color) {
+	$("img[id^=dot_]").each(function(){
+		if ($(this).attr('color')==color) {
+				$(this).trigger("click");
+				return false;
+		}
+	});
+}
+
+function resimg_num(i){
+	var slide_current = $(".slides_wrap").data('slide_current');
+	$('.main_tabs_contents').eq(slide_current).removeClass('active');
+	$('.main_tabs_contents').eq(i).addClass('active').show();
+	var k=0;
+	$('.main_tabs_contents').each(function(){
+		if(i == k) $(this).show();
+		else $(this).hide();
+		k = k + 1;
+	});
+	$(".slides_wrap").data('slide_current',i);
+
+	$("#goods_thumbs_paging").attr('idx',i);
+	$("#goods_thumbs_paging .paging_btn_num_now").html(parseInt(i)+1);
+}
+
+var old_id = "";
+function option_open(id){
+	var url = "recently_option?no="+id;
+	var area_obj = $("div#optional_changes_area_"+id);
+
+	// 닫기 옵션
+	if(old_id == id){ $(".optional_area").slideUp(500); old_id = ""; $(".optional_area").html(""); return; }
+	else			{ $(".optional_area").slideUp(500); $(".optional_area").html(""); }
+
+	$.get(url, function(data) {
+		area_obj.html(data);
+		area_obj.slideDown(500);
+		old_id = id;
+	});
+}
+
+function open_information_tab(thisTab,type){
+	$(".goods_information_tabs li.current").removeClass('current');
+	$(thisTab).addClass('current');
+
+	$(".goods_information_contents").hide();
+	$('.info_goods_add').hide();
+	$('.info_goods_add_map').hide();
+	$('.info_goods_add_bigdata').hide();
+	$('.info_goods_add_relation').hide();
+
+	$('.'+type).show();
+	
+	if( type == 'goods_description' || type == 'exchange_guide' ) {
+		$('.info_goods_add').show();
+		if( type == 'goods_description' ) { 
+			$('.info_goods_add_map').show();
+			$('.info_goods_add_bigdata').show();
+			$('.info_goods_add_relation').show();
+		}
+	}
+
+	if ($('#goods_contents_quick').hasClass('flyingMode'))
+	{
+		$(document).scrollTop($('#goods_view_quick').height()+40-$('#goods_tabs').height());
+	}
+}
+
+var alert_timer = null;
+function wish_chg(){
+	if(!gl_member_seq){
+		if(confirm('회원만 사용가능합니다.\n로그인하시겠습니까?')){
+			var url = "/member/login?return_url={_SERVER['REQUEST_URI']}";
+			top.document.location.href = url;
+			return;
+		}else{
+			return;
+		}
+	}
+	$.ajax({
+		'url' : $('#wishimg').attr('usewish') == 'n' ? '/mypage/wish_add?seqs[]={goods.goods_seq}' : '/mypage/wish_del?seqs={goods.goods_seq}',
+		'type' : 'get',
+		'success' : function(res){
+			if($('#wishimg').attr('usewish') == 'n'){
+				//$('#wishimg').attr('src','../images/design/ico_wish_on.png');
+				$('#wishimg').css('background','url(../images/design/ico_wish_on.png)');
+				$('#wishimg').attr('usewish','y');
+				$("#wish_alert .wa_on").show();
+				$("#wish_alert .wa_off").hide();
+				$("#wish_alert .wa_msg").html("위시리스트에<br />저장되었습니다.");
+
+			}else{
+				//$('#wishimg').attr('src','../images/design/ico_wish_off.png');
+				$('#wishimg').css('background','url(../images/design/ico_wish_off.png)');
+				$('#wishimg').attr('usewish','n');
+				$("#wish_alert .wa_on").hide();
+				$("#wish_alert .wa_off").show();
+				$("#wish_alert .wa_msg").html("위시리스트에서<br />삭제되었습니다.");
+			}
+			$("#wish_alert").stop(true,true).show();
+
+			clearInterval(alert_timer);
+			alert_timer = setInterval(function(){
+				clearInterval(alert_timer);
+				$("#wish_alert").stop(true,true).show().fadeOut('slow');
+			},1000);
+		}
+	});
+}
+
+var get_preload_func = function(){
+	$.ajax({
+		url: "/goods/view_contents?no={goods.goods_seq}&zoom=1&view_preload=1",
+		type: "get",
+		success : function(e){
+			$('.goods_view_contents').html(e);
+		}
+	});
+};
+</script>
+<script type="text/javascript" src="/app/javascript/js/goods-view.js?dummp=20150106"></script>
+<script type="text/javascript" src="/app/javascript/plugin/lazy/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+<script type="text/javascript" src="/app/javascript/plugin/jquery.inview.js"></script>
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.mobile.css" type="text/css" rel="stylesheet" />
+<div class="sub_title_bar" id="goods_title_bar" >
+	<h2><span id="plustest"></span>{goods.goods_name}</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+</div>
+
+{? eventEnd}
+<!-- 타임세일 -->
+<div class="event_datetime">
+	<table width="100%" height="100" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td height="100" bgcolor="{goods.event.bgcolor}" valign="top">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr><td height="10"></td></tr>
+					<tr>
+						<td align="center" class="event_tit">{goods.event.title_contents}</td>
+					</tr>
+					<tr><td height="5"></td></tr>
+					<tr>
+						<td align="center">
+							<table border="0" cellspacing="0" cellpadding="0">
+								<td class="event_wrap">
+									<div class="event_date" id="soloday">0</div>
+									<div class="event_bg"></div>
+								</td>
+								<td class="event_txt">일</td>
+								<td class="event_wrap">
+									<div class="event_date" id="solohour">00</div>
+									<div class="event_bg"></div>
+								</td>
+								<td class="event_txt2">:</td>
+								<td class="event_wrap">
+									<div class="event_date" id="solomin">00</div>
+									<div class="event_bg"></div>
+								</td>
+								<td class="event_txt2">:</td>
+								<td class="event_wrap">
+									<div class="event_date" id="solosecond">00</div>
+									<div class="event_bg"></div>
+								</td>
+							</table>
+						</td>
+					</tr>
+					<tr><td height="10"></td></tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+{/}
+
+<div id="goods_view">
+	<div id="goods_view_quick">
+		<!-- 상품 스펙 -->
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td valign="top">
+				<!-- 상품 이미지 -->
+				<table width="100%" cellpadding="0" cellspacing="0" align="center" >
+				<tr>
+					<td>
+						<div id="goods_thumbs">
+
+							<!--{? images && count(images) > 1 }-->
+							<div class="slide-wrap">
+								<div class="slides_wrap">
+								<!--{@ images }--><div class="main_tabs_contents slide {? .index_ == 0}active{/}" id="slide{.index_}" style="text-align:center;">
+								<a href="javascript:;" style="margin:auto;display:inline-block;width:100%;">
+								{? .view.image_type == 'video'}
+								<iframe  width="{goods.video_size_mobile0}" height="{goods.video_size_mobile1}" src="{.view.image}" frameborder="0" allowfullscreen  ></iframe>
+								{:}
+								<img src="{.view.image}" width="100%" onerror="this.src='../images/common/noimage.gif'" title="{images[1].large.label}" {? goods_view_image_alt}alt="{goods_view_image_alt}"{/}/>
+								{/}
+								</a>
+								</div><!--{/}-->
+								</div>
+							</div>
+							<div class="relative"><div id="goods_thumbs_paging" idx="0"></div></div>
+							<!--{:}-->
+							<a href="javascript:;"><img src="{images[1].view.image}" width="100%" onerror="this.src='../images/common/noimage.gif'" title="{images[1].large.label}"  {? goods_view_image_alt}alt="{goods_view_image_alt}"{/}/></a>
+							<!--{/}-->
+						</div>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td height="10"></td></tr>
+		<tr>
+			<td>
+				<div class="short_desc">{goods.summary}</div>
+			</td>
+		</tr>
+		<tr><td height="5"></td></tr>
+		<tr>
+			<td>
+				<div class="goods_name">
+					{goods.goods_name}
+					<!--{ @ icons }-->
+						<img src="/data/icon/goods/{.codecd}.gif" border="0">
+					<!--{ / }-->
+				</div>
+			</td>
+		</tr>
+		<tr><td height="10"></td></tr>
+		{? eventEnd}
+		<tr>
+			<td>
+				<table class="event_datetime" width="100%" border="0" cellpadding="0" cellspacing="0">
+				<col /><col /><col width="120" />
+				<tr>
+					<td align="left" class="fx15 pdl10">
+						<strong class="black">{=number_format(goods.event.event_order_ea)}개</strong> 구매 중
+					</td>
+					<td align="right">
+						남은시간
+					</td>
+					<td>
+						<div class="event_datetime_box">
+						<span id="soloday{goods.goods_seq}"></span><span class="fx13 notbold">일</span> <span id="solohour{goods.goods_seq}"></span> : <span id="solomin{goods.goods_seq}"></span> : <span id="solosecond{goods.goods_seq}"></span>
+						</div>
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		{/}
+		<tr>
+			<td valign="top">
+				<form name="goodsForm" method="post" enctype="multipart/form-data" action="../order/add" target="actionFrame">
+				<input type="hidden" name="goodsSeq" value="{goods.goods_seq}" />
+				<!-- 상품 스펙 -->
+				<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td>
+						<table class="goods_spec_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+						<col width="80" /><col />					
+						<tr>
+							<th class="gst_th">판매가격</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										<!--{? goods.string_price_use }-->
+											<b class="price">{goods.string_price}</b>
+										<!--{ : }-->
+											<!--{ ? goods.org_price > goods.sale_price }-->
+											<b class="consumer"><s>{=number_format(goods.org_price)}원</s></b>
+											<!--{ / }-->
+
+											<!--{ ? goods.org_price > goods.sale_price }-->
+											<br />
+											<!--{ / }-->
+												<b class="price">
+													{? goods.sale_price > 0 }{=number_format(goods.sale_price)}{:}0{/}<span class="price_won">원</span>
+													{? goods.sale_rate }<span class="price_won">({=number_format(goods.sale_rate)}%↓)</span>{/}
+												</b>
+										<!--{ / }-->
+									</td>
+									<td width="80" align="right" valign="top" >
+										<!--{ ? !goods.string_price_use && goods.sum_sale_price }-->
+											<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'priceDetail')">할인내역</button>
+										<!--{ / }-->
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="priceDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+									<!--{ @ sales.sale_list }-->
+									<!--{ ? .value_ > 0 }-->
+									<tr>
+										<td>
+											{sales.title_list[.key_]}
+										</td>
+										<td>
+											{=number_format(.value_)}원
+										</td>
+									</tr>
+									<!--{ / }-->
+									<!--{ / }-->
+									</table>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th class="gst_th">상품번호</th>
+							<td class="gst_td">
+								{goods.goods_seq}
+							</td>
+						</tr>
+						<!--{ ? goods.goods_status == 'unsold' }-->
+						<tr>
+							<th class="gst_th">상태</th>
+							<td class="gst_td">판매중지</td>
+						</tr>
+						<!--{ / }-->
+
+						<!-- 이벤트 시작 -->
+						<!--{ ? sales.mtext_list['event'] }-->
+						<tr>
+							<th class="gst_th">이벤트</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										{sales.mtext_list['event']}
+									</td>
+									<td width="70" align="right" valign="top">
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'eventDetail')">자세히</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="eventDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+									<tr>
+										<td>
+											{ sales.subject_list['event'] }
+										</td>
+									</tr>
+									<tr>
+										<td>{ sales.text_list['event'] }</td>
+									</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 이벤트 끝 -->
+
+						<!-- 복수구매 시작 -->
+						<!--{ ? sales.mtext_list['multi'] }-->
+						<tr>
+							<th class="gst_th">복수구매할인</th>
+							<td class="gst_td">{sales.mtext_list['multi']}</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 복수구매 끝 -->
+
+						<!-- 유입경로 시작 -->
+						<!--{ ? goods.referer_sale.referersale_seq }-->
+						<tr>
+							<th class="gst_th">유입경로</th>
+							<td class="gst_td">{sales.text_list['referer']}</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 유입경로 끝 -->
+
+						<!-- 모바일 시작 -->
+						<!--{ ? sales.mtext_list['mobile'] }-->
+						<tr >
+							<th class="gst_th">모바일</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										{sales.mtext_list['mobile']}
+									</td>
+									<td width="70" align="right" valign="top" >
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'mobileDetail')">자세히</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="mobileDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+									<!--{@ mobilesale.result}-->
+									<tr>
+										<td >
+											모바일에서 {=number_format(.price1)}원 이상 구매시<br />
+											{?count(.result)>1}
+												최대
+												{=number_format(.sale_price_max)}%추가할인
+												{?.sale_emoney_max}, {=number_format(.sale_emoney_max)}%추가적립{/}
+												{?.sale_point_max}, {=number_format(.sale_point_max)}%추가포인트{/}
+											{:}
+												{=number_format(.sale_price)}%추가할인
+												{?.sale_emoney}, {=number_format(.sale_emoney)}%추가적립{/}
+												{?.sale_point}, {=number_format(.sale_point)}%추가포인트{/}
+											{/}
+										</td>
+									</tr>
+									<!--{/}-->
+									</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 모바일 끝 -->
+
+						<!-- 회원등급 시작 -->
+						<!--{ ? sales.mtext_list['member'] }-->
+						<tr>
+							<th class="gst_th">회원등급</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										{sales.mtext_list['member']}
+									</td>
+									<td width="70" align="right" valign="top" >
+										<!--{ ? goods.group_benifits }-->
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'memberBenefitDetail')">자세히</button>
+										<!--{ / }-->
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="memberBenefitDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+									<!--{@goods.group_benifits}-->
+									<!--{?.group_seq && (.sale_price > 0 || .reserve_price > 0 || .point_price > 0) }-->
+									<tr>
+										<td>
+											{.group_name}
+											<br/>
+											<!--{ ? .sale_price > 0 }-->
+												<!--{ ? .sale_price_type == 'PER' }-->
+											{.sale_price}% 추가할인
+												<!--{ : }-->
+											{.sale_price}원 추가할인
+												<!--{ / }-->
+												<!--{ ? .sale_use == 'Y' && .sale_limit_price > 0 }-->
+											({=number_format(.sale_limit_price)} 이상 구매 시)
+												<!--{ / }-->
+											<!--{ / }-->
+											<!--{ ? .sale_price > 0 && (.reserve_price > 0 || .point_price > 0) }-->
+											<br />
+											<!--{ / }-->
+											<!--{ ? .reserve_price > 0 }-->
+												<!--{ ? .reserve_price_type == 'PER' }-->
+											{.reserve_price}%추가적립
+												<!--{ : }-->
+											{.reserve_price}원추가적립
+												<!--{ / }-->
+											<!--{ / }-->
+
+											<!--{ ? .point_price > 0 }-->
+												<!--{ ? .point_price_type == 'PER' }-->
+											{.point_price}%추가포인트
+												<!--{ : }-->
+											{.point_price}P추가포인트
+												<!--{ / }-->
+											<!--{ / }-->
+
+											<!--{ ? .reserve_price > 0 || .point_price > 0 }-->
+												<!--{ ? .point_use == 'Y' && .point_limit_price > 0 }-->
+											({=number_format(.point_limit_price)} 이상 구매 시)
+												<!--{ / }-->
+											<!--{ / }-->
+										</td>
+									</tr>
+									<!--{ / }-->
+									<!--{ / }-->
+									</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 회원등급 끝 -->
+
+						<!-- 좋아요 시작 -->
+						<!--{ ? sales.mtext_list['like'] && APP_USE == 'f' && APP_LIKE_TYPE != 'NO' }-->
+						<tr >
+							<th class="gst_th">좋아요</th>
+							<td class="gst_td" >
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<tr>
+										<td>
+											{sales.mtext_list['like']}
+											<!--{ ? APP_USE == 'f' && APP_LIKE_TYPE != 'NO' }-->
+											<div>{=snsLikeButton(goods.goods_seq,'button_count')}</div>
+											<!--{ / }-->
+										</td>
+										<td width="70" align="right" valign="top" >
+											<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'fblikeDetail')">자세히</button>
+										</td>
+									</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+						<tr id="fblikeDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<!--{@fblikesale.result}-->
+									<tr>
+										<td>
+											좋아요 한 상품을 {=number_format(.price1)}원 이상 구매시<br />
+											{?count(.result)>1}
+												최대
+												{?.sale_price_max} {=number_format(.sale_price_max)}%추가할인{/}
+												{?.sale_emoney_max}{?.sale_price_max},{/} {=number_format(.sale_emoney_max)}%추가적립{/}
+												{?.sale_point_max}{?.sale_price_max || .sale_emoney_max},{/} {=number_format(.sale_point_max)}%추가포인트{/}
+											{:}
+												{?.sale_price} {=number_format(.sale_price)}%추가할인{/}
+												{?.sale_emoney}{?.sale_price},{/} {=number_format(.sale_emoney)}%추가적립{/}
+												{?.sale_point}{?.sale_price || .sale_emoney},{/} {=number_format(.sale_point)}%추가포인트{/}
+											{/}
+										</td>
+									</tr>
+									<!--{/}-->
+									</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 좋아요 끝 -->
+
+						<!-- 쿠폰 시작 -->
+						<!--{ ? sales.mtext_list['coupon'] }-->
+						<tr>
+							<th class="gst_th">쿠폰</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										{sales.mtext_list['coupon']}
+									</td>
+									<td width="80" align="right" valign="top" >
+										<button type="button" id="couponDownload" class="btn_small_point">쿠폰받기</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 쿠폰 끝 -->
+
+						<!-- 프로모션코드 시작 -->
+						<!--{ ? sales.mtext_list['code'] }-->
+						<tr class="promotion_code_area hide">
+							<th class="gst_th">할인코드</th>
+							<td class="gst_td">{sales.mtext_list['code']}
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 프로모션코드 끝 -->
+
+						<!-- 무이자 할부 행사 정보입니다. 수정하여 운영 하세요-->
+						<tr>
+							<th class="gst_th">무이자할부</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										무이자 가능
+									</td>
+									<td width="80" align="right" valign="top" >
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'goodsInterest')">적용카드</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="goodsInterest" class="hide">
+							<td class="gst_sub" colspan="2">
+								<table class="gst_sub_table2" width="100%" cellpadding="0" cellspacing="0" border="0">
+								<col width="33%" /><col width="33%" /><col width="33%" />
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_bc.gif"></th>
+									<td width="123">3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_ct.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_hd.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_hn.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_kb.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_lt.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_sh.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								<tr>
+									<th><img src="../images/common/interest/Interest_img_ss.gif"></th>
+									<td>3~12개월</td>
+									<td>5만원이상</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<!-- 무이자할부 표기 끝 -->
+
+						<!-- 사은품 표기 시작 -->
+						<!--{ ? goods.gift && goods.gift.benifits }-->
+						<tr>
+							<th class="gst_th">사은품</th>
+							<td class="gst_td">
+								<table width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										증정
+									</td>
+									<td width="70" align="right" valign="top" >
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'giftInterest')">자세히</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="giftInterest" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+									<!--{ @ goods.gift.benifits }-->
+									<tr>
+										<td>
+											{ ? .sprice }{=number_format(.sprice)}원 이상 {/}구매 시&nbsp;<br />
+
+											<!--{ ?count(.goods) > 1 }-->
+											사은품
+											<!--{ @ .goods }-->
+											{?..index_}, {/}{..goods_name}
+											<!--{ / }-->
+											중
+											<!--{:}-->
+											{.goods[0].goods_name}
+											<!--{/}-->
+											{.ea}개 선택
+										</td>
+									</tr>
+									<!--{ / }-->
+									</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 사은품 표기 끝 -->
+						
+						<!--{ ? goods.reserve > 0 }-->
+						<tr>
+							<th class="gst_th">적립금</th>
+							<td class="gst_td">
+								<!--{? goods.string_price_use }-->
+								<b>{goods.string_price}</b>
+								<!--{:}-->
+								{=number_format(goods.reserve)}원
+								<!--{/}-->
+							</td>
+						</tr>
+						<!--{ / }-->
+
+						<!--{ ? isplusfreenot && isplusfreenot.ispoint  && goods.point > 0 }-->
+						<tr>
+							<th class="gst_th">포인트</th>
+							<td class="gst_td">
+								<!--{? goods.string_price_use }-->
+								<b>{goods.string_price}</b>
+								<!--{:}-->
+								{=number_format(goods.point)}원
+								<!--{/}-->
+							</td>
+						</tr>
+						<!--{ / }-->
+
+						<!-- 네이버 마일리지 시작 -->
+						<!--{ ? in_array(naver_mileage_yn,array('y','t')) }-->
+						<tr>
+							<th class="gst_th">네이버 마일리지</th>
+							<td class="gst_td">{=showNaverMileageButton('view')}</td>
+						</tr>
+						<!--{ / }-->
+						<!-- 네이버 마일리지 끝 -->
+
+						<!--{ ? (cfg_reserve.autoemoney_video > 0 ||  cfg_reserve.autopoint_video > 0
+						|| cfg_reserve.autoemoney_photo > 0 ||  cfg_reserve.autopoint_photo > 0
+						|| cfg_reserve.autoemoney_review > 0 ||  cfg_reserve.autopoint_review > 0
+						|| (cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date))
+						&& isplusfreenot  // }-->
+						<tr >
+							<th class="gst_th">구매후기</th>
+							<td class="gst_td">
+								<table class="gst_sub_table" width="100%" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										{?
+											(cfg_reserve.autoemoney_video||
+											 cfg_reserve.autoemoney_photo||
+											 cfg_reserve.autoemoney_review||
+											 (cfg_reserve.emoneyBbs_limit && cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date))
+											 &&
+											 (cfg_reserve.autopoint_video||
+											 cfg_reserve.autopoint_photo||
+											 cfg_reserve.autopoint_review||
+											 (cfg_reserve.pointBbs_limit && cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date))
+										}
+
+										적립금, 포인트 지급
+										{:
+											(cfg_reserve.autoemoney_video||
+											 cfg_reserve.autoemoney_photo||
+											 cfg_reserve.autoemoney_review||
+											 (cfg_reserve.emoneyBbs_limit && cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date))
+										}
+										적립금 지급
+										{:
+											(cfg_reserve.autopoint_video||
+											 cfg_reserve.autopoint_photo||
+											 cfg_reserve.autopoint_review||
+											 (cfg_reserve.pointBbs_limit && cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date))
+										}
+										포인트 지급
+										{/}
+										{?cfg_reserve.pointBbs_limit && cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date}
+										(~{cfg_reserve.bbs_end_date}까지)
+										{/}
+									</td>
+									<td width="70" align="right" valign="top" >
+										<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'reviewDetail')">자세히</button>
+									</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+						<tr id="reviewDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="80" /><col />
+										{? cfg_reserve.autoemoney_video > 0 ||  cfg_reserve.autopoint_video > 0 }
+											<tr>
+												<td>동영상후기</td>
+												<td>{? cfg_reserve.autoemoney_video > 0 } 적립금 {=number_format(cfg_reserve.autoemoney_video)}원 지급,{/}
+												{? cfg_reserve.autopoint_video > 0 } 포인트 {=number_format(cfg_reserve.autopoint_video)}P 지급{/}
+												</td>
+											</tr>
+										{/}
+
+									{? cfg_reserve.autoemoney_photo > 0 ||  cfg_reserve.autopoint_photo > 0 }
+										<tr>
+											<td>
+											포토후기
+											</td><td>{? cfg_reserve.autoemoney_photo > 0 } 적립금 {=number_format(cfg_reserve.autoemoney_photo)}원 지급,{/}
+											{? cfg_reserve.autopoint_photo > 0 } 포인트 {=number_format(cfg_reserve.autopoint_photo)}P 지급 {/}
+											</td>
+										</tr>
+									{/}
+									{? cfg_reserve.autoemoney_review > 0 ||  cfg_reserve.autopoint_review > 0 }
+										<tr>
+											<td>
+											일반후기
+											</td><td>{? cfg_reserve.autoemoney_review > 0 } 적립금 {=number_format(cfg_reserve.autoemoney_review)}원 지급,{/}
+											{? cfg_reserve.autopoint_review > 0 } 포인트 {=number_format(cfg_reserve.autopoint_review)}P 지급{/}
+											</td>
+										</tr>
+									{/}
+
+									{? cfg_reserve.bbs_start_date  &&  cfg_reserve.bbs_end_date }
+										<tr><td colspan="2">
+											{? cfg_reserve.emoneyBbs_limit > 0 } 적립금 {=number_format(cfg_reserve.emoneyBbs_limit)}원 추가지급,{/}
+											{? cfg_reserve.pointBbs_limit > 0 } 포인트 {=number_format(cfg_reserve.pointBbs_limit)}P 추가지급{/}
+											</td>
+										</tr>
+									{/}
+								</table>
+								</div>
+							</td>
+						</tr>
+						<!--{ / }-->
+
+						<!--{ ? shipping_policy.shipping_method }-->
+						<tr>
+							<th class="gst_th">배송</th>
+							<td class="gst_td">
+								<span class="styled select">
+								<select name="shipping_method" onchange="view_delviery_cost();">
+									<!--{ @shipping_policy.shipping_method }-->
+									<option value='{.key_}'>{.value_}</option>
+									<!--{ / }-->
+								</select>
+								<script>$(function(){view_delviery_cost()});</script>
+								</span>
+							</td>
+						</tr>
+						<!--{ / }-->
+
+						<!--{ ?shipping_policy.summary }-->
+						<tr>
+							<th class="gst_th">배송비</th>
+							<td class="gst_td">
+								<!--{ @shipping_policy.summary }-->
+								<div id="{.key_}" class="hide">{.value_}</div>
+								<!--{ / }-->
+							</td>
+						</tr>
+						<!--{ / }-->
+
+						<tr>
+							<th class="gst_th">배송</th>
+							<td  class="gst_td">
+								<!--{ ? delivery.type == 'delivery' }-->택배<!--{ / }-->
+								<!--{ ? delivery.type == 'quick' }-->퀵서비스<!--{ / }-->
+								<!--{ ? delivery.type == 'direct' }-->직접배송<!--{ / }-->
+								<!--{ ? delivery.type == 'delivery' }-->
+									<!--{? delivery.free > 0 }-->
+										{=number_format(delivery.free)}원 이상 구매 시 무료
+									<!--{: delivery.price >= 0 && !delivery.free }-->
+										<!--{? delivery.price == 0 }-->
+											무료
+										<!--{: delivery.price > 0 && !delivery.free }-->
+											{=number_format(delivery.price)}원
+									<!--{ / }-->
+
+										<!-- 개별배송안내 -->
+										<!--{ ? goods.shipping_policy == 'goods' && goods.goods_shipping_policy=='limit'}--> 
+										&nbsp;<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'eachDeliveryDetail')">자세히</button>
+										<!--{ / }-->
+
+									<!--{ / }-->
+								<!--{ : }-->
+								<!--{ ? delivery.summary }-->({delivery.summary})<!--{ / }-->
+								<!--{ / }-->
+							</td>
+						</tr>
+						<tr id="eachDeliveryDetail" class="hide">
+							<td class="gst_sub" colspan="2">
+								<div class="gst_sub_inner">
+									<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+									<col width="125" /><col />
+									<tr>
+										<td>포장최대단위</td>
+										<td>상품 {=number_format(goods.limit_shipping_ea)}개</td>
+									</tr>
+									<tr>
+										<td>포장단위별 배송비</td>
+										<td>{=number_format(goods.limit_shipping_price)}원</td>
+									</tr>
+									<tr>
+										<td>포장단위별 추가배송비</td>
+										<td>{=number_format(goods.limit_shipping_subprice)}원</td>
+									</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+
+
+						<!--{? shipping && (max(array(max(shipping[0][0].addDeliveryCost),max(shipping[0][1].addDeliveryCost)))) }-->
+						<tr>
+							<th class="gst_th">추가배송비</th>
+							<td class="gst_td">
+								도서산간 최대
+								{=number_format(max(array(max(shipping[0][0].addDeliveryCost),max(shipping[0][1].addDeliveryCost))))}원 추가
+							</td>
+						</tr>
+						<!--{/}-->
+
+						<!--{ ? goods.option_international_shipping_status == 'y' }-->
+						<!-- 해외배송 표기 시작 -->
+						<tr>
+							<th class="gst_th">
+								<img src="../images/common/plane.png" height="20" />
+							</th>
+							<td class="gst_td">
+								<div>해외배송 상품</div>
+								<div style="font-weight:normal">이 상품은 해외에서 국내로 배송되는 상품이므로</div>
+								<div style="font-weight:normal;color:red;">배송,반품,교환이 일반 상품과 다를 수 있습니다.</div>
+							</td>
+						</tr>
+						<!-- 해외배송 표기 끝 -->
+						<!--{ / }-->
+
+						<!--{ ? goods.brand }-->
+						<tr>
+							<th class="gst_th">브랜드</th>
+							<td class="gst_td"><!--{view_brand}--></td>
+						</tr>
+						<!--{ / }-->
+
+						<!--{ ? goods.cancel_type == '1' }-->
+						<tr>
+							<th class="gst_th">청약철회</th>
+							<td class="gst_td">불가</td>
+						</tr>
+						<!--{ / }-->
+
+						</table>
+					</td>
+				</tr>
+				</table>
+				
+				<!-- 구매하기(슬라이딩 메뉴) -->
+				<div id="goods_buy_wrap">
+					<div class="option_btn_wrap">
+						<a href="javascript:;" class="option_btn off cover">열기</a>
+					</div>
+					<div class="buy_btn_wrap">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<colgroup>
+							<col width="50%" /><col width="50%" />
+						</colgroup>
+						<tr>
+						<!--{ ? goods.goods_status == 'normal' && !goods.string_price_use }-->
+							<td>
+							{? navercheckout_tpl }
+								<input type="button" style="width:18%;" id="npay_btn" /> 
+								<input type="button" style="width:80%;" id="buy_btn" class="btn_important_large" value="구매하기" />
+							{:}
+								<input type="button" style="width:100%;" id="buy_btn" class="btn_important_large" value="구매하기" />
+							{/}
+							</td>
+						<!--{ : }-->
+							<!--{ ? goods.goods_status == 'runout'}-->
+							
+							<!--{ ? goods.restock_notify_use }-->
+							<td class="pdr5">
+							<!--{ : }-->
+							<td colspan="2">
+							<!--{ / }-->
+							<input type="button" style="width:100%;" value="품절" class="btn_cancel_large NpayNo" /></td>
+							<!--{ / }-->
+							
+							<!--{ ? goods.goods_status == 'purchasing'}-->
+							<td class="pdr5"><input type="button" style="width:100%;" value="재고확보 중" class="btn_important_large NpayNo" /></td>
+							<!--{ / }-->
+							
+							<!--{ ? (goods.goods_status == 'purchasing' && service_code!='P_FREE') || (goods.goods_status == 'runout' && goods.restock_notify_use)}-->
+							<td class="pdl5"><input type="button" style="width:100%;" value="재입고알림 신청" class="btn_important_large NpayNo" onclick="openDialogModal('restock','재입고알림 - 휴대폰 알림 신청','restock_notify_apply?goods_seq={goods.goods_seq}','restock_notify_apply');"/></td>
+							<!--{ / }-->
+							
+							<!--{ ? goods.goods_status == 'unsold'}-->
+							<td><input type="button" style="width:100%;" value="판매중지" class="btn_cancel_large  NpayNo" /></td>
+							<!--{ / }-->
+						<!--{ / }-->
+						</tr>
+						</table>
+						<!--{? sns.ntalk_connect == 'Y' && sns.ntalk_use == 'Y' && sns.ntalk_use_mobile_product == 'Y'}-->
+						<div style="margin-top: 5px;">
+							<button type="button" style="width:100%;" class="btn_talk" onclick="window.open('https://talk.naver.com/{sns.ntalk_connect_id}{? sns.ntalk_use_sniffet == 'Y'}?ref='+encodeURIComponent(location.href)+'#nafullscreen'{:}#nafullscreen'{/}, 'talktalk', 'width=471, height=640');return false;">쇼핑할땐 &nbsp;<img src="../images/icon/icon_talk.png" align="absmiddle" alt="네이버톡톡" /> 톡톡하세요</button>
+						</div>
+						<style type="text/css">
+							.btn_talk {display:inline-block; border:1px solid #01ba3a; background:#01c43d; height:42px; line-height:38px; font-size:16px; font-weight:600; color:#ffffff; letter-spacing:-1px;}
+						</style>
+						<!--{/}-->
+					</div>
+
+					<!-- ↑↑↑↑↑↑↑↑↑↑ 분기 ↓↓↓↓↓↓↓↓↓↓ -->
+					<div class="buy_option_wrap" style="display:none;"> 
+						<!-- 옵션 선택부 :: START -->
+						<div class="goods_option">
+							{ #OPTION_SELECT }
+						</div>
+						<!-- 옵션 선택부 :: END -->
+						<div class="goods_btn">
+							<!-- 총 상품 금액 표기 시작-->
+							<!--{ ? !goods.string_price_use && select_option_mode != 'optional_change' }-->
+							<div class="goods_price_area">
+							<table width="100%" cellpadding="0" cellspacing="0" border="0">
+							<tr>
+								<!-- 단일옵션일 경우 수량 -->
+								<!--{ ? !(count(options) > 0 && options[0].option_title) && !goods.string_price_use }-->
+								<td width="100" class="pdb5">
+									<input type="hidden" name="option[0][0]" class="selected_options" type="hidden" value="" opt_seq="0" opt_group="0" />
+									<input type="hidden" name="optionTitle[0][0]" class="selected_options_title" type="hidden" value="" opt_seq="0" opt_group="0" />
+									<!--{ ? cart_options[0]['cart_option_seq'] > 0}-->
+									<input type="hidden" name="exist_option_seq[]" class="cart_option_seq" value="{cart_options[0]['cart_option_seq']}" />
+									<!--{ / }-->
+									<button type="button" class="btn_graybox eaMinus">-</button><input type="text" name="optionEa[0]" value="{?cart_options[0]['ea']>0}{cart_options[0]['ea']}{:}1{/}" class="onlynumber ea_change" /><button type="button" class="btn_graybox eaPlus">+</button>
+										<div style="display:none" class="optionPrice">{goods.sale_price}</div>
+								</td>
+								<!--{ : }-->
+								<!--{ / }-->			
+								<td align="right" class="total_goods_price">
+									<span class="total_goods_tit">총 상품금액</span>
+								<!--{ ? (goods.price > goods.sale_price) || (goods.consumer_price > goods.sale_price && goods.event.target_sale == 1 ) }-->
+									<span id="total_goods_price">{? goods.sale_price > 0 }{=number_format(goods.sale_price)}{:}0{/}</span>원
+								<!--{ : }-->
+									<span id="total_goods_price">{=number_format(goods.price)}</span>원
+								<!--{ / }-->
+								</td>
+							</tr>
+							</table>
+							</div>
+							<!--{ / }-->
+							<!-- 총 상품 금액 표기 끝-->
+
+							<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<colgroup>
+								<col width="50%" /><col width="50%" />
+							</colgroup>
+							<tr>
+								<!--{ ? goods.goods_status == 'normal' && !goods.string_price_use }-->
+								<td class="pdr5">
+									<input type="button" style="width:100%;" value="장바구니" name="addCart" id="addCart" class="btn_normal_large NpayNo" />								
+								</td>
+								<td class="pdl5">
+									<input type="button" style="width:100%;" value="바로구매" id="buy" class="btn_important_large NpayNo" />
+								</td>
+								<!--{ / }-->
+								<!-- <td width="16%">
+									<button type="button" style="width:100%;" class="btn_normal_large NpayNo" onclick="wish_chg();"><img src="../images/design/ico_wish_off.png" width="27" id="wishimg" usewish="n" /></button>
+								</td> -->
+								<!--{ ? goods.goods_status == 'runout'}-->
+								<!--{ ? goods.restock_notify_use }-->
+								<td class="pdr5">
+								<!--{ : }-->
+								<td colspan="2">
+								<!--{ / }-->
+									<input type="button" style="width:100%;" value="품절" class="btn_cancel_large NpayNo" />
+								</td>
+								<!--{ / }-->
+								<!--{ ? goods.goods_status == 'purchasing'}-->
+								<td class="pdr5">
+									<input type="button" style="width:100%;" value="재고확보 중" class="btn_important_large NpayNo" />
+								</td>
+								<!--{ / }-->
+								<!--{ ? (goods.goods_status == 'purchasing' && service_code!='P_FREE') || (goods.goods_status == 'runout' && goods.restock_notify_use)}-->
+								<td class="pdl5">
+									<input type="button" style="width:100%;" value="재입고알림 신청" class="btn_important_large NpayNo" onclick="openDialogModal('restock','재입고알림 - 휴대폰 알림 신청','restock_notify_apply?goods_seq={goods.goods_seq}','restock_notify_apply');"/>
+								</td>
+								<!--{ / }-->
+								<!--{ ? goods.goods_status == 'unsold'}-->
+								<td colspan="2">
+									<input type="button" style="width:100%;" value="판매중지" class="btn_cancel_large NpayNo" />
+								</td>
+								<!--{ / }-->
+							</tr>
+							</table>
+						</div>
+					{? navercheckout_tpl }<div class="goods_npay hide">{navercheckout_tpl}</div>{/}
+					</div>
+				</div>
+				<div class="goods_bg"></div>
+				<!-- //구매하기(슬라이딩 메뉴) -->
+				</form>
+			</td>
+		</tr>
+		</table>
+		
+		<!-- 오프라인 쿠폰 -->
+		<div class="coupon_area">		
+			{=showCoupons('all','detail')}		
+		</div>
+		<!-- //오프라인 쿠폰 -->
+
+		<!-- SNS 공유 -->
+		<div class="sns_btn_area">
+			<ul class="clearbox">
+				<li><button type="button" class="btn_normal_large" id="sns_btn"><span class="ico_sns cover">공유아이콘</span>공유하기</button></li>
+				<li><button type="button" class="btn_normal_large" onclick="wish_chg();"><span class="ico_wish cover" id="wishimg" usewish="n">관심상품아이콘</span>위시리스트</button></li>
+			</ul>
+			<div class="sns_pop">
+				<div class="sns_sub">
+					<h1>SNS 공유</h1>
+					{=snslinkurl('goods', goods.goods_name)}
+					<a href="javascript:;" class="sns_close">닫기</a>
+				</div>
+			</div>	
+			<div class="sns_bg"></div>
+		</div>
+		<!-- //SNS 공유 -->
+	</div>
+
+	<div id="goods_contents_quick" class="set_preload">
+		<!-- 상품설명 탭 -->
+		<div id="goods_tabs">
+			<ul class="goods_information_tabs">
+				<li class="current" onclick="open_information_tab(this,'goods_description');"><a href="javascript:;">상세설명</a></li>
+				<li onclick="open_information_tab(this,'goods_review');"><a href="javascript:;">상품후기{? goods.review_count }<span class="num">{=number_format(goods.review_count)}</span>{/}</a></li>
+				<li onclick="open_information_tab(this,'goods_qna');"><a href="javascript:;">상품문의{? goods.qna_count }<span class="num">{=number_format(goods.qna_count)}</span>{/}</a></li>
+				<li onclick="open_information_tab(this,'exchange_guide');"><a href="javascript:;">교환/반품/배송</a></li>
+			</ul>
+		</div>
+		<!-- //상품설명 탭 -->
+
+		<div class="goods_information_contents goods_description">
+			<div class="mg10">
+				{? goods.mobile_contents_images_true }
+					아래 이미지는 미리보기 화면으로 상세설명 이미지를 자유롭게 확대 축소하시려면 원본 보기에서 가능합니다.<br /><br />
+					<button type="button" class="btn_radius_white" style="width:100%" onclick="document.location.href='/goods/view_contents?no={goods.goods_seq}&zoom=1';">원본 보기</button>
+				{/}
+			</div>
+
+			<!-- 상품상세설명 -->
+			<div class="goods_description_images goods_view_contents">
+				<!--{? !preload }-->
+				{goods.mobile_contents}
+				<!--{/}-->
+			</div>
+		</div>
+
+		<div class="goods_information_contents goods_review hide" id="goods_review_frame_div"></div>
+
+		<div class="goods_information_contents goods_qna hide" id="goods_qna_frame_div"></div>
+
+		<div class="goods_information_contents exchange_guide hide">{goods.common_contents}</div>
+
+		<!-- 추가정보 -->
+		<!--{? additions }-->
+		<div class="info_goods_add "> 
+			<table class="info_goods_spec_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<col width="110" /><col />
+			<tr>
+				<th class="gst_th">상품추가정보</th>
+				<td class="gst_td">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr> 
+						<td width="70" align="right" valign="top" >
+							<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'additions_table_style')">자세히</button>
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr> 
+			<tr id="additions_table_style" class="hide">
+			<td class="gst_sub" colspan="2">
+				<div class="gst_sub_inner">
+					<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+						<col width="110" /><col />  
+						<tr>
+						<!--{@ additions }-->
+						<td>{.name}</td>
+						<td>{.contents}</td>
+						</tr>
+						<!--{ / }-->
+					</table>
+				</div>
+			</td>
+			</tr>
+			</table> 
+		</div>
+		<!--{ / }-->
+
+		<!-- 상품정보고시 시작 -->
+		<!--{ ? goods.sub_info_desc.subInfo }-->
+		<div class="info_goods_add"> 
+			<table class="info_goods_spec_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<col width="110" /><col />
+			<tr>
+				<th class="gst_th">상품정보제공고시</th>
+				<td class="gst_td">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tr> 
+						<td width="70" align="right" valign="top" >
+							<button type="button" class="btn_open_small" onclick="detail_contents_toggle(this,'goodsInfo')">자세히</button>
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr> 
+			<tr id="goodsInfo" class="hide">
+			<td class="gst_sub" colspan="2">
+				<div class="gst_sub_inner">
+					<table class="gst_sub_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+						<col width="110" /><col />  
+						<tr>
+						{ @ goods.sub_info_desc.subInfo }
+						<td>{.title}</td>
+						<td>{.desc}</td>
+						</tr>
+						{ / }
+					</table>
+				</div>
+			</td>
+			</tr>
+			</table> 
+		</div>
+		<!--{ / }-->
+
+		<!--{? goods.m_mapview == 'Y'}-->
+		<div class="info_goods_add_map"> 
+			<table class="info_goods_spec_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<col width="110" /><col />
+			<tr>
+				<th class="gst_th">위치안내</th>
+				<td class="gst_td"> 
+				</td>
+			</tr> 
+			<tr>
+			<td class="gst_sub" colspan="2">  
+					<script type="text/javascript">
+					// 티켓상품 지도변경 버튼
+					function setMapajax(){
+						var option_seq	= $("#option_location option:selected").val();
+						var goods_seq	= $("#option_location option:selected").attr('goods_seq');
+
+						$.ajax({
+								type: "post",
+								url: "../goods/coupon_location_ajax",
+								data: {'option_seq':option_seq, 'goods_seq':goods_seq, 'width':'300'},
+								success: function(result){
+									$("#NaverMap").html('');
+									$("#map_area").html(result);
+								}
+							});
+					}
+					</script>
+					<!-- 티켓상품 위치 안내 : 시작 -->
+					<div class="goods_mapview" style="padding:10px;align-text:center;">
+						<div style="margin:-20px;padding-bottom:10px;">
+							{=showNaverMapApi('300', '300', mapArr[0]['address'], mapArr[0]['option'])}
+						</div>
+						<div id="map_area"></div>
+						<table cellpadding="0" cellspacing="0" border="0" width="100%" style="line-height:17px;">
+						<tr>
+							<td width="50px">업체명</td><td width="5px"> : </td>
+							<td>
+								<select name="option_location" id="option_location" >
+									<!--{@ mapArr }-->
+									<option value="{.o_seq}" goods_seq="{_GET.no}" >{.option}</option>
+									<!--{ / }-->
+								</select>
+								<span class="btn small cyanblue"><button type="button" onclick="setMapajax();">보기</button></span>
+							</td>
+						</tr>
+						<tr>
+							<td>주소</td><td> : </td>
+							<td id="address">{mapArr[0]['address']}</td>
+						</tr>
+						<tr>
+							<td></td><td></td>
+							<td id="street">{mapArr[0]['address_street']}</td>
+						</tr>
+						<tr>
+							<td>전화번호</td><td> : </td>
+							<td id="biztel">{mapArr[0]['biztel']}</td>
+						</tr>
+						</table>
+					</div>
+					<!-- 티켓상품 위치 안내 : 끝 --> 
+			</td>
+			</tr>
+			</table>
+		</div>	
+		<!--{ / }-->
+
+		<!--{ ? bigdata }-->
+		<div class="sbt_relation_contents_new info_goods_add_bigdata">
+			<!--### BIGDATA -->
+			<!--{ @ bigdata }-->
+			<div class="bigdata-title-bar">
+				<table width="100%" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td><img src="../images/design/ico_bd_{ .key_ }.png" /></td>
+					<td>{ .textStr }</td>
+				</tr>
+				</table>
+			</div>
+			<div class="bigdata-goods-list">
+				{ .display }
+			</div>
+			<!--{ / }-->
+		</div>
+		<!--{ / }-->
+
+		<!--{?goodsRelationDisplayHTML}-->
+		<div class="info_goods_add_relation"> 
+			<table class="info_goods_spec_table" width="100%" cellpadding="0" cellspacing="0" border="0">
+			<col width="110" /><col />
+			<tr>
+				<th class="gst_th">관련상품</th>
+				<td class="gst_td"> </td>
+			</tr> 
+			</table> 
+		</div>
+		<div>
+			<!--{goodsRelationDisplayHTML}-->
+		</div>
+		<!--{/}-->
+
+		<!-- 연관 이벤트 배너 -->
+		<!--{? event_banner }-->
+		<script type='text/javascript' src='/app/javascript/jquery/jquery.ui.touch-punch.min.js'></script>
+		<script type='text/javascript' src='/app/javascript/plugin/anibanner/jquery.anibanner.js?v=20140808'></script>
+		<link rel='stylesheet' type='text/css' href='/app/javascript/plugin/anibanner/anibanner.css' />
+		<div class="goods_event_banner"></div>
+		<script>
+		$(function(){
+			var settings = {
+			'platform' : 'mobile',
+			'modtime' : '{=time()}',
+			'style' : 'mobile_style_2',
+			'height' : '',
+			'background_color' : "#ffffff",
+			'background_image' : '',
+			'background_repeat' : '',
+			'background_position' : '',
+			'image_border_use' : "n",
+			'image_border_width' : "0",
+			'image_border_color' : "#000000",
+			'image_opacity_use' : "n",
+			'image_opacity_percent' : "0",
+			'image_top_margin' : "0",
+			'image_side_margin' : "0",
+			'image_width' : "0",
+			'image_height' : "0",
+			'navigation_btn_style' : "btn_style_3",
+			'navigation_btn_visible' : "fixed",
+			'navigation_paging_style' : "custom",
+			'navigation_paging_align' : "center",
+			'navigation_paging_position' : "bottom",
+			'navigation_paging_margin' : "10",
+			'navigation_paging_spacing' : "0",
+			'slide_event' : "auto",
+			'images' : [
+				{@ event_banner }
+					{?.index_},{/}{"link":"/page/index?tpl={=urlencode(.tpl_path)}","image":"/data/event/{.banner_filename}"}
+				{/}
+			]};
+			$('.goods_event_banner').anibanner(settings);
+		});
+		</script>
+		<!--{ / }-->
+	</div>
+
+</div>
+
+<div id="couponDownloadDialog" style="display:none"></div>
+
+<!-- 재입고 알림 레이어 -->
+<div id="restock_notify_apply" class="hide"></div>
+
+<!-- 회원등급별 혜택 안내 -->
+<div id="memberBenefitDetailDialog" style="display:none">
+	<table class="ddlTable" width="100%">
+	<col width="100" />
+	<!--{@goods.group_benifits}-->
+		<!--{?.group_seq && (.sale_price > 0 || .reserve_price > 0 || .point_price > 0)}-->
+	<tr>
+		<th>{.group_name}</th>
+		<td>
+			<!--{ ? .sale_price > 0 }-->
+				<!--{ ? .sale_price_type == 'PER' }-->
+			{.sale_price}% 추가할인
+				<!--{ : }-->
+			{.sale_price}원 추가할인
+				<!--{ / }-->
+				<!--{ ? .sale_use == 'Y' && .sale_limit_price > 0 }-->
+			({=number_format(.sale_limit_price)} 이상 구매 시)
+				<!--{ / }-->
+			<!--{ / }-->
+			<!--{ ? .sale_price > 0 && (.reserve_price > 0 || .point_price > 0) }-->
+			<br />
+			<!--{ / }-->
+			<!--{ ? .reserve_price > 0 }-->
+				<!--{ ? .reserve_price_type == 'PER' }-->
+			{.reserve_price}%추가적립
+				<!--{ : }-->
+			{.reserve_price}원추가적립
+				<!--{ / }-->
+			<!--{ / }-->
+
+			<!--{ ? .point_price > 0 }-->
+				<!--{ ? .point_price_type == 'PER' }-->
+			{.point_price}%추가포인트
+				<!--{ : }-->
+			{.point_price}P추가포인트
+				<!--{ / }-->
+			<!--{ / }-->
+
+			<!--{ ? .reserve_price > 0 || .point_price > 0 }-->
+				<!--{ ? .point_use == 'Y' && .point_limit_price > 0 }-->
+			({=number_format(.point_limit_price)} 이상 구매 시)
+				<!--{ / }-->
+			<!--{ / }-->
+		</td>
+	</tr>
+		<!--{ / }-->
+	<!--{ / }-->
+	</table>
+</div>
+
+<div id="wish_alert">
+	<div class="wa_on"></div>
+	<div class="wa_off"></div>
+	<div class="wa_msg"></div>
+</div>
+{ #INTERNATIONAL_SHIPPING_INFO }
+<script type="text/javascript">
+$("div#goods_review_frame_div").html('<iframe name="goods_review_frame" id="goods_review_frame" src="/board/?id=goods_review&goods_seq={goods.goods_seq}&iframe=1&gdviewer=1" width="100%" height="500" frameborder="0" scrolling="no" allowTransparency="true"></iframe>');
+$("div#goods_qna_frame_div").html('<iframe name="goods_qna_frame" id="goods_qna_frame" src="/board/?id=goods_qna&goods_seq={goods.goods_seq}&iframe=1&gdviewer=1" width="100%" height="500" frameborder="0" scrolling="no" allowTransparency="true"></iframe>');
+</script>

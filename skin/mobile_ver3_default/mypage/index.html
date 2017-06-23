@@ -1,0 +1,187 @@
+<div class="bg_gray">
+	<!-- 타이틀 -->
+	<div class="sub_title_bar">
+		<h2>마이페이지</h2>
+		<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+	</div>
+
+	<div class="pd10">
+		<div class="mypage_member">
+			<span class="username">{user_name}</span>(<span class="usergroup">{userInfo.group_name}</span>)님, 반갑습니다!
+		</div>
+		<table class="mypage_list_table2 mt10" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<thead>
+			<tr>
+				<th colspan="2">주문/배송 조회</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="cell" colspan="2">
+					<table align="center" border="0" width="100%" cellpadding="0" cellspacing="0" style="margin:auto; letter-spacing:-1px; font-size:11px; min-width:250px;">
+					<tr>
+						<td align="center" width="45" class="hand" onclick="document.location.href='../mypage/order_catalog?step_type=order'">
+							<div class="relative">
+								<img src="../images/common/my_order_i1.jpg" width="32" height="26" class="mb10" /><br />주문접수
+								{?counts['15']}<span class="pushCount" style="position:absolute;top:-6px;right:-6px;">{counts['15']}</span>{/}
+							</div>
+						</td>
+						<td align="center" width="15"><img src="../images/common/my_order_arw.jpg" width="15" height="26" /></td>
+						<td align="center" width="45" class="hand" onclick="document.location.href='../mypage/order_catalog?step_type=deposit_only'">
+							<div class="relative">
+								<img src="../images/common/my_order_i2.jpg" width="32" height="26" class="mb10" /><br />결제확인
+								{?counts['25']}<span class="pushCount" style="position:absolute;top:-6px;right:-6px;">{counts['25']}</span>{/}
+							</div>
+						</td>
+						<td align="center" width="15"><img src="../images/common/my_order_arw.jpg" width="15" height="26" /></td>
+						<td align="center" width="60" class="hand" onclick="document.location.href='../mypage/order_catalog?step_type=ready_only'">
+							<div class="relative">
+								<img src="../images/common/my_order_i3.jpg" width="32" height="26" class="mb10" /><br />상품준비중
+								{?counts['35']}<span class="pushCount" style="position:absolute;top:-6px;right:-6px;">{counts['35']}</span>{/}
+							</div>
+						</td>
+						<td align="center" width="15"><img src="../images/common/my_order_arw.jpg" width="15" height="26" /></td>
+						<td align="center" width="45" class="hand" onclick="document.location.href='../mypage/order_catalog?step_type=delivery_ing'">
+							<div class="relative">
+								<img src="../images/common/my_order_i4.jpg" width="32" height="26" class="mb10" /><br />배송중
+								{? (counts['40']+counts['45']+counts['50']+counts['55']+counts['60']+counts['65']+counts['70']) }<span class="pushCount" style="position:absolute;top:-6px;right:-6px;">{counts['40']+counts['45']+counts['50']+counts['55']+counts['60']+counts['65']+counts['70']}</span>{/}
+							</div>
+						</td>
+						<td align="center" width="15"><img src="../images/common/my_order_arw.jpg" width="15" height="26" /></td>
+						<td align="center" width="45" class="hand" onclick="document.location.href='../mypage/order_catalog?step_type=delivery_complete'">
+							<div class="relative">
+								<img src="../images/common/my_order_i5.jpg" width="32" height="26" class="mb10" /><br />배송완료
+								{?counts['75']}<span class="pushCount" style="position:absolute;top:-6px;right:-6px;">{counts['75']}</span>{/}
+							</div>
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="cell">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" onclick="document.location.href='../mypage/return_catalog?step_type=return'" class="hand">
+					<tr>
+						<td align="left">반품/교환</td>
+						<td align="right"><span class="count">{=number_format(counts['return'])}</span><span class="num">건</span></td>
+					</tr>
+					</table>
+				</td>
+				<td class="cell">
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" onclick="document.location.href='../mypage/refund_catalog?step_type=cancel'" class="hand">
+					<tr>
+						<td align="left">취소/환불</td>
+						<td align="right"><span class="count">{=number_format(counts['refund'])}</span><span class="num">건</span></td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>	
+
+		<table class="mypage_list_table1 mt10" width="100%" border="0" cellspacing="0" cellpadding="0">
+		<thead>
+		<tr>
+			<th colspan="2">나의 쇼핑/혜택</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr>			
+				<td>
+					<div onclick="document.location.href='../order/cart'">
+						<span class="icon"><img src="../images/common/my_i_cart.jpg" class="mr5" width="20" /></span>				
+						<span class="title">장바구니</span>
+						<span class="count">{=showMycartTop('cart')}<span class="num">개</span></span>
+					</div>
+				</td>
+				<td>
+					<div onclick="document.location.href='../mypage/wish'">
+						<span class="icon"><img src="../images/common/my_i_wish.jpg" class="mr5" width="20" /></span>				
+						<span class="title">위시리스트</span>
+						<span class="count">{=showMycartTop('wish')}<span class="num">개</span></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div onclick="document.location.href='../goods/recently'">
+						<span class="icon"><img src="../images/common/my_i_recently.jpg" class="mr5" width="20" /></span>				
+						<span class="title">최근 본 상품</span>
+						<span class="count">{=showMycartTop('recently')}<span class="num">개</span></span>
+					</div>
+				</td>
+				<td>
+					<div onclick="document.location.href='../mypage/coupon'">
+						<span class="icon"><img src="../images/common/my_i_coupon.jpg" class="mr5" width="20" /></span>				
+						<span class="title">
+							보유한 쿠폰
+							<!-- <span class="desc" style="font-weight:normal;">(이번주 소멸 <b>{=number_format(extinction.coupon)}</b>개)</span> -->
+						</span>
+						<span class="count">{=summary.coupondownloadtotal}<span class="num">개</span></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div onclick="document.location.href='../mypage/emoney'">
+						<span class="icon"><img src="../images/common/my_i_emoney.jpg" class="mr5" width="20" /></span>
+						<span class="title">
+							적립금
+							<!-- <span class="desc" style="font-weight:normal;">(이번달 소멸 <b>{=number_format(extinction.reserve)}</b>원)</span> -->
+						</span>
+						<span class="count">{=number_format(emoney)}<span class="num">원</span></span>
+					</div>
+				</td>
+				<td onclick="document.location.href='../mypage/emoney_exchange'"><img src="../images/common/my_i_exchange.jpg" class="mr5" width="20" /> 포인트/적립금 교환</td>
+				<!-- <td>
+					<div onclick="document.location.href='../mypage/emoney_exchange'">
+						<span class="icon"><img src="../images/design/icon_m_change.png" width="34" height="29" /></span>
+						<span class="title">포인트교환<br />적립금교환</span>
+					</div>
+				</td> -->
+			</tr>
+			<tr>
+				<td onclick="document.location.href='../mypage/personal'"><img src="../images/common/my_i_prvpay.jpg" class="mr5" width="20" /> 개인결제</td>
+				<td onclick="document.location.href='../mypage/delivery_address?tab=1'"><img src="../images/common/my_i_adrs.jpg" class="mr5" width="20" /> 자주쓰는 배송지</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<table class="mypage_list_table1 mt10" width="100%" border="0" cellpadding="0" cellspacing="0">
+		<thead>		
+			<tr>
+				<th colspan="2">나의 활동/정보수정</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--{? joinform.use_f  && APP_VER != "2.0" }-->
+				<!--{? empty(myinfo_sns_f) }-->
+				<!-- <tr>
+					<td  id="facebookmbconnectalert"><img src="../images/common/my_i_prvpay.jpg" width="16" height="16" /> 페이스북<br />초대</td>
+				</tr> -->
+				<!--{:}-->
+				<!-- <tr>
+					<td onclick="document.location.href='../mypage/myfbrecommend'"><img src="../images/common/my_i_prvpay.jpg" width="16" height="16" /> 페이스북<br />초대</td>
+				</tr> -->
+				<!--{/}-->
+			<!--{/}-->
+			<tr>
+				<td onclick="document.location.href='../mypage/myqna_catalog'"><img src="../images/common/my_i_1to1.jpg" class="mr5" width="20" /> 내가 쓴 1:1문의</td>
+				<td onclick="document.location.href='../mypage/mygdqna_catalog'"><img src="../images/common/my_i_qna.jpg" class="mr5" width="20" /> 내가 쓴 상품문의</td>
+			</tr>
+			<tr>
+				<td onclick="document.location.href='../mypage/mygdreview_catalog'"><img src="../images/common/my_i_review.jpg" class="mr5" width="20" /> 내가 쓴 상품후기</td>
+				<td onclick="document.location.href='../mypage/myinfo'"><img src="../images/common/my_i_prvpay.jpg" class="mr5" width="20" /> 회원정보 수정</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	//기존멤버-통합하기
+	$("#facebookmbconnectalert").click(function(){
+		openDialogConfirm('facebook 친구들을 쇼핑몰에 초대하기 위해서는 facebook계정으로 쇼핑몰을 이용해 주셔야 합니다.<br>회원정보수정에서 "SNS계정사용"을 수락해 주세요. <br>친구들을 초대하시면 다양한 혜택을 받으실 수 있습니다.<br>지금 회원정보수정 화면으로 이동하시겠습니까?','650','200',function(){document.location.href='../mypage/myinfo'},function(){});
+	});
+});
+</script>

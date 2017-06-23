@@ -1,0 +1,151 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.countdown').each(function(key){
+			var setTime	= $(this).prev().val();
+			count_down(this, setTime);
+		});
+	});
+	
+	function count_down(target, setTime){
+		var pad	= "00";
+
+		var key = setInterval(function(){
+			setTime--;
+			if(setTime <= 0){
+				$(target).text("00일 00:00:00");
+				clearInterval(key);
+			}else{
+				day		= Math.floor(setTime / 86400);
+				day_c	= (setTime - day * 86400) % 86400;
+				day_t	= pad.substring(0, pad.length - day.toString().length) + day.toString();
+				
+				hour	= Math.floor(day_c / 3600);
+				hour_c	= (day_c - hour * 3600) % 3600;
+				hour_t	= pad.substring(0, pad.length - hour.toString().length) + hour.toString();
+				
+				minit	= Math.floor(hour_c / 60);
+				minit_t	= pad.substring(0, pad.length - minit.toString().length) + minit.toString();
+
+				sec		= hour_c % 60;
+				sec_t	= pad.substring(0, pad.length - sec.toString().length) + sec.toString();
+				
+				$(target).text(day_t + "일 " + hour_t + ":"+ minit_t + ":" + sec_t);
+			}
+
+		}, 1000);
+	}
+</script>
+<style>
+	.clearfix:before, .clearfix:after {content: ""; display: table;}
+	.clearfix:after{clear: both;}
+
+	.event-container {padding:10px 0 10px 35px; width:925px;}
+	.event-container .event-title{padding-bottom:17px}
+	.event-container .event-top{width:{display.event_li_width}px; padding-bottom:20px; border-bottom:1px #ebe8e6 solid;}
+	.event-container .event-banner{height:272px; padding:20px 0 53px 0;}
+	.event-container .event-banner ul li{width:223px; float:left; padding-right:11px;}
+	.event-container .event-banner ul li:last-child{padding-right:0;}
+	
+	.event-container .event-tab{margin-bottom:44px;}
+	.event-container .event-tab li{float:left; height:25px;font-size:12px; font-weight:bold; text-align:center; padding-top:10px;}
+	.event-container .event-tab li.event-tab-none{height:26px;border-bottom:1px #000000 solid;}
+	.event-container .event-tab li.event-tab-active{border-left:1px #000000 solid; border-top:1px #000000 solid; color:#000000;}
+	.event-container .event-tab li.event-tab-active.beggin-tab{border-left:1px #000000 solid; border-right:1px #000000 solid;}
+	.event-container .event-tab li.event-tab-active.middle-tab{border-right: 1px #000000 solid;}
+	.event-container .event-tab li.event-tab-active.end-tab{border-right: 1px #000000 solid;}
+
+	.event-container .event-tab li.event-tab-inactive{border-bottom:1px #000000 solid; border-top:1px #c4c4c4 solid; color:#aaaaaa;}
+	.event-container .event-tab li.event-tab-inactive a{color:#aaaaaa;}
+	.event-container .event-tab li.event-tab-inactive a:hover{color:#000000;}
+	.event-container .event-tab li.event-tab-inactive.beggin-tab{border-left:1px #c4c4c4 solid;}
+	.event-container .event-tab li.event-tab-inactive.middle-tab{border-left:1px #c4c4c4 solid;}
+	.event-container .event-tab li.event-tab-inactive.end-tab{border-right:1px #c4c4c4 solid; border-left:1px #c4c4c4 solid;}
+
+	.event-container .event-list{margin-bottom:54px; text-align:center; vertical-align:middle; width:925px;}
+	.event-container .event-list li{float:left; width:{display.event_li_width}px; text-align:center; padding-bottom:38px;}
+	.event-container .event-list .event-image-box .close-icon{top:3px; right:3px; position:absolute; width:{display.close_icon_width}px; height:{display.close_icon_height}px; background-image:url("{display.close_icon}");}
+	.event-container .event-list .event-image-box .end-icon{top:3px; right:3px; position:absolute; width:{display.end_icon_width}px; height:{display.end_icon_height}px; background-image:url("{display.end_icon}");}
+	
+
+	<!--{? display.over_line_use == 'y'}-->
+	.event-container .event-list .event-image-box{position:relative; overflow:hidden; width:{display.size_w_non}px; height:{display.size_h_non}px; border:{display.non_line_px}px {display.non_line_color} solid;}
+	.event-container .event-list a:hover .event-image-box{width:{display.size_w_over}px; height:{display.size_h_over}px; border:{display.over_line_px}px {display.over_line_color} solid;}
+	<!--{ : }-->
+	.event-container .event-list .event-image-box{position:relative; overflow:hidden; width:{display.size_w - 2}px; height:{display.size_h - 2}px; border: 1px #ebe8e6 solid;}
+	<!--{ / }-->
+
+	<!--{? display.over_opacity_use == 'y'}-->
+	.event-container .event-list li a:hover .event-image-box{zoom:1;filter:alpha(opacity={display.over_opacity_per});opacity:{display.over_opacity_per / 100};}
+	<!--{ / }-->
+	
+
+	.event-container .event-list .infobox{width:{display.size_w_non - 15}px; height:76px; text-align:left; margin:14px 0 0 15px;}
+	.event-container .event-list .infobox .intorduce{color:#333333; font-size:12px; font-weight:bold; margin-bottom:13px;}
+	.event-container .event-list .infobox .period{text-align:left; color:#7f7f7f; font-size:12px; margin-bottom:6px;}
+	.event-container .event-list .infobox .until{text-align:left; color:#7f7f7f; font-size:12px; font-weight:bold; margin-bottom:6px;}
+	.event-container .event-list .infobox .until .until-day{color:#ef3e34; font-weight:lighter;}
+
+	.event-container .event-list .event-image-box img.none{margin:{(display.size_h_non - 62) / 2}px 0px; width:43px; height:62px;}
+	.event-container .event-list .event-image-box .has{width:100%; height:100%;  background-repeat: no-repeat; background-position:center top;};
+
+	
+</style>
+<div class="event-container">
+	<div class="event-title"><img src="/data/icon/event/event_tit.gif"/></div>
+	<div class="event-top">
+		<img width="920" src="/data/icon/event/event_top.jpg"/>
+	</div>
+	<div class="event-banner clearfix">
+		<ul>
+			<li><img src="/data/icon/event/evnet_banner01.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/evnet_banner02.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/evnet_banner03.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/evnet_banner04.jpg" alt=""/></li>
+		</ul>
+	</div>
+	<div class="event-tab clearfix">
+		<ul>
+			<!--{? display.disp_target == 'all'}-->
+			<li class="event-tab-none" style="width:536px"></li>
+			<li class="{? sc.target=='all'}event-tab-active{:}event-tab-inactive{/} beggin-tab" style="width:128px;"><a href="/promotion/event?target=all">전체 이벤트</a></li>
+			<li class="{? sc.target=='ing'}event-tab-active{:}event-tab-inactive{/} middle-tab" style="width:128px;"><a href="/promotion/event?target=ing">진행 중인 이벤트</a></li>
+			<li class="{? sc.target=='end'}event-tab-active{:}event-tab-inactive{/} end-tab" style="width:128px;"><a href="/promotion/event?target=end">종료된 이벤트</a></li>
+			<!--{ : }-->
+			<li class="event-tab-none" style="width:792px"></li>
+			<li class="event-tab-active end-tab" style="width:128px;">진행 중인 이벤트</li>
+			<!--{ / }-->
+		</li>
+	</div>
+	<div class="event-list clearfix">
+		<ul>
+			<!--{@ record}-->
+			<li>
+				<a href="/page/index?tpl={.tpl_path}">
+					<div class="event-image-box clearfix">
+						<!--{? .event_banner}-->
+						<div class="has" style="background-image:url('/data/event/{.event_banner}')"></div>
+						<!--{ : }-->
+						<img class="none" src="/data/icon/event/event_imgno.gif"/>
+						<!--{ / }-->
+						<!--{? display.close_lay_use == 'y' && .status == 'close'}--><div class="close-icon"></div><!--{ / }-->
+						<!--{? display.end_lay_use == 'y' && .status == 'end'}--><div class="end-icon"></div><!--{ / }-->
+					</div>
+					<div class="infobox">
+						<!--{? display.event_intorduce_use == 'y'}--><div class="intorduce" {? .event_introduce_color}style="color:{.event_introduce_color}"{/}>{? .event_introduce}{.event_introduce}{:}{.event_title}{/}</div><!--{ / }-->
+						<!--{? display.event_period_use == 'y'}--><div class="period">{.period}</div><!--{ / }-->
+						<!--{? display.event_until_use == 'y' && .event_type == 'solo'}-->
+							<div class="until">남은시간 : <input type="hidden" name="timestamp[]" value="{.timestamp}"><span class="until-day countdown">{.d_day}</span></div>
+						<!--{ / }-->
+						<!--{? .status == 'end' && display.event_end_icon_use == 'y'}-->
+							<div class="until"><img src="/data/icon/event/event_end.gif"/></div>
+						<!--{ / }-->
+					</div>
+				</a>
+			</li>
+			<!--{ / }-->
+		</ul>
+	</div>
+	<div class="paging_navigation">
+		{pagin}
+	</div>
+</div>

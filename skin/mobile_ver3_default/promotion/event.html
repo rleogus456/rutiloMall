@@ -1,0 +1,281 @@
+<script type="text/javascript" src="/app/javascript/plugin/jquery_selectbox/js/jquery.selectbox-0.2.js"></script>
+<link href="/app/javascript/plugin/jquery_selectbox/css/jquery.selectbox.mobile.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+	var next_page	= {sc.page};
+	var timer_lay	= 0;
+	
+	$(document).ready(function(){
+		$('#status_change').selectbox({onChange: function(val, inst){
+				document.location.replace('/promotion/event?target=' + val);
+			}
+		});
+
+		$('.countdown').each(function(key){
+			var setTime	= $(this).prev().val();
+			count_down(this, setTime);
+		});
+
+		$('#get_more_list').click(function(){get_more_event()});
+
+		$(window).resize(function(){list_resize();});
+		list_resize();
+		get_more_event();
+	});
+
+
+	function get_more_event(){
+		var params			= {};
+		params.page			= next_page;
+		params.target		= '{sc.target}';
+		loadingStart('.event-container');
+		$.get('/promotion/get_more_event_list', params, function(response){
+			
+			dom_set			= $('#event_list_li_layout').html();
+			event_config	= response.event_config;
+
+			$.each(response.event_list, function(key,val){
+				cp_dom		= $('<div></div>');
+				cp_dom.append(dom_set);
+
+				infobox			= cp_dom.children('.infobox');
+				event_image_box	= cp_dom.children('.event-image-box');
+
+				if(event_config.close_lay_use != 'y' || val.status != 'close'){
+					event_image_box.children('.close-icon').remove()
+				}
+
+				if(event_config.end_lay_use == 'n' || val.status != 'end'){
+					event_image_box.children('.end-icon').remove()
+				}
+
+				if(val.m_event_banner){
+					event_image_box.children('.none').remove();
+					event_image_box.children('.has').css('background-image', 'url("/data/event/' + val.m_event_banner + '")');
+				}else{
+					event_image_box.children('.has').remove();
+				}
+				
+
+				if(event_config.event_intorduce_use == 'y'){
+					intorduce	= (val.m_event_introduce) ? val.m_event_introduce : val.event_title;
+					infobox.children('.intorduce').html(intorduce);
+				}else{
+					infobox.children('.intorduce').remove();
+				}
+
+
+				if(event_config.event_period_use == 'y'){
+					infobox.children('.period').html(val.period);
+				}else{
+					infobox.children('.period').remove();
+				}
+
+				if(event_config.event_until_use == 'y' && val.event_type == 'solo'){
+					infobox.children('.ing').html('남은시간 :<input type="hidden" name="timestamp[]" value="' + val.timestamp + '"><span class="until-day countdown">' + val.d_day + '</span>');
+				}else{
+					infobox.children('.ing').remove();
+				}
+
+				if(event_config.event_end_icon_use == 'y' && val.status == 'end'){
+					infobox.children('.end').html("<img src='/data/icon/event/event_end.gif'/>");
+				}else{
+					infobox.children('.end').remove();
+				}
+
+
+				liClass	= ((key + 1) % event_config['count_w'] == 0) ? 'end-li' : '';
+				li_set	= "<li class='" + liClass + "'><a href='/page/index?tpl=" + val.tpl_path + "'>" + cp_dom.html() +"</a></li>";
+				$('#event_list_lay').append(li_set);
+
+			});
+	
+			for(i = 0; i <= timer_lay; i++){clearInterval(i);}
+			timer_lay	= 0
+			$('.countdown').each(function(key){
+				var setTime	= $(this).prev().val();
+				count_down(this, setTime);
+			});
+
+			if(response.next_page_count < 1){
+				$('.paging_navigation').hide();
+			}else{
+				var next_btn	= response.next_page_count + "개 더보기 <br/>(" + response.page + "/" + response.max_page + ")";
+				$('#get_more_list').html(next_btn);
+				next_page++;
+			}
+
+			list_resize();
+			loadingStop('.event-container','false');
+		},'json');
+	}
+
+	function list_resize(){
+		var over_line_use	= "{display.over_line_use}";
+		var w_count			= parseInt('{display.count_w}',10);
+		var h_per			= parseInt('{display.size_h}',10) / 100;
+		var new_width		= $('.event-list').width();
+		var new_li_size		= parseInt(new_width / w_count, 10) - 5;
+		var max_info		= 0;
+		var base_image_h	= new_li_size * h_per;
+		
+		$('.event-list > ul > li').width(new_li_size);
+
+		$('.event-list > ul > li > a > div.infobox').each(function(){
+			max_info	= ($(this).height() > max_info) ? $(this).height() : max_info;
+		});
+
+		$('.event-list > ul > li').height(base_image_h + max_info + 10);
+		$('.event-list > ul > li.end-li').css('margin-right', 2.5);
+	
+		if(over_line_use == 'y'){
+			var non_line_px		= parseInt('{display.non_line_px}',10) * 2;
+			var over_line_px	= parseInt('{display.over_line_px}',10) * 2;
+
+			
+			$('.event-list > ul > li > a').hover(function(){
+				$(this).children('.event-image-box').height(base_image_h - over_line_px)
+				$(this).children('.event-image-box').width(new_li_size - over_line_px)
+				//$(this).children('.event-image-box > img.none').css({'margin-left':2,'margin-top':20});
+			}, function(){
+				$(this).children('.event-image-box').height(base_image_h - non_line_px)
+				$(this).children('.event-image-box').width(new_li_size - non_line_px)
+				//$(this).children('.event-image-box > img.none').css({'margin-left':20,'margin-top':40});
+			});
+		}else{
+			var non_line_px		= 2;
+		}
+
+		$('.event-list > ul > li > a > div.event-image-box').height(base_image_h - non_line_px);
+		$('.event-list > ul > li > a > div.event-image-box').width(new_li_size - non_line_px);
+
+		var noimg_w	= ($('.event-list > ul > li > a > div.event-image-box').width() - 40) / 2;
+		var noimg_h	= ($('.event-list > ul > li > a > div.event-image-box').height() - 62) / 2;
+
+		$('.event-list > ul > li > a > div.event-image-box > img.none').css({'margin-top':noimg_h});
+
+	};
+
+	function count_down(target, setTime){
+		var pad	= "00";
+
+		timer_lay = setInterval(function(){
+			setTime--;
+			if(setTime <= 0){
+				$(target).text("00일 00:00:00");
+				clearInterval(timer_lay);
+			}else{
+				day		= Math.floor(setTime / 86400);
+				day_c	= (setTime - day * 86400) % 86400;
+				day_t	= pad.substring(0, pad.length - day.toString().length) + day.toString();
+				
+				hour	= Math.floor(day_c / 3600);
+				hour_c	= (day_c - hour * 3600) % 3600;
+				hour_t	= pad.substring(0, pad.length - hour.toString().length) + hour.toString();
+				
+				minit	= Math.floor(hour_c / 60);
+				minit_t	= pad.substring(0, pad.length - minit.toString().length) + minit.toString();
+
+				sec		= hour_c % 60;
+				sec_t	= pad.substring(0, pad.length - sec.toString().length) + sec.toString();
+				
+				$(target).text(day_t + "일 " + hour_t + ":"+ minit_t + ":" + sec_t);
+			}
+
+		}, 1000);
+	}
+
+	
+
+
+</script>
+<style>
+	.clearfix:before, .clearfix:after {content: ""; display: table;}
+	.clearfix:after{clear: both;}
+
+	.event-container {width:calc(100% - 16px); padding: 10px 0 40px 5px;}
+
+	.event-container .event-banner{margin-bottom:7px; border-bottom:1px #a4a4aa solid;}
+	.event-container .event-banner ul li{width:100%; padding-bottom:5px;}
+	.event-container .event-banner ul li img{width:100%; padding-right:11px;}
+	.event-container .event-banner ul li:last-child{padding-bottom:7px;}
+
+	.event-container .event-status{padding-bottom:5px;}
+	
+	.event-container .event-list{position:relative; width:100%; border-bottom:1px #a4a4aa solid; padding-bottom:20px;margin-bottom:5px; text-align:center; vertical-align:middle;}
+	.event-container .event-list ul{margin-left:2.5px}
+	.event-container .event-list li{float:left;display:inline-block; text-align:center; padding: 0 5px 13px 0;}
+	.event-container .event-list li.end-li{float:left;padding-right:0;}
+	.event-container .event-list .event-image-box {margin:auto;}
+	.event-container .event-list .event-image-box .close-icon{top:3px; right:3px; position:absolute; width:{display.close_icon_width}px; height:{display.close_icon_height}px; background-image:url("{display.close_icon}");}
+	.event-container .event-list .event-image-box .end-icon{top:3px; right:3px; position:absolute; width:{display.end_icon_width}px; height:{display.end_icon_height}px; background-image:url("{display.end_icon}");}
+
+	<!--{? display.over_line_use == 'y'}-->
+	.event-container .event-list .event-image-box{position:relative; overflow:hidden; border:{display.non_line_px}px {display.non_line_color} solid;}
+	.event-container .event-list a:hover .event-image-box{border:{display.over_line_px}px {display.over_line_color} solid;}
+	<!--{ : }-->
+	.event-container .event-list .event-image-box{width:calc(100% - 2px); height:calc(100% - 82px);position:relative; overflow:hidden; border: 1px #ebe8e6 solid;}
+	<!--{ / }-->
+
+	<!--{? display.over_opacity_use == 'y'}-->
+	.event-container .event-list li a:hover .event-image-box{zoom:1;filter:alpha(opacity={display.over_opacity_per});opacity:{display.over_opacity_per / 100};}
+	<!--{ / }-->
+
+	.event-container .event-list .infobox {text-align:left; margin-left:15px; margin-top:10px;}
+	.event-container .event-list .infobox .intorduce{color:#333333; font-size:12px; font-weight:bold; margin-bottom:8px;}
+	.event-container .event-list .infobox .period{text-align:left; color:#7f7f7f; font-size:12px; margin-bottom:3px;}
+	.event-container .event-list .infobox .until{text-align:left; color:#7f7f7f; font-size:12px; font-weight:bold; margin-bottom:3px;}
+	.event-container .event-list .infobox .until .until-day{color:#ef3e34; font-weight:lighter;}
+
+	.event-container .event-list .event-image-box img.none{width:43px; height:62px;}
+	.event-container .event-list .event-image-box .has{margin:auto; width:100%; height:100%; background-size:contain; background-position:center center; background-repeat: no-repeat;}
+
+	.event-container .paging_navigation .btn_more_large{display:inline-block; background-color:#fdfdfd; border:none; border:1px solid #d9d9d9; height:39px; line-height:12px; font-size:10px; font-weight:bold; color:#6f6e6e; letter-spacing:-1px;}
+
+</style>
+<div class="sub_title_bar">
+	<h2>이벤트</h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+</div>
+<div class="event-top">
+	<img width="100%" src="/data/icon/event/event_top.jpg"/>
+</div>
+<div class="event-container">
+	<div class="event-banner clearfix">
+		<ul>
+			<li><img src="/data/icon/event/m_evnet_banner01.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/m_evnet_banner02.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/m_evnet_banner03.jpg" alt=""/></li>
+			<li><img src="/data/icon/event/m_evnet_banner04.jpg" alt=""/></li>
+		</ul>
+	</div>
+	<div class="event-status">
+		<!--{? display.disp_target == 'all'}-->
+		<select id="status_change">
+			<option value="all" {? sc.target=='all'}selected{/}>전체 이벤트</option>
+			<option value="ing" {? sc.target=='ing'}selected{/}>진행 중인 이벤트</option>
+			<option value="end" {? sc.target=='end'}selected{/}>종료된 이벤트</option>
+		</select>
+		<!--{ / }-->
+	</div>
+	<div class="event-list clearfix">
+		<ul id="event_list_lay">
+			<li id="event_list_li_layout" style="display:none">
+				<div class="event-image-box clearfix">
+					<div class="has"></div>
+					<img class="none" src="/data/icon/event/event_imgno.gif"/>
+					<div class="close-icon"></div>
+					<div class="end-icon"></div>
+				</div>
+				<div class="infobox">
+					<div class="intorduce"></div>
+					<div class="period"></div>
+					<div class="until ing"></div>
+					<div class="until end"><img src="/data/icon/event/event_end.gif"/></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="paging_navigation {? sc.next_page_count < 1}hide{/}">
+		<button type="button" id="get_more_list" style="width:100%" class="btn_more_large">{sc.next_page_count}개 더보기<br/>({sc.page}/{sc.max_page})</button>
+	</div>
+</div>

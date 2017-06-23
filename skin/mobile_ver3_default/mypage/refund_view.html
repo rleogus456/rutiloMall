@@ -1,0 +1,217 @@
+
+<div class="sub_title_bar">
+	<h2>환불상세내역</a></h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" /></a>
+</div>
+
+<div class="center pd10">
+	{data_refund.refund_code} <span class="bold fx15">({data_refund.mstatus})</span>
+</div>
+
+<div style="padding:10px 5px; border-top:2px soldi #aaa; border-bottom:1px solid #aaa; background-color:#ddd;">환불접수 : {=substr(data_refund.regist_date,0,10)}</div>
+
+<div class="refund-lay">
+
+	<div class="refund-status-lay">
+		<span class="title"><strong>{data_refund.mstatus}</strong></span>
+
+		{?data_refund.refund_date && data_refund.refund_date!='0000-00-00'}
+			: {data_refund.refund_date}
+		{/}
+	</div>
+
+	<div class="refund-list-lay">
+	<!--{ @ refund_items }-->
+		<!--{ @ .items }-->
+			<div class="goods-info-lay {? ..opt_type == 'sub' && .opt_cnt > 0 }sub{/}">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" class="goods-info-table">
+				<tr>
+					{? ..opt_type == "opt" || (..opt_type == "sub" && .opt_cnt == 0) }
+					<td width="80" valign="top">
+						<a href="../goods/view?no={..goods_seq}" class="img"><img src="{=viewImg(..goods_seq, 'thumbCart')}" align="absmiddle" hspace="5" style="border:1px solid #ddd;" onerror="this.src='../images/common/noimage_list.gif'" /></a>
+					</td>
+					{ / } 
+					<td valign="top" class="goods-info">
+						
+						{? ..opt_type == "opt" || (..opt_type == "sub" && .opt_cnt == 0) }
+						<div class="goods-name">
+							<a href="../goods/view?no={..goods_seq}">{..goods_name}</a>
+							{? ..cancel_type == 1 }<span class="canceltypetitle">청약철회불가</span>{ / }
+						</div>
+						<!--<div class="goods-price">
+							<span class="goods-price">{=number_format(..price)}</span>원
+						</div>
+						-->
+						{ / }
+						{? ..couponinfo.coupon_serial }
+						<div class="goods-coupon">
+							<div class="goods-coupon-number">[쿠폰번호] : <span class="goods-coupon-number-serial bold blue">{..couponinfo.coupon_serial}</span></div>
+							<div class="goods-coupon-{.index_}">{..couponinfo.options}</div>
+
+							<!-- {? ..biztel }<div class="goods-coupon-address"> 주소 : [{..biztel}] {..address} {..addressdetail}</div>{/} -->
+							<!--<div class="goods-coupon-expires">유효기간 : {..social_start_date}~{..social_end_date}</div> -->
+							<div class="goods-coupon-value">쿠폰값어치 : <b>{..couponinfo.coupon_value}</b></div>
+							<div class="goods-coupon-input-value">쿠폰잔여 값어치 : <b>{..couponinfo.coupon_used}</b></div>
+							<div class="goods-coupon-use-return">사용제한 : {..couponinfo.coupon_use_return}</div>
+							<div class="goods-coupon-cancel-day">취소 마감시간 : {..couponinfo.socialcp_cancel_refund_day}</div>
+						</div>
+						{:}
+							{? ..opt_type == "opt" }
+							<!--{ ? ..option1 || ..option2 || ..option3 || ..option4 || ..option5 }-->
+							<div class="goods-option">└ [옵션] 
+							<!--{ ? ..option1 }-->{ ? ..title1 }{ ..title1 }:{ / }{ ..option1 }<!--{ / }-->
+							<!--{ ? ..option2 }-->, { ? ..title2 }{ ..title2 }:{ / }{ ..option2 }<!--{ / }-->
+							<!--{ ? ..option3 }-->, { ? ..title3 }{ ..title3 }:{ / }{ ..option3 }<!--{ / }-->
+							<!--{ ? ..option4 }-->, { ? ..title4 }{ ..title4 }:{ / }{ ..option4 }<!--{ / }-->
+							<!--{ ? ..option5 }-->, { ? ..title5 }{ ..title5 }:{ / }{ ..option5 }<!--{ / }-->
+							</div>
+							<!--{ / }-->
+							{ / }
+						{/}
+						{? ..opt_type == "opt" }
+						<div class="fright goods-etc">[환불수량] {=number_format(..ea)}개</div>
+						{ : ..opt_type == "sub" &&  .opt_cnt > 0 }
+						<div class="goods-info ">
+							<span class="goods-option">└ [추가] { ? ..title1 }{ ..title1 }:{ / }{ ..option1 }</span>
+							<span class="goods-etc fright ">[환불수량] {=number_format(..ea)}개</span>
+						</div>
+						{ / }
+
+					</td>
+				</tr>
+				</table>
+			</div>
+			
+			{? ..opt_type == "sub" && .opt_cnt == 0 }
+			<div class="goods-info-lay sub">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" class="goods-info-table">
+				<tr>
+					<td valign="top" class="goods-info ">
+						<span class="goods-option">└ [추가] { ? ..title1 }{ ..title1 }:{ / }{ ..option1 }</span>
+						<span class="goods-etc fright ">[환불수량] {=number_format(..ea)}개</span>
+					</td>
+				</tr>
+				</table>
+			</div>
+			{ / }
+
+		<!--{ / }-->
+	<!--{ / }-->
+
+		{?data_refund.status=='complete'}
+		<br class="table-gap" />
+
+		<div class="pd15 center fx13" style="border-top:1px solid #ddd;">
+
+			<div>
+				<span class="btn medium black" style="margin-bottom:7px;"><button type="button">환불금액</button></span>
+				<span class="fx20"><strong>{=number_format(tot.refund_total_price)}</strong></span>
+				(상품금액 {=number_format(tot.refund_total_price - data_refund.refund_delivery)}+배송비{=number_format(data_refund.refund_delivery)})
+			</div>
+			<div style="margin-top:5px;">
+				<span class="desc">[{data_order.mpayment} {=data_refund.mcancel_type}] {=number_format(data_refund.refund_price)} 
+				+ [적립금] {=number_format(data_refund.refund_emoney)} 
+				+ [이머니] {=number_format(data_refund.refund_cash)} 
+				</span>
+			</div>
+		</div>
+
+		{/}
+	</div>
+</div>
+
+<form action="../mypage_process/refund_modify" target="actionFrame" method="post">
+<input type="hidden" name="refund_code" value="{data_refund.refund_code}" />
+<div class="sub_division_title">환불정보 <div class="sub_division_arw"></div></div>
+<div class="sub_division_contents">
+	{? tot.coupontotal }
+		<table width="100%" border="0" cellpadding="2">
+		<tr>
+			<td class="left fx11 pdl10">
+		{tot.coupon_use_return}
+		{?data_refund.refund_date && data_refund.refund_date!='0000-00-00'}
+			{? data_refund.coupon_refund_emoney }
+				/ 적립금 : {=number_format(data_refund.coupon_refund_emoney)}원
+			{: data_refund.coupon_refund_emoney }
+				/ 환불금액 : {=number_format(data_refund.coupon_refund_price)}원
+			{/}
+		{/}
+		</td>
+		</tr>
+		</table>
+	{:}
+	<table width="100%" border="0" cellpadding="2">
+	<colgroup width="25%"><colgroup width="75%">
+	<tr>
+		<td class="left fx11 pdl10">은행</td>
+		<td class="its_td left">{?data_refund.status=='request'}<input type="text" name="bank_name" value="{data_refund.bank_name}" class="inputbox_large" style="width:94%" />{:}{data_refund.bank_name}{/}</td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">예금주</td>
+		<td class="its_td left">{?data_refund.status=='request'}<input type="text" name="bank_depositor" value="{data_refund.bank_depositor}" class="inputbox_large" style="width:94%" />{:}{data_refund.bank_depositor}{/}</td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">계좌번호</td>
+		<td class="its_td left">{?data_refund.status=='request'}<input type="text" name="bank_account" value="{data_refund.bank_account}" class="inputbox_large" style="width:94%" />{:}{data_refund.bank_account}{/}</td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">상세사유</td>
+		<td class="its_td left">{?data_refund.status=='request'}<input type="text" name="refund_reason" value="{data_refund.refund_reason}" class="inputbox_large" style="width:94%" />{:}{data_refund.refund_reason}{/}</td>
+	</tr>
+	</table>
+	{?data_refund.status=='request'}
+	<div class="pd10 center"><button class="btn_style" type="submit" style="width:100%">변경</button></div>
+		{/}
+	{/}
+</div>
+</form>
+
+<div class="sub_division_title">환불처리<div class="sub_division_arw"></div></div>
+<div class="sub_division_contents">
+	<table width="100%" border="0" cellpadding="4">
+	<col width="120" />
+	<tr>
+		<td class="left fx11 pdl10">원주문번호</td><td class="its_td">{data_refund.order_seq}</td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">환불종류</td><td class="its_td">{data_refund.mrefund_type}</td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">환불접수일</td><td class="its_td">{=date('Y년 m월 d일',strtotime(data_refund.regist_date))}</td>
+	</tr>
+	{?data_refund.refund_date && data_refund.refund_date!='0000-00-00'}
+	<tr>
+		<td class="left fx11 pdl10">환불완료일</td><td class="its_td">{=date('Y년 m월 d일',strtotime(data_refund.refund_date))}</td>
+	</tr>
+	{/}
+
+	{?data_refund.status=='complete'}
+	<tr>
+		<td class="left fx11 pdl10">환불금액</td><td class="its_td"><span class="red"><b>{=number_format(data_refund.refund_price)}원</b></span></td>
+	</tr>
+	<tr>
+		<td class="left fx11 pdl10">{data_order.mpayment} {data_refund.mcancel_type}</td><td class="its_td">{=number_format(data_refund.refund_price)}원</td>
+	</tr>
+	{?data_refund.refund_emoney}
+	<tr>
+		<td class="left fx11 pdl10">적립금 환불</td><td class="its_td">{=number_format(data_refund.refund_emoney)}원</td>
+	</tr>
+	{/}
+	{?data_refund.refund_cash}
+	<tr>
+		<td class="left fx11 pdl10">이머니 환불</td><td class="its_td">{=number_format(data_refund.refund_cash)}원</td>
+	</tr>
+	{/}
+	{?tot.return_reserve}
+	<tr>
+		<td class="left fx11 pdl10">회수(차감)된 적립금</td><td class="its_td">{=number_format(tot.return_reserve)}원</td>
+	</tr>
+	{/}
+	{?tot.return_point}
+	<tr>
+		<td class="left fx11 pdl10">회수(차감)된 포인트</td><td class="its_td">{=number_format(tot.return_point)}원</td>
+	</tr>
+	{/}
+	{/}
+	</table>
+</div>

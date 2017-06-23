@@ -1,0 +1,119 @@
+<script>
+var perpage = parseInt('{sc.perpage}');
+
+$(function(){
+	$(".sub_category_btn").click(function(){
+		if($(".sub_category_list ul").is(":visible")){
+			$(".sub_category_list ul").slideUp();
+			$(this).html("<img src='../images/design/btn_arw_dn.png' width='25' />");
+		}else{
+			$(".sub_category_list ul").slideDown();
+			$(this).html("<img src='../images/design/btn_arw_up.png' width='25' />");
+		}
+	});
+
+	$(".goods_catalog_more_btn").click(function(){
+		var btn = this;
+		var nowpage = parseInt($(this).attr('nowpage'));
+		var totalcount = parseInt('{page.totalcount}');
+		var totalpage = parseInt('{page.totalpage}');
+		var nextpage = nowpage+1;
+
+		$.ajax({
+			'global' : false,
+			'url' : ' /goods/catalog?page='+nextpage+'&sort={sort}&ajax=1{=html_entity_decode(sortUrlQuerystring)}',
+			'type' : 'get',
+			'cache' : false,
+			'success' : function(res){
+				$("#itemstmplayer").html(res);
+				var items = $("ul.goods_list>li.gl_item",$("#itemstmplayer"));
+
+				{?_GET.display_style == 'mobile_lattice_a'}
+				$(".catalog_list_wrap .latticeContentsContainer ul.goods_list").append(items);
+				{:}
+				$(".catalog_list_wrap ul.goods_list").append(items);
+				{/}
+
+				resize_height_{display_key}();
+
+				/* 이미지꾸미기 이미지 설정 */
+				set_goods_display_decoration(".goodsDisplayImageWrap");
+
+				try{
+					FB.XFBML.parse($("#{display_key}").get(1));
+				}catch(ex){}
+				echo.init({
+					offset: 100,
+					throttle: 250,
+					unload: false
+				});
+			}
+		});
+
+		$(this).attr('nowpage',nextpage);
+
+		if(nextpage<totalpage){
+			var rest = nextpage<totalpage-1 || (totalcount % perpage == 0) ? perpage : totalcount % perpage;
+			$(".nextcnt",this).text(rest);
+			$(".pages",this).text("("+nextpage+"/"+totalpage+")");
+		}else{
+			$(this).hide();
+		}
+	});
+});
+</script>
+<div id="itemstmplayer" class="hide"></div>
+
+<!--[ 카테고리별 추천상품 출력 ]-->
+<!--{ ? categoryData.recommend_display_seq }-->
+	<div style="padding:0 0 20px 0">
+		<div style="padding-top:10px">
+		{=showCategoryRecommendDisplay(categoryCode)}
+		</div>
+	</div>
+<!--{ / }-->
+
+<div class="sub_title_bar">
+	<h2>{categoryTitle}<!--{ ? page.totalcount }-->({=number_format(page.totalcount)})<!--{ / }--></h2>
+	<a href="javascript:history.back();" class="stb_back_btn"><img src="../images/design/btn_back.png" width="22" height="22" /></a>
+	<!--{ ? childCategoryData }-->
+	<div class="sub_category_btn">
+		<img src="../images/design/btn_arw_dn.png" width='25' />
+	</div>
+	<!--{ / }-->
+</div>
+
+<!--{ ? childCategoryData }-->
+<div class="sub_category_list">
+	<ul>
+	<!--{ @ childCategoryData }-->
+		<li><a href="?code={.category_code}">{.title}</a></li>
+	<!--{ / }-->
+	</ul>
+</div>
+<!--{ / }-->
+ 
+<!--[ 상단탭 ]-->
+<div class="goods_list_top">
+	{=showMobileTopForm(sc)}
+</div>
+<!--{ ? categoryData.list_use == 'y' }-->
+
+<!--{ ? page.totalcount }-->
+<div class="catalog_list_wrap">
+	{goodsDisplayHTML}
+</div>
+<!--{ : }-->
+	<div class="bg_gray pd10">
+		<div class="list_table_nodata">
+			<img src="../images/common/nodata.png" height="71" width="70"><br><br>
+			<span class="bold">이 카테고리에 상품이 없습니다.</span>
+		</div>
+	</div>
+<!--{ / }-->
+
+<!--{ ? page.nowpage < page.totalpage && categoryData.list_style != 'lattice_responsible'}-->
+<button type="button" class="goods_catalog_more_btn" nowpage="{=page.nowpage}"><span class="nextcnt">{?(page.nowpage<page.totalpage-1) || (page.totalcount % sc.perpage == 0)}{sc.perpage}{:}{page.totalcount % sc.perpage}{/}</span>개 더보기<br /><span class="pages">({page.nowpage}/{page.totalpage})</span></button>
+<!--{ / }-->
+
+<!--{ / }-->

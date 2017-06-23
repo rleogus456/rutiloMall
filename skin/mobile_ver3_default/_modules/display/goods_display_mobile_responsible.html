@@ -1,0 +1,319 @@
+<style>
+#{display_key} .goods_list {margin:4px; text-align:center; font-size:0px; *zoom:1; }
+#{display_key} .goods_list:after {clear:both; display:block; content:"";}
+#{display_key} .goods_list li.gl_item {display:inline-block; padding:5px 4px 10px 4px; vertical-align:top; overflow:hidden; width:{=100/2}%; box-sizing:border-box; font-size:12px;}
+#{display_key} .goods_list li.gl_item_medium {width:{=100/3}%; box-sizing:border-box; padding:0px 4px 10px 4px;}
+#{display_key} .goods_list li.gl_item_small {width:{=100/5}%; box-sizing:border-box; padding:0px 4px 10px 4px;}
+#{display_key} .goods_list li.gl_item>a {display:block; padding-top:5px; padding-bottom:5px;}
+#{display_key} .goods_list span.gli_image {width:100%;display:inline-block;background-size:contain; background-position:center center; background-repeat: no-repeat; position:relative}
+#{display_key} .goods_list span.gli_image img {width:100%;}
+#{display_key} .goods_list ol.gli_contents { padding-top:10px; text-align:{text_align};}
+#{display_key} .goods_list ol.gli_contents li {margin-bottom:3px;}
+#{display_key} .goods_list ol.gli_contents .goods_name {font-size:15px; font-weight:bold;}
+#{display_key} .goods_list ol.gli_contents .goods_summary {display:block; font-size:12px; color:gray; }
+#{display_key} .goods_list ol.gli_contents .goods_consumer_price {color:gray}
+#{display_key} .goods_list ol.gli_contents .goods_price {font-weight:bold; font-size:14px; font-family:tahoma; color:#ff3300}
+#{display_key} .goods_list ol.gli_contents .gli_goodsprice {display:block;}
+#{display_key} .fb-like {width:60px; margin:3px 0;}
+#{display_key} .goods_display_more_btn {display:block; margin:5px auto;
+	width:-webkit-calc(100% - 6px);
+	width:   -moz-calc(100% - 6px);
+	width:        calc(100% - 6px);
+}
+#{display_key} .goods_display_more_btn {display:block; width:100%; height:50px; border:1px solid #e3e3e3; background-color:#f8f8f8; font-size:14px; color:#7a7b83}
+{?decorations.image_icon && decorations.image_icon_location=='right'}
+#{display_key} .goodsDisplayImageIcon {position:absolute; right:0px; top:0px; {?decorations.image_icon_over=='y'}display:none;{/}}
+{/}
+{?decorations.image_icon && decorations.image_icon_location=='left'}
+#{display_key} .goodsDisplayImageIcon {position:absolute; left:0px; top:0px; {?decorations.image_icon_over=='y'}display:none;{/}}
+{/}
+{?decorations.image_icon && preg_match("/^icon_best_no/",decorations.image_icon)}
+#{display_key} .goodsDisplayImageIconText {position:absolute;font-size:16px;font-family:tahoma;font-weight:bold;text-align:center;color:#ffffff;letter-spacing:-1px;width:48px;top:25px;left:0px;}
+{/}
+{?decorations.image_icon && preg_match("/^icon_number/",decorations.image_icon)}
+#{display_key} .goodsDisplayImageIconText {position:absolute;font-size:18px;font-family:tahoma;font-weight:bold;text-align:right;color:#ffffff;letter-spacing:-1px;width:28px;top:10px;left:0px;}
+{/}
+{?decorations.image_icon && preg_match("/^icon_sale/",decorations.image_icon)}
+#{display_key} .goodsDisplayImageIconText {position:absolute;font-size:16px;font-family:tahoma;font-weight:bold;text-align:center;color:#ffffff;letter-spacing:-1px;width:48px;top:0px;left:0px;}
+{/}
+{?(decorations.image_send || decorations.image_zzim) && decorations.image_send_location=='right'}
+#{display_key} .goodsDisplayImageSend {position:absolute;right:0px;top:2px; {?decorations.image_send_over=='y'}display:none;{/}}
+{/}
+{?(decorations.image_send || decorations.image_zzim) && decorations.image_send_location=='left'}
+#{display_key} .goodsDisplayImageSend {position:absolute;left:0px;top:2px; {?decorations.image_send_over=='y'}display:none;{/}}
+{/}
+</style>
+
+<script>
+
+var gl_item_resize_{display_key} = function(){
+	w_width = $(window).width();
+	if(w_width>=1024){
+		$("#{display_key} .goods_list li.gl_item").not('.gl_item_small').addClass('gl_item_small');
+		$("#{display_key} .goods_list li.gl_item_medium").removeClass('gl_item_medium');
+	}else if(w_width>=640 && w_width<1024){
+		$("#{display_key} .goods_list li.gl_item").not('.gl_item_medium').addClass('gl_item_medium');
+		$("#{display_key} .goods_list li.gl_item_small").removeClass('gl_item_small');
+	}else{
+		$("#{display_key} .goods_list li.gl_item_small").removeClass('gl_item_small');
+		$("#{display_key} .goods_list li.gl_item_medium").removeClass('gl_item_medium');
+	}
+};
+var gl_item_resize_timer_{display_key} = null;
+
+$(function(){
+	$(window).bind('resize',function(){
+		gl_item_resize_{display_key}();
+		resize_height_{display_key}();
+	}).trigger('resize');
+
+	$("#{display_key} .displayTabContainer").each(function(){
+		var tabContainerObj = $(this);
+		tabContainerObj.children('li').bind('mouseover click',function(){
+			resize_height_{display_key}();
+		});
+	});
+
+	$("#{display_key} .goods_display_more_btn").live('click',function(){
+		var btn = this;
+
+		var nowpage = parseInt($(this).attr('nowpage'));
+		var totalcount = parseInt('{page.totalcount}');
+		var totalpage = parseInt('{page.totalpage}');
+		var tabIdx = parseInt($(this).attr('tabIdx'));
+		var nextpage = nowpage+1;
+		var perpage = parseInt($(this).attr('perpage'));
+
+		$(btn).hide();
+
+		var params = {'display_seq':$("#{display_key}").attr('displaySeq'),'page':nextpage,'perpage':perpage,'tab_index':tabIdx};
+		loadingStart(btn,{'color':'#000000'});
+
+		$.ajax({
+		'global' : false,
+		'url' : '/goods/design_display_tab',
+		'type' : 'post',
+		'data' : params,
+		'cache' : false,
+		'success' : function(res){
+			loadingStop(btn);
+
+			$("#itemstmplayer").html(res);
+			var items = $("ul.goods_list>li.gl_item",$("#itemstmplayer"));
+
+			if($("#{display_key}").find("ul.goods_list>li.gl_item").hasClass('gl_item_small')){
+			items.addClass('gl_item_small');
+			}
+
+			$("#{display_key}").find("ul.goods_list").eq(tabIdx).append(items);
+
+			$("#{display_key}").find(".displayTabContentsContainer").eq(tabIdx).append($(".goods_display_more_btn",res).eq(0));
+
+			resize_height_{display_key}();
+
+			/* 이미지꾸미기 이미지 설정 */
+			set_goods_display_decoration(".goodsDisplayImageWrap");
+
+			try{
+				FB.XFBML.parse($("#{display_key}").get(1));
+			}catch(ex){}
+				echo.init({
+				offset: 100,
+				throttle: 250,
+				unload: false
+			});
+		}
+		});
+
+		$(this).attr('nowpage',nextpage);
+
+		if(nextpage<totalpage){
+			var rest = nextpage<totalpage-1 ? perpage : totalcount % perpage;
+			$(".nextcnt",this).text(rest);
+			$(".pages",this).text("("+nextpage+"/"+totalpage+")");
+		}else{
+			$(this).hide();
+		}
+	});
+
+	set_goods_display_decoration(".goodsDisplayImageWrap");
+});
+
+function resize_height_{display_key}(){
+	mobile_h = '{mobile_h}' ? '{mobile_h}' : 100;
+	height = ($('.{display_key} span.gli_image').width())*(mobile_h/100);
+	$('#{display_key} .displayTabContentsContainer').each(function(){
+		if ($(this).css('display') == 'block' && $('span.gli_image',$(this)).width() > 0){
+			height = ($('span.gli_image',$(this)).width())*(mobile_h/100);
+		}
+	});
+	$('#{display_key} span.gli_image').each(function(){
+		$(this).css({'height':height });
+	});
+};
+</script>
+<div id="itemstmplayer" class="hide"></div>
+<link rel="stylesheet" type="text/css" href="../../css/mobile_pagination.css" />
+<!--{ ? title }--><div><font face="arial black, 돋움" size="2"><b>{title}</b></font></div><!--{ / }-->
+<!--{ ? displayTitle }--><div>{displayTitle}</div><!--{ / }-->
+<!--{ ? count(displayTabsList)>1 }-->
+<ul class="displayTabContainer {tab_design_type}">
+	<!--{ @ displayTabsList }-->
+		<li {?.index_==0}class="current"{/} style="width:{=100/count(displayTabsList)}%">{.tab_title}</li>
+	<!--{ / }-->
+</ul>
+<!--{ / }-->
+
+<!--{ @ displayTabsList }-->
+<div class="displayTabContentsContainer {?count(displayTabsList)>1}displayTabContentsContainerBox{/}">
+<ul class="goods_list {display_key}" tabIdx="{.key_}">
+<!--{ @ .record }-->
+<li class="gl_item">
+	<a href="/goods/view?no={..goods_seq}">
+		<span class="gli_image goodsDisplayImageWrap" decoration="{image_decorations}" goodsInfo="{=base64_encode(json_encode(..value_))}" style="background-image:url('{..image}'),url('../../images/common/m_noimage.gif');background-size:contain,40px;"></span>
+		<ol class="gli_contents">
+			<!--{ @ info_settings.list }-->
+
+				<!--{? ...value_->kind == 'brand_title' && ..brand_title }-->
+				<li>
+					<span {...value_->name_css}>
+					{?...value_->wrapper}{=substr(...value_->wrapper,0,1)}{/}{..brand_title}{?...value_->wrapper}{=substr(...value_->wrapper,1,1)}{/}
+					</span>
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'goods_name' }-->
+				<li><span class="goods_name" {...value_->name_css}>{..goods_name}</span></li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'icon' && ..icons }-->
+				<li>
+					<!--{ @ ..icons }--><img src="/data/icon/goods/{....value_}.gif" border="0"><!--{ / }-->
+				</li>
+				<!--{ / }-->
+
+				<!--{? ...value_->kind == 'summary' && ..summary}-->
+				<li><span class="goods_summary" {...value_->name_css}>{..summary}</span></li>
+				<!--{/}-->
+
+				<!-- {? ...value_->kind == 'consumer_price' && ..consumer_price>..sale_price} -->
+				<li>
+					<span {...value_->name_css}>
+					<!--{?..string_price}-->
+						{..string_price}
+					<!--{:}-->
+						{=number_format(..consumer_price)}
+						{?...value_->postfix}{...value_->postfix}{/}
+					<!--{/}-->
+					</span>
+				</li>
+				<!-- {/} -->
+
+				<!--{? ...value_->kind == 'price' }-->
+				<li class="gli_goodsprice">
+					<div class="goods_price" {...value_->name_css}>
+					<!--{?..string_price}-->
+						{..string_price}
+					<!--{:}-->
+						{=number_format(..price)}
+						{?...value_->postfix}{...value_->postfix}{/}
+					<!--{/}-->
+					</div>
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'sale_price' }-->
+				<li>
+					<span {...value_->name_css}>
+						{?..string_price}
+							{..string_price}
+						{:}
+							{=number_format(..sale_price)}
+							{?...value_->postfix}{...value_->postfix}{/}
+						{/}
+					</span>
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'fblike' && APP_USE == 'f' && APP_LIKE_TYPE != 'NO'}-->
+				<li>{=snsLikeButton(..goods_seq,...value_->fblike)}</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'status_icon' }-->
+				<li>
+					<!--{ ? ...value_->status_icon_runout && ..goods_status == 'runout' }-->
+					<img src="/data/icon/goods_status/{goodsStatusImage.icon_runout}" />
+					<!--{ / }-->
+					<!--{ ? ...value_->status_icon_purchasing && ..goods_status == 'purchasing' }-->
+					<img src="/data/icon/goods_status/{goodsStatusImage.icon_purchasing}" />
+					<!--{ / }-->
+					<!--{ ? ...value_->status_icon_unsold && ..goods_status == 'unsold' }-->
+					<img src="/data/icon/goods_status/{goodsStatusImage.icon_unsold}" />
+					<!--{ / }-->
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'score' }-->
+				<li>
+					<font style="font-weight:bold; color:#fff; background-color:#ee6600; padding:0 3px; font-family:tahoma">{=round(..review_sum/..review_count)}</font>
+					<span class="orange">{=str_repeat('★',round(..review_sum/..review_count))}</span>
+					<span class="gray">{=str_repeat('★',5-round(..review_sum/..review_count))}</span>
+					(<span class="red">{=number_format(..review_count)}</span>)
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'color' }-->
+				<li>
+					{@(..colors)}
+					<span style="color:{....value_};">■</span>
+					{/}
+				</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'count' && ..eventEnd }-->
+					<li class="soloEventTd{..goods_seq}" style="padding-top:5px; font-face:Dotum; font-size:11px;">
+						<img src="../../images/common/icon_clock.gif" style="padding-bottom:2px;"> <span style="background-color:#c61515; color:#ffffff; padding:2px; font-weight:bold;"><span id="soloday{..goods_seq}" style="color:#ffffff; font-weight:bold;"></span>일 <span id="solohour{..goods_seq}" style="color:#ffffff; font-weight:bold;"></span>:<span id="solomin{..goods_seq}" style="color:#ffffff; font-weight:bold;"></span>:<span id="solosecond{..goods_seq}" style="color:#ffffff; font-weight:bold;"></span></span>
+					<script>
+					$(function() {
+						timeInterval{..goods_seq} = setInterval(function(){
+							var time{..goods_seq} = showClockTime('text', '{..eventEnd.year}', '{..eventEnd.month}', '{..eventEnd.day}', '{..eventEnd.hour}', '{..eventEnd.min}', '{..eventEnd.second}', 'soloday{..goods_seq}', 'solohour{..goods_seq}', 'solomin{..goods_seq}', 'solosecond{..goods_seq}', '{..goods_seq}');
+							if(time{..goods_seq} == 0){
+								clearInterval(timeInterval{..goods_seq});
+								$("..soloEventTd{displayGoods.goods_seq}").html("단독 이벤트 종료");
+							}
+						},1000);
+					});
+					</script>
+					</li>
+				<!--{/}-->
+
+				<!--{? ...value_->kind == 'event_text' }-->
+				<li>
+					<span {...value_->name_css}>
+						{?is_numeric(..event_text)}
+							{=number_format(..event_text)}
+							{?...value_->postfix}{...value_->postfix}{/}
+						{:}
+							{..event_text}
+						{/}
+					</span>
+				</li>
+				<!--{/}-->
+				<!--{? ...value_->kind == 'bigdata' }-->
+				<li>
+					<span>
+						<a href="/bigdata/catalog?no={..goods_seq}"><u {...value_->name_css}>{...value_->bigdata}</u></a>
+					</span>
+				</li>
+				<!--{ / }-->
+			<!--{ / }-->
+		</ol>
+	</a>
+</li>
+<!--{ / }-->
+</ul>
+<!--{ ? perpage && (page.nowpage < page.totalpage) }-->
+<button type="button" class="goods_display_more_btn" nowpage="{=page.nowpage}" tabIdx="{.key_}" perpage="{perpage}"><span class="nextcnt">{?page.nowpage<page.totalpage-1}{perpage}{:}{page.totalcount % perpage}{/}</span>개 더보기<br /><span class="pages">({page.nowpage}/{page.totalpage})</span></button>
+<!--{ / }-->
+</div>
+<!--{ / }-->

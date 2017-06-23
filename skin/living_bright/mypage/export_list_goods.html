@@ -1,0 +1,132 @@
+<style type="text/css">
+.s1-bd	{ border:1px solid #e5e7e6; }
+.s1-bdt	{ border-top:1px solid #e5e7e6; }
+.s1-bdb	{ border-bottom:1px solid #e5e7e6; }
+.s1-bdr	{ border-right:1px solid #e5e7e6; }
+.s1-bdl	{ border-left:1px solid #e5e7e6; }
+.s2-bd	{ border:1px solid #aaaaaa; }
+.s2-bdt	{ border-top:1px solid #aaaaaa; }
+.s2-bdb	{ border-bottom:1px solid #aaaaaa; }
+.s2-bdr	{ border-right:1px solid #aaaaaa; }
+.s2-bdl	{ border-left:1px solid #aaaaaa; }
+
+.s3-bdt	{ border-top:1px dashed #aaaaaa; }
+.s3-bdb	{ border-bottom:1px dashed #aaaaaa; }
+.s3-bdr	{ border-right:1px dashed #aaaaaa; }
+.s3-bdl	{ border-left:1px dashed #aaaaaa; }
+
+.nbdt	{ border-top:none; }
+.nbdb	{ border-bottom:none; }
+.nbdr	{ border-right:none; }
+.nbdl	{ border-left:none; }
+
+/* 리스트 테이블 */
+.order_list_table .exp-title {background-color:#EFEFEF;padding:5px 0;font-size:13px;color:#515151;text-align:center;border-top:1px solid #E1E1E1; border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1; font-weight:none; height:25px;}
+.order_list_table .lpd { border-left: 1px solid #E1E1E1; }
+.order_list_table .exp-content {background-color:#fff;padding:5px 0; border-right:1px solid #E1E1E1; border-bottom:1px solid #E1E1E1; }
+.order_list_table .exp-content div { line-height:20px; }
+.order_list_table .exp-desc	{color:#777777;}
+.order_list_table .coupon-step-msg { font-size:14px;color:#0050d2;}
+.order_list_table .sub { background-color:#F6F6F6; }
+.order_list_table .goods_info td{ border:0 !important; min-height:45px; line-height:15px; }
+
+/* 상품 이미지 */
+span.order-item-image img {border:1px solid #ccc; width:30px; height:30px; vertical-align:middle;}
+</style>
+<script type="text/javascript">
+function goods_review_write(goodsseq,order_seq){
+	if(goodsseq){
+		{ ? defined('__ISUSER__') }
+			window.open( '/mypage/mygdreview_write?goods_seq='+goodsseq+'&order_seq='+order_seq);
+		{:}
+			window.open('/board/write?id=goods_review&goods_seq='+goodsseq+'&order_seq='+order_seq);
+		{/} 
+	}
+}
+</script>
+
+<div class="bg_gray" style="padding:5px 10px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+	<colgroup>
+		<col />
+		<col />
+	</colgroup>
+	<thead>
+	<tr>
+		<th style="35%" class="exp-title lpd">상품</th>
+		<th style="15%" class="exp-title">발송수량</th>
+		<th style="10%" class="exp-title">주문수량</th>
+		<th style="10%" class="exp-title">상품후기</th>
+		<th style="30%" class="exp-title">발송정보</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{ @ export }-->
+		<!--{ @ .items }-->
+
+	<tr>
+		<!--{ ? ..opt_type=='opt' }-->
+		<td class="exp-content lpd pdl10">
+			<table cellpadding="0" cellspacing="0" border="0" width="100%" class="goods_info" >
+			<tr>
+				<td width="40px">
+					<span class="order-item-image"><img class="small_goods_image" src="{..image}" /></span>
+				</td>
+				<td>
+					<span>{ ..goods_name }</span>
+					<div class="option-info">
+						<!--{?..title1}-->
+						<img src="../images/common/icon_option.gif" />
+						{..title1}:{..option1}
+						<!--{ / }-->
+						<!--{?..option2 }--> / {..title2}:{..option2}<!--{ / }-->
+						<!--{?..option3 }--> / {..title3}:{..option3}<!--{ / }-->
+						<!--{?..option4 }--> / {..title4}:{..option4}<!--{ / }-->
+						<!--{?..option5 }--> / {..title5}:{..option5}<!--{ / }-->
+					</div>
+				</td>
+			</tr>
+			</table>
+		</td>
+		<!--{ : }-->
+		<td class="exp-content lpd pdl20 sub">
+			<img src="../images/common/icon_add_arrow.gif" />
+			<img src="../images/common/icon_add.gif" />
+			{..title1}:{..option1}
+		</td>
+		<!--{ / }-->
+		<td class="exp-content {..opt_type}" style="text-align:center;">{..ea}</td>
+		<td class="exp-content {..opt_type}" style="text-align:center;">{..opt_ea}</td>
+		<td class="exp-content {..opt_type}" style="text-align:center;">
+			<button class="black_btn" onclick="goods_review_write('{..goods_seq}','{.order_seq}');">상품후기</button>
+		</td>
+		<!--{ ? ..index_ == 0 }-->
+		<td class="exp-content pdl10 {..opt_type}" rowspan="{=count(.items)}">
+			<div>
+				<!--{ ? .provider_name }-->
+				<span class="exp-desc">[{ .provider_name }]</span>
+				<!--{ / }-->
+				{.export_date} 발송
+			</div>
+			<div>{.mstatus}</div>
+			<div>{.mdelivery} {.mdelivery_number}</div>
+			<div>
+				<!--{ ? .tracking_url }-->
+				<button type="button" class="black_btn" onclick="window.open('{.tracking_url}');">배송조회</button>
+				<!--{ / }-->
+				<!--{? buy_confirm_use }-->
+				<!--{ ? .btn_buyconfirm }-->
+				<button type="button" class="black_btn exportbuyconfirm" export_code="{.export_code}" status="{.status}" >구매확정</button>
+				<!--{ : }-->
+				{? .reserve_buyconfirm_ea > 0}<button type="button" class="gray_btn">구매확정</button>{/}
+				<!--{ / }-->
+				<!--{ / }-->
+			</div>
+		</td>
+		<!--{ / }-->
+	</tr>
+		<!--{ / }-->
+	<!--{ / }-->
+	</tbody>
+	</table>
+</div>

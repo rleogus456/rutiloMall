@@ -1,0 +1,146 @@
+<style type="text/css">
+.s1-bd	{ border:1px solid #e5e7e6; }
+.s1-bdt	{ border-top:1px solid #e5e7e6; }
+.s1-bdb	{ border-bottom:1px solid #e5e7e6; }
+.s1-bdr	{ border-right:1px solid #e5e7e6; }
+.s1-bdl	{ border-left:1px solid #e5e7e6; }
+.s2-bd	{ border:1px solid #aaaaaa; }
+.s2-bdt	{ border-top:1px solid #aaaaaa; }
+.s2-bdb	{ border-bottom:1px solid #aaaaaa; }
+.s2-bdr	{ border-right:1px solid #aaaaaa; }
+.s2-bdl	{ border-left:1px solid #aaaaaa; }
+
+.s3-bdt	{ border-top:1px dashed #aaaaaa; }
+.s3-bdb	{ border-bottom:1px dashed #aaaaaa; }
+.s3-bdr	{ border-right:1px dashed #aaaaaa; }
+.s3-bdl	{ border-left:1px dashed #aaaaaa; }
+
+.nbdt		{ border-top:none; }
+.nbdb		{ border-bottom:none; }
+.nbdr		{ border-right:none; }
+.nbdl		{ border-left:none; }
+
+.exp-info { background-color:#fff; padding:10px; }
+.exp-info td { line-height:20px; font-size:13px; }
+.exp-info td.tit { color:#777777; border-bottom:1px solid #d9d9d9; padding-bottom:12px; }
+.exp-info td.add { color:#373737;padding:12px 0 12px 0; }
+
+.btn-link-area { padding-bottom: 15px; }
+
+.exp-title {background-color:#99a2b8;padding:5px 0;padding-bottom:9px;font-size:16px;color:#fff;text-align:center;}
+.exp-content {background-color:#fff;font-size:14px;color:#373737;padding:5px 0;}
+.exp-content div {margin:5px 0;}
+.exp-desc	{color:#777777;}
+.coupon-step-msg { font-size:14px;color:#0050d2;}
+
+
+.btn-blue-use {width:100%;height:32px;border-radius:3px;}
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+	// 구매확정
+	$(".exportbuyconfirm").live('click',function(){
+		var return_url = encodeURIComponent('{_SERVER.REQUEST_URI}');
+		document.location.href	= "./buy_confirm?export_code="+$(this).attr('exportCode')+'&return_url='+return_url;
+	});
+});
+</script>
+<div class="sub_title_bar">
+	<h2>발송리스트</h2>
+	<a class="stb_back_btn" href="javascript:history.back();"><img width="22" height="22" src="../../images/design/btn_back.png"></a>
+</div>
+<div class="bg_gray" style="padding:10px;">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="order_list_table">
+	<colgroup>
+		<col />
+		<col />
+	</colgroup>
+	<thead>
+	<tr>
+		<th style="min-width:200px;" class="exp-title s1-bdr">상품</th>
+		<th style="min-width:94px;width:94px;" class="exp-title">발송</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{ @ export }-->
+		<!--{ ? .index_ > 0}-->
+	<tr><td colspan="2" style="height:5px;border-top:1px solid #c8c8c8;"></td></tr>
+		<!--{ : }-->
+	<tr><td colspan="2" style="height:5px;"></td></tr>
+		<!--{ / }-->
+	<tr><td colspan="2" >
+		<div class="exp-info s2-bd">
+			<div>
+				<table cellpadding="0" cellspacing="0" border="0" width="100%">
+				<tr>
+					<td class="tit">
+						<!--{ ? .provider_name }-->[{ .provider_name }] <!--{ / }-->
+						{ .export_date } 발송
+						{ .mdelivery } { .mdelivery_number }
+					</td>
+				</tr>
+				<tr>
+					<td class="add">
+						({.shipping.recipient_zipcode})
+					<!--{? .shipping.recipient_address_type == 'street'}-->
+						{.shipping.recipient_address_street}
+					<!--{ : }-->
+						{.shipping.recipient_address}
+					<!--{ / }-->
+						 {.shipping.recipient_address_detail} / {.shipping.recipient_phone} / {.shipping.recipient_email}
+					</td>
+				</tr>
+				</table>
+			</div>
+			<div class="">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0"  >
+				<colgroup>
+					<col />
+					<col />
+				</colgroup>
+				<tbody>
+					<!--{ @ .items }-->
+				<tr>
+					<td  class="exp-content pdl10 {?..index_==0}s2-bdt{/} {?..index_==(count(.items)-1)}s2-bdb{/} s2-bdl">
+						<div>{ ..goods_name }</div>
+						<div>
+							<!--{ ? ..provider_name }-->
+							<span class="exp-desc">[{ ..provider_name }]</span>
+							<!--{ / }-->
+						</div>
+					</td>
+					<td class="exp-content {?..index_==0}s2-bdt{/} {?..index_==(count(.items)-1)}s2-bdb{/} s2-bdr nbdl" style="min-width:74px;width:74px;text-align:center;border-left:1px solid #aaaaaa; ">{..ea}</td>
+				</tr>
+					<!--{ / }-->
+				</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div  style="padding-top:9px;padding-bottom:14px;">
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<td>
+				<!--{ ? .tracking_url }-->
+				<button type="button" class="btn-blue-use" onclick="window.open('{.tracking_url}');">배송조회</button>
+				<!--{ : }-->
+				<button type="button" class="btn-coupon-use-disable">배송조회</button>
+				<!--{ / }-->
+			</td>
+			<td width="7"></td>
+			<td>
+				<!--{ ? .btn_buyconfirm && .status != 75 }-->
+				<button type="button" class="btn-blue-use exportbuyconfirm" exportCode="{.export_code}">구매확정</button>
+				<!--{ : }-->
+				<button type="button" class="btn-coupon-use-disable">구매확정</button>
+				<!--{ / }-->
+			</td>
+		</tr>
+		</table>
+		</div>
+		</td>
+	</tr>
+	<!--{ / }-->
+	</tbody>
+	</table>
+</div>

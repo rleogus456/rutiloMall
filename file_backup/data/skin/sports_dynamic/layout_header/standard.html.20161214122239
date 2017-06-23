@@ -1,0 +1,69 @@
+<!-- 상단영역 : 시작 -->
+<!-- top-->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:url(../images/design/top_bg.gif) repeat-x">
+<tr>
+	<td>
+    <!-- top menu-->
+    <table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center">
+    <tr>
+    	<td width="600px" height="25px"></td>
+        <!--{? userInfo.member_seq }-->
+        <td>{? userInfo.snsfacebookcon && fbuser  }<a href="javascript:void(0);" onclick="FB.logout(function(response) {logout();});return false; " >로그아웃</a>{:}<a href="../login_process/logout" target= "actionFrame"><img src="../images/design/top_logout.gif" title="" alt="" /></a>{/}
+        </td>
+        <td><img src="../images/design/top_bar.gif" title="" alt="" /></td>
+        <td><a href="../mypage/myinfo"><img src="../images/design/top_info.gif" title="" alt="" /></a></td>
+        <!--{ : }-->
+        <td><a href="../member/login"><img src="../images/design/top_login.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/top_bar.gif" title="" alt=""></td>
+        <td><a href="../member/agreement"><img src="../images/design/top_join.gif" title="" alt="" /></a></td>
+        <!--{ / }-->
+        <td><img src="../images/design/top_bar.gif" title="" alt=""></td>
+        <td><a href="../mypage/index"><img src="../images/design/top_mypage.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/top_bar.gif" title="" alt=""></td>
+        <td><a href="../mypage/order_catalog"><img src="../images/design/top_order.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/top_bar.gif" title="" alt=""></td>
+        <td><a href="../order/cart"><img src="../images/design/top_cart.gif" title="" alt="" /></a></td>
+        <td><img src="../images/design/top_bar.gif" title="" alt=""></td>
+        <td><a href="../service/cs"><img src="../images/design/top_cscenter.gif" title="" alt="" /></a></td>
+    </tr>
+    </table>
+    <!-- /top menu-->
+    </td>
+</tr>
+<tr>
+	<td>
+    <!-- 로고 검색 배너-->
+    <table cellpadding="0" cellspacing="0" border="0" width="{layout_config.width}" align="center">
+    <tr>
+    	<td align="left"><a href="/main/index" target='_self'><img src="../images/design/logo.gif" title="" alt="" /></a></td>
+        <td align="right">
+         <form action="../goods/search">
+        <input type="text" name="search_text" value="" style="width:258px; background-color:#fff; border:0px solid #467edc ; border-right:none; height:26px; line-height:18px; text-indent:5px;" /><input type="image" src="../images/design/icon_search.gif" value="검색" style="vertical-align:middle;" />
+		</form>
+        
+        </td>
+    </tr>
+    </table>
+    <!-- /로고 검색 배너-->
+    </td>
+</tr>
+<tr>
+	<td>
+<table class="headerCategoryDivision" width="{layout_config.width}"  align="{layout_config.align}"  cellpadding="0" cellspacing="0" border="0" style="margin-top:26px">
+<tr>
+	<td align="left">{=showCategoryNavigation()}</td>
+    
+    <td width="120">{=showLocationNavigation()}</td>
+    </tr>
+    </table>
+    
+    
+
+
+<!-- 상단영역 : 끝 -->
+        
+        <table>
+            <tr>
+                <td style="margin-top:10px"></td>
+            </tr>
+        </table>
